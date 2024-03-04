@@ -1,24 +1,34 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import './App.css';
+// import { useEffect, useState } from 'react';
+// import axios from 'axios';
+import { useRoutes } from 'react-router-dom';
+import LandingPage from './views/LandingPage.tsx';
+import './assets/scss/_theme.scss';
+import AppFooter from './components/AppFooter.tsx';
 
 function App() {
-  const [tickets, setTickets] = useState([]);
+  // const [tickets, setTickets] = useState([]);
 
-  useEffect(() => {
-    axios.get('http://localhost:5000/api/tickets').then((resp) => {
-      setTickets(resp.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get('http://localhost:5000/api/tickets').then((resp) => {
+  //     setTickets(resp.data);
+  //   });
+  // }, []);
+
+  const routes = useRoutes([
+    {
+      path: '/',
+      element: <LandingPage />
+    },
+    {
+      path: '*',
+      element: <LandingPage />
+    }
+  ]);
 
   return (
     <>
-      <h1>TaskWorkflow</h1>
-      <ul>
-        {tickets.map((ticket: any) => (
-          <li key={ticket.id}>{ticket.title}</li>
-        ))}
-      </ul>
+      {routes}
+      <AppFooter />
     </>
   );
 }

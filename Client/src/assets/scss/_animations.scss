@@ -1,0 +1,136 @@
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up-from-below {
+  0% {
+    transform: translateY(200%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes sway {
+  from {
+    opacity: 0.5;
+    transform: rotate(-5deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes background-slide {
+  from {
+    background-size: 0% 100%;
+  }
+
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(-5px);
+  }
+
+  to {
+    transform: translateY(5px);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes morph {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
+@keyframes wobble {
+  0% {
+    transform: translateX(0%);
+  }
+  15% {
+    transform: translateX(-15%);
+  }
+  30% {
+    transform: translateX(10%);
+  }
+  45% {
+    transform: translateX(-10%);
+  }
+  60% {
+    transform: translateX(5%);
+  }
+  75% {
+    transform: translateX(-5%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-up-from-below-2 {
+  0% {
+    transform: translateY(50px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down-from-above {
+  0% {
+    top: -100vh;
+    left: 0;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+// loading animation
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

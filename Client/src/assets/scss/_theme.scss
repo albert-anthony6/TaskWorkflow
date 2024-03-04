@@ -1,0 +1,82 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+// ::selection {
+//   background-color: $dark-orange;
+// }
+
+html,
+body {
+  font-family: $secondary-font-stack;
+  color: $text-color-primary;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: $light-neutral;
+}
+
+p {
+  @include font-size(18, 300, none, 0, 29);
+  color: $dark-grey;
+}
+
+a {
+  @include font-size(16, 500, none, normal, 0);
+  color: $primary;
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $primary-font-stack;
+}
+
+h1 {
+  @include font-size(45, 900, none, normal, 65);
+}
+
+h2 {
+  @include font-size(48, 700, none, normal, 65);
+}
+
+h4 {
+  @include font-size(16, 700, none, 1.6, normal);
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  @include font-size(16, 500, none, 1, 24);
+  padding: 16px 38px;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.button__primary {
+  background-color: $primary;
+  color: $lightest-neutral;
+  border: none;
+}
+
+.button__secondary {
+  background-color: transparent;
+  color: $lightest-neutral;
+  border: 2px solid $lightest-neutral;
+}
+
+.caption {
+  @include font-size(14, 300, none, 0, 27);
+}
