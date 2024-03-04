@@ -167,7 +167,7 @@ export default function LandingPage() {
           {slides.map((slide) => (
             <div className="carousel-slide">
               <div className="review-section__left">
-                <IconLogo className="logo" />
+                <IconLogo className="logo__white" />
                 <p>{slide.review}</p>
                 <div className="caption">{slide.caption}</div>
                 <IconStars />

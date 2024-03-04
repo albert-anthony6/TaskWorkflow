@@ -23,13 +23,11 @@ body {
 
 p {
   @include font-size(18, 300, none, 0, 29);
-  color: $dark-grey;
 }
 
 a {
   @include font-size(16, 500, none, normal, 0);
-  color: $primary;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 h1,
@@ -63,6 +61,20 @@ button {
   border-radius: 4px;
   outline: none;
   cursor: pointer;
+}
+
+.page {
+  margin-left: 330px;
+}
+
+.logo__white {
+  path,
+  circle {
+    fill: white;
+  }
+  line {
+    stroke: white;
+  }
 }
 
 .button__primary {

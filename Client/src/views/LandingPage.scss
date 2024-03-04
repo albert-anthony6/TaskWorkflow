@@ -1,6 +1,15 @@
 .landing-page {
   padding-top: 50px;
 
+  p {
+    color: $dark-grey;
+  }
+
+  a {
+    color: $primary;
+    text-decoration: underline;
+  }
+
   .header {
     display: flex;
     max-width: 1440px;
@@ -159,16 +168,6 @@
       .caption {
         font-size: 18px;
         margin-bottom: 50px;
-      }
-
-      .logo {
-        path,
-        circle {
-          fill: white;
-        }
-        line {
-          stroke: white;
-        }
       }
     }
 
