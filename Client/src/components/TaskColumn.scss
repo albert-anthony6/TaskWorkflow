@@ -1,0 +1,57 @@
+.task-column {
+  width: 23%;
+  min-width: 230px;
+  height: 100%;
+  background-color: $lightest-neutral;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .column-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10.5px 10px 10.5px 10px;
+
+    .status-color {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+
+      &__red {
+        background-color: $red;
+      }
+
+      &__yellow {
+        background-color: $yellow;
+      }
+
+      &__blue {
+        background-color: $primary;
+      }
+
+      &__green {
+        background-color: $green;
+      }
+    }
+
+    .add-task {
+      margin-right: 6px;
+      cursor: pointer;
+    }
+
+    p {
+      color: $dark-neutral;
+    }
+  }
+
+  .column {
+    height: 100%;
+    display: flex;
+    padding: 15px 10px;
+    flex-direction: column;
+    align-items: stretch;
+    border-top: 1px solid rgba($darkest-neutral, 0.2);
+  }
+}

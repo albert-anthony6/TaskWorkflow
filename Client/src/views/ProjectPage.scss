@@ -1,2 +1,18 @@
 .project-page {
+  &--header {
+    padding: 35px 50px 40px;
+    background-color: $light-grey;
+  }
+
+  .main-content {
+    padding: 40px 50px 50px;
+
+    .columns-container {
+      display: flex;
+      height: 75vh;
+      min-height: 700px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+  }
 }
