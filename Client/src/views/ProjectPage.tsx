@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import './ProjectPage.scss';
 import TaskColumn from '../components/TaskColumn';
+import TaskCreationModal from '../components/TaskCreationModal';
 
 export default function ProjectPage() {
   interface Column {
@@ -48,8 +49,13 @@ export default function ProjectPage() {
   };
 
   const [columns, setColumns] = useState(initialColumns);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onDragEnd = ({ source, destination }: DropResult) => {
+  function toggleModalState(newState: boolean) {
+    setIsModalOpen(newState);
+  }
+
+  function onDragEnd({ source, destination }: DropResult) {
     // Make sure we have a valid destination
     if (destination === undefined || destination === null) return null;
 
@@ -117,7 +123,7 @@ export default function ProjectPage() {
       }));
       return null;
     }
-  };
+  }
 
   return (
     <main className="project-page">
@@ -129,11 +135,12 @@ export default function ProjectPage() {
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="columns-container">
             {Object.values(columns).map((col) => (
-              <TaskColumn col={col} key={col.id} />
+              <TaskColumn col={col} key={col.id} onStateChange={toggleModalState} />
             ))}
           </div>
         </DragDropContext>
       </div>
+      {isModalOpen && <TaskCreationModal onStateChange={toggleModalState} />}
     </main>
   );
 }

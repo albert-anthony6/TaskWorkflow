@@ -1,0 +1,66 @@
+.task-creation-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background-color: rgba($darkest-neutral, 0.5);
+  backdrop-filter: blur(5px);
+
+  .form-container {
+    position: absolute;
+    padding: 25px 25px 47px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    border-radius: 8px;
+    background-color: $lightest-neutral;
+
+    h2 {
+      font-size: 32px;
+      font-weight: 500;
+    }
+
+    p {
+      margin-bottom: 18px;
+      color: $dark-grey;
+    }
+
+    .icon-close {
+      position: absolute;
+      top: 41px;
+      right: 25px;
+      cursor: pointer;
+    }
+
+    .input-container {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        @include font-size(20, 500, none, normal, 29);
+        margin-bottom: 5px;
+        color: $dark-neutral;
+      }
+
+      input {
+        padding: 14px 16px 13px;
+        border-radius: 4px;
+        border: 2px solid rgba($grey, 0.5);
+        outline: none;
+
+        &::placeholder {
+          color: $grey;
+        }
+      }
+
+      .caption {
+        margin-top: 5px;
+        text-align: right;
+      }
+    }
+  }
+}

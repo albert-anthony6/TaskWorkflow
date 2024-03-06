@@ -10,27 +10,32 @@ interface Props {
     statusColor: string;
     list: string[];
   };
+  onStateChange: (param: boolean) => void;
 }
 
-export default function TaskColumn({ col: { list, id, name, statusColor } }: Props) {
+export default function TaskColumn({ col: { list, id, name, statusColor }, onStateChange }: Props) {
   return (
-    <Droppable droppableId={id}>
-      {(provided) => (
-        <div className="task-column">
-          <div className="column-header">
-            <div className={`status-color status-color__${statusColor}`} />
-            <p>{name}</p>
-            {id === 'todo' && <IconAdd className="add-task" />}
-          </div>
+    <>
+      <Droppable droppableId={id}>
+        {(provided) => (
+          <div className="task-column">
+            <div className="column-header">
+              <div className={`status-color status-color__${statusColor}`} />
+              <p>{name}</p>
+              {id === 'todo' && (
+                <IconAdd onClick={() => onStateChange(true)} className="add-task" />
+              )}
+            </div>
 
-          <div className="column" {...provided.droppableProps} ref={provided.innerRef}>
-            {list.map((text, index) => (
-              <TaskCard key={text} text={text} index={index} />
-            ))}
-            {provided.placeholder}
+            <div className="column" {...provided.droppableProps} ref={provided.innerRef}>
+              {list.map((text, index) => (
+                <TaskCard key={text} text={text} index={index} />
+              ))}
+              {provided.placeholder}
+            </div>
           </div>
-        </div>
-      )}
-    </Droppable>
+        )}
+      </Droppable>
+    </>
   );
 }
