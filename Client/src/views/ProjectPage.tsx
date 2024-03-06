@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Task } from '../utils/interfaces/task';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import './ProjectPage.scss';
 import TaskColumn from '../components/TaskColumn';
@@ -7,15 +8,6 @@ import TaskCreationModal from '../components/TaskCreationModal';
 import agent from '../api/agent';
 
 export default function ProjectPage() {
-  interface Task {
-    id: string;
-    title: string;
-    date: Date;
-    description: string;
-    status: string;
-    dueDate: Date;
-  }
-
   interface Column {
     id: string;
     columnName: string;
@@ -62,7 +54,7 @@ export default function ProjectPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    agent.Tasks.list().then((resp: Task[]) => {
+    agent.Tasks.list().then((resp) => {
       setColumns((prevState) => ({
         ...prevState,
         todo: {
