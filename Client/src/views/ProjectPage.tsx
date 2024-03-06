@@ -1,16 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import './ProjectPage.scss';
 import TaskColumn from '../components/TaskColumn';
 import TaskCreationModal from '../components/TaskCreationModal';
+import agent from '../api/agent';
 
 export default function ProjectPage() {
+  interface Task {
+    id: string;
+    title: string;
+    date: Date;
+    description: string;
+    status: string;
+    dueDate: Date;
+  }
+
   interface Column {
     id: string;
-    name: string;
+    columnName: string;
     statusColor: string;
-    list: string[];
+    list: Task[];
   }
 
   interface Columns {
@@ -24,25 +34,25 @@ export default function ProjectPage() {
   const initialColumns: Columns = {
     todo: {
       id: 'todo',
-      name: 'To Do',
+      columnName: 'To Do',
       statusColor: 'red',
-      list: ['item 1', 'item 2', 'item 3']
+      list: []
     },
     inProgress: {
       id: 'inProgress',
-      name: 'In Progress',
+      columnName: 'In Progress',
       statusColor: 'yellow',
       list: []
     },
     readyForReview: {
       id: 'readyForReview',
-      name: 'Ready for Review',
+      columnName: 'Ready for Review',
       statusColor: 'blue',
       list: []
     },
     done: {
       id: 'done',
-      name: 'Done',
+      columnName: 'Done',
       statusColor: 'green',
       list: []
     }
@@ -50,6 +60,18 @@ export default function ProjectPage() {
 
   const [columns, setColumns] = useState(initialColumns);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    agent.Tasks.list().then((resp: Task[]) => {
+      setColumns((prevState) => ({
+        ...prevState,
+        todo: {
+          ...prevState.todo,
+          list: resp
+        }
+      }));
+    });
+  }, []);
 
   function toggleModalState(newState: boolean) {
     setIsModalOpen(newState);
@@ -80,7 +102,7 @@ export default function ProjectPage() {
       // Then create a new copy of the column object
       const newCol = {
         id: start.id,
-        name: start.name,
+        columnName: start.columnName,
         statusColor: start.statusColor,
         list: newList
       };
@@ -96,7 +118,7 @@ export default function ProjectPage() {
       // Create a new start column
       const newStartCol = {
         id: start.id,
-        name: start.name,
+        columnName: start.columnName,
         statusColor: start.statusColor,
         list: newStartList
       };
@@ -110,7 +132,7 @@ export default function ProjectPage() {
       // Create a new end column
       const newEndCol = {
         id: end.id,
-        name: end.name,
+        columnName: end.columnName,
         statusColor: end.statusColor,
         list: newEndList
       };

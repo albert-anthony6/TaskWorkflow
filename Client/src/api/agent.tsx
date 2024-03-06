@@ -12,7 +12,7 @@ const requests = {
 };
 
 const Tasks = {
-  list: () => requests.get('/tasks')
+  list: () => requests.get('/tickets')
 };
 
 const agent = {
