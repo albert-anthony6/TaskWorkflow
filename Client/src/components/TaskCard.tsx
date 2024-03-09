@@ -1,14 +1,15 @@
 import { Draggable } from '@hello-pangea/dnd';
 import './TaskCard.scss';
+import { Task } from '../utils/interfaces/task';
 
 interface Props {
-  text: string;
+  task: Task;
   index: number;
 }
 
-export default function TaskCard({ text, index }: Props) {
+export default function TaskCard({ task, index }: Props) {
   return (
-    <Draggable draggableId={text} index={index}>
+    <Draggable key={task.id} draggableId={task.id as string} index={index}>
       {(provided) => (
         <div
           className="task-card"
@@ -16,7 +17,7 @@ export default function TaskCard({ text, index }: Props) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {text}
+          {task.title}
         </div>
       )}
     </Draggable>

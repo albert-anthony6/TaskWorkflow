@@ -13,58 +13,58 @@ namespace Persistence
                 new Ticket
                 {
                     Title = "Add carousel to home page",
-                    Date = DateTime.UtcNow,
                     Description = "Test description",
-                    Status = "To Do",
-                    DueDate = DateTime.UtcNow.AddDays(5)
+                    Severity = "To Do",
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddDays(5)
                 },
                 new Ticket
                 {
                     Title = "Add README.md file",
-                    Date = DateTime.UtcNow,
                     Description = "Test description",
-                    Status = "To Do",
-                    DueDate = DateTime.UtcNow.AddDays(5)
+                    Severity = "To Do",
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddDays(5)
                 },
                 new Ticket
                 {
                     Title = "Add more images to the About Us page",
-                    Date = DateTime.UtcNow,
                     Description = "Test description",
-                    Status = "To Do",
-                    DueDate = DateTime.UtcNow.AddDays(5)
+                    Severity = "To Do",
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddDays(5)
                 },
                 new Ticket
                 {
                     Title = "Fix typo on Careers page",
-                    Date = DateTime.UtcNow,
                     Description = "Test description",
-                    Status = "In Progress",
-                    DueDate = DateTime.UtcNow.AddDays(5)
+                    Severity = "In Progress",
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddDays(5)
                 },
                 new Ticket
                 {
                     Title = "Add download PDF button",
-                    Date = DateTime.UtcNow,
                     Description = "Test description",
-                    Status = "In Progress",
-                    DueDate = DateTime.UtcNow.AddDays(5)
+                    Severity = "In Progress",
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddDays(5)
                 },
                 new Ticket
                 {
                     Title = "Update hero section",
-                    Date = DateTime.UtcNow,
                     Description = "Test description",
-                    Status = "Ready for Review",
-                    DueDate = DateTime.UtcNow.AddDays(5)
+                    Severity = "Ready for Review",
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddDays(5)
                 },
                 new Ticket
                 {
                     Title = "Filter overlay bug",
-                    Date = DateTime.UtcNow,
                     Description = "Test description",
-                    Status = "Done",
-                    DueDate = DateTime.UtcNow.AddDays(5)
+                    Severity = "Done",
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddDays(5)
                 },
             };
 

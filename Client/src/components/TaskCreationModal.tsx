@@ -1,5 +1,8 @@
 import { useForm } from 'react-hook-form';
+import agent from '../api/agent';
+import { Task } from '../utils/interfaces/task';
 import StyledDropdown from './micro/StyledDropdown';
+import { ColorOption } from '../utils/interfaces/color-options';
 import IconClose from '../assets/icons/IconClose.svg?react';
 import './TaskCreationModal.scss';
 
@@ -19,12 +22,26 @@ export default function TaskCreationModal({ onStateChange }: Props) {
       title: '',
       description: '',
       severity: { value: 'Low', label: 'Low', color: '#00ff66' },
-      startDate: '',
-      endDate: ''
+      startDate: null,
+      endDate: null
     }
   });
 
   const severityValue = watch('severity');
+
+  function onSubmit(data: Task) {
+    const severityValue: string = (data.severity as ColorOption).value;
+
+    // Only using the value property from the severity object
+    const payload = {
+      ...data,
+      severity: severityValue
+    };
+
+    agent.Tasks.create(payload).then(function (resp) {
+      console.log(resp);
+    });
+  }
 
   return (
     <div className="task-creation-modal">
@@ -32,11 +49,7 @@ export default function TaskCreationModal({ onStateChange }: Props) {
         <h2>Create new task</h2>
         <p className="form-note">Use this form to setup your new task</p>
         <IconClose onClick={() => onStateChange(false)} className="icon-close" />
-        <form
-          onSubmit={handleSubmit((data) => {
-            console.log(data);
-          })}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="input-container">
             <label htmlFor="title">Title</label>
             <input

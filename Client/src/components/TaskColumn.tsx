@@ -1,16 +1,8 @@
 import TaskCard from './TaskCard';
 import { Droppable } from '@hello-pangea/dnd';
+import { Task } from '../utils/interfaces/task';
 import IconAdd from '../assets/icons/icon_add.svg?react';
 import './TaskColumn.scss';
-
-interface Task {
-  id: string;
-  title: string;
-  date: Date;
-  description: string;
-  status: string;
-  dueDate: Date;
-}
 
 interface Props {
   col: {
@@ -40,8 +32,8 @@ export default function TaskColumn({
             </div>
 
             <div className="column" {...provided.droppableProps} ref={provided.innerRef}>
-              {list.map((text, index) => (
-                <TaskCard key={text.id} text={text.title} index={index} />
+              {list.map((task, index) => (
+                <TaskCard key={task.id} task={task} index={index} />
               ))}
               {provided.placeholder}
             </div>

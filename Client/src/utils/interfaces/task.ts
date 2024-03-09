@@ -1,8 +1,8 @@
 export interface Task {
-  id: string;
+  id?: string;
   title: string;
-  date: Date;
   description: string;
-  status: string;
-  dueDate: Date;
+  severity: { value: string; label: string; color: string } | string;
+  startDate: Date | null;
+  endDate: Date | null;
 }

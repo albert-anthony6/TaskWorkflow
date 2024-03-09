@@ -1,11 +1,6 @@
 import Select, { StylesConfig } from 'react-select';
+import { ColorOption } from '../../utils/interfaces/color-options';
 import './StyledDropdown.scss';
-
-interface ColorOption {
-  readonly value: string;
-  readonly label: string;
-  readonly color: string;
-}
 
 const colorOptions: readonly ColorOption[] = [
   { value: 'Trivial', label: 'Trivial', color: '#3bcbff ' },
