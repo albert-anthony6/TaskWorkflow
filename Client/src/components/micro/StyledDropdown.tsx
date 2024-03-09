@@ -39,6 +39,7 @@ export default function StyledDropdown({ value, onChange }: Props) {
     <div className="styled-dropdown">
       <p className="react-select--label">Severity</p>
       <Select
+        isSearchable={false}
         value={value}
         onChange={(selectedOption) => onChange(selectedOption as ColorOption)}
         defaultValue={colorOptions[2]}

@@ -4,7 +4,6 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 // ::selection {
@@ -15,10 +14,6 @@ html,
 body {
   font-family: $secondary-font-stack;
   color: $text-color-primary;
-}
-
-html {
-  overflow-y: scroll;
 }
 
 body {
@@ -88,7 +83,6 @@ button {
 
 .page {
   margin-left: 330px;
-  overflow-x: hidden;
 }
 
 .logo__white {

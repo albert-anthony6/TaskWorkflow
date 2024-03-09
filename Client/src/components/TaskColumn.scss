@@ -4,7 +4,6 @@
   height: 100%;
   background-color: $lightest-neutral;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: scroll;
 
   .column-header {
     position: relative;
@@ -54,5 +53,7 @@
     flex-direction: column;
     align-items: stretch;
     border-top: 1px solid rgba($darkest-neutral, 0.2);
+    overflow-y: scroll;
+    padding-bottom: 50px;
   }
 }
