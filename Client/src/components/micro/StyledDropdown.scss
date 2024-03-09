@@ -1,0 +1,30 @@
+.styled-dropdown {
+  .react-select__control {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: none;
+    border: 2px solid rgba($grey, 0.5);
+    transition: all 0.3s ease;
+    margin-top: 5px;
+    max-width: 300px;
+
+    &:hover,
+    &:focus {
+      border: 2px solid rgba($grey, 0.9);
+    }
+  }
+
+  .react-select__menu {
+    width: 300px;
+  }
+
+  .react-select__placeholder {
+    color: $grey;
+  }
+
+  .react-select--label {
+    @include font-size(20, 500, none, normal, 29);
+    margin-top: -12px;
+    color: $dark-neutral;
+  }
+}
