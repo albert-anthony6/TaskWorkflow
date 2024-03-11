@@ -14,7 +14,7 @@ namespace Persistence
                 {
                     Title = "Add carousel to home page",
                     Description = "Test description",
-                    Severity = "To Do",
+                    Severity = "Low",
                     StartDate = DateTime.UtcNow,
                     EndDate = DateTime.UtcNow.AddDays(5)
                 },
@@ -22,7 +22,7 @@ namespace Persistence
                 {
                     Title = "Add README.md file",
                     Description = "Test description",
-                    Severity = "To Do",
+                    Severity = "Low",
                     StartDate = DateTime.UtcNow,
                     EndDate = DateTime.UtcNow.AddDays(5)
                 },
@@ -30,7 +30,7 @@ namespace Persistence
                 {
                     Title = "Add more images to the About Us page",
                     Description = "Test description",
-                    Severity = "To Do",
+                    Severity = "Low",
                     StartDate = DateTime.UtcNow,
                     EndDate = DateTime.UtcNow.AddDays(5)
                 },
@@ -38,7 +38,7 @@ namespace Persistence
                 {
                     Title = "Fix typo on Careers page",
                     Description = "Test description",
-                    Severity = "In Progress",
+                    Severity = "High",
                     StartDate = DateTime.UtcNow,
                     EndDate = DateTime.UtcNow.AddDays(5)
                 },
@@ -46,7 +46,7 @@ namespace Persistence
                 {
                     Title = "Add download PDF button",
                     Description = "Test description",
-                    Severity = "In Progress",
+                    Severity = "High",
                     StartDate = DateTime.UtcNow,
                     EndDate = DateTime.UtcNow.AddDays(5)
                 },
@@ -54,7 +54,7 @@ namespace Persistence
                 {
                     Title = "Update hero section",
                     Description = "Test description",
-                    Severity = "Ready for Review",
+                    Severity = "Trivial",
                     StartDate = DateTime.UtcNow,
                     EndDate = DateTime.UtcNow.AddDays(5)
                 },
@@ -62,7 +62,7 @@ namespace Persistence
                 {
                     Title = "Filter overlay bug",
                     Description = "Test description",
-                    Severity = "Done",
+                    Severity = "Critical",
                     StartDate = DateTime.UtcNow,
                     EndDate = DateTime.UtcNow.AddDays(5)
                 },

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Task } from '../utils/interfaces/task';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import './ProjectPage.scss';
 import TaskColumn from '../components/TaskColumn';
 import TaskCreationModal from '../components/TaskCreationModal';
-import agent from '../api/agent';
+import { getTasks } from '../store/slices/taskSlice';
+import { useAppDispatch, useAppSelector } from '../store/configureStore';
+import './ProjectPage.scss';
 
 export default function ProjectPage() {
   interface Column {
@@ -51,23 +52,22 @@ export default function ProjectPage() {
   };
 
   const [columns, setColumns] = useState(initialColumns);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const { tasks, taskModal } = useAppSelector((state) => state.task);
 
   useEffect(() => {
-    agent.Tasks.list().then((resp) => {
-      setColumns((prevState) => ({
-        ...prevState,
-        todo: {
-          ...prevState.todo,
-          list: resp
-        }
-      }));
-    });
-  }, []);
+    dispatch(getTasks());
+  }, [dispatch]);
 
-  function toggleModalState(newState: boolean) {
-    setIsModalOpen(newState);
-  }
+  useEffect(() => {
+    setColumns((prevState) => ({
+      ...prevState,
+      todo: {
+        ...prevState.todo,
+        list: tasks
+      }
+    }));
+  }, [tasks]);
 
   function onDragEnd({ source, destination }: DropResult) {
     // Make sure we have a valid destination
@@ -149,12 +149,12 @@ export default function ProjectPage() {
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="columns-container">
             {Object.values(columns).map((col) => (
-              <TaskColumn col={col} key={col.id} onStateChange={toggleModalState} />
+              <TaskColumn col={col} key={col.id} />
             ))}
           </div>
         </DragDropContext>
       </div>
-      {isModalOpen && <TaskCreationModal onStateChange={toggleModalState} />}
+      {taskModal.isOpen && <TaskCreationModal />}
     </main>
   );
 }

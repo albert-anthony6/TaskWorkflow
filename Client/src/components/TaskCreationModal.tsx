@@ -1,16 +1,17 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import agent from '../api/agent';
 import { Task } from '../utils/interfaces/task';
 import StyledDropdown from './micro/StyledDropdown';
 import { ColorOption } from '../utils/interfaces/color-options';
-import IconClose from '../assets/icons/IconClose.svg?react';
+import { colorOptions } from '../utils/data/colorOptions';
+import { useAppDispatch, useAppSelector } from '../store/configureStore';
+import { createTask, getTask, toggleTaskModal } from '../store/slices/taskSlice';
+import IconClose from '../assets/icons/icon_close.svg?react';
 import './TaskCreationModal.scss';
 
-interface Props {
-  onStateChange: (param: boolean) => void;
-}
-
-export default function TaskCreationModal({ onStateChange }: Props) {
+export default function TaskCreationModal() {
+  const { taskModal, selectedTask } = useAppSelector((state) => state.task);
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -38,17 +39,40 @@ export default function TaskCreationModal({ onStateChange }: Props) {
       severity: severityValue
     };
 
-    agent.Tasks.create(payload).then(function (resp) {
-      console.log(resp);
-    });
+    dispatch(createTask(payload));
   }
+
+  useEffect(() => {
+    if (taskModal.taskId) {
+      dispatch(getTask(taskModal.taskId));
+    }
+  }, [dispatch, taskModal]);
+
+  useEffect(() => {
+    if (selectedTask) {
+      // Formatting severity string
+      const colorOption = colorOptions.find(
+        (option: ColorOption) => option.value === selectedTask.severity
+      );
+
+      setValue('title', selectedTask.title);
+      setValue('description', selectedTask.description);
+      setValue('severity', colorOption as ColorOption);
+      // setValue('startDate', selectedTask.startDate);
+      // setValue('endDate', selectedTask.endDate);
+    }
+    console.log('test');
+  }, [setValue, selectedTask]);
 
   return (
     <div className="task-creation-modal">
       <div className="form-container">
         <h2>Create new task</h2>
         <p className="form-note">Use this form to setup your new task</p>
-        <IconClose onClick={() => onStateChange(false)} className="icon-close" />
+        <IconClose
+          onClick={() => dispatch(dispatch(toggleTaskModal({ isOpen: false })))}
+          className="icon-close"
+        />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="input-container">
             <label htmlFor="title">Title</label>
@@ -91,7 +115,11 @@ export default function TaskCreationModal({ onStateChange }: Props) {
             </div>
           </div>
           <div className="buttons-container">
-            <button type="button" onClick={() => onStateChange(false)} className="button__cancel">
+            <button
+              type="button"
+              onClick={() => dispatch(dispatch(toggleTaskModal({ isOpen: false })))}
+              className="button__cancel"
+            >
               Cancel
             </button>
             <button className="button__primary">Create Task</button>

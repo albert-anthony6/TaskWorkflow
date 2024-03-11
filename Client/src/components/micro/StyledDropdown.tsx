@@ -1,14 +1,7 @@
 import Select, { StylesConfig } from 'react-select';
 import { ColorOption } from '../../utils/interfaces/color-options';
+import { colorOptions } from '../../utils/data/colorOptions';
 import './StyledDropdown.scss';
-
-const colorOptions: readonly ColorOption[] = [
-  { value: 'Trivial', label: 'Trivial', color: '#3bcbff ' },
-  { value: 'Low', label: 'Low', color: '#00ff66' },
-  { value: 'Medium', label: 'Medium', color: '#ffbb00' },
-  { value: 'High', label: 'High', color: '#f84c17' },
-  { value: 'Critical', label: 'Critical', color: '#dc143c' }
-];
 
 const dot = (color = 'transparent') => ({
   alignItems: 'center',

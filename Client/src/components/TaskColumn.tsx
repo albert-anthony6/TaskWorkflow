@@ -1,6 +1,8 @@
 import TaskCard from './TaskCard';
 import { Droppable } from '@hello-pangea/dnd';
 import { Task } from '../utils/interfaces/task';
+import { toggleTaskModal } from '../store/slices/taskSlice';
+import { useAppDispatch } from '../store/configureStore';
 import IconAdd from '../assets/icons/icon_add.svg?react';
 import './TaskColumn.scss';
 
@@ -11,13 +13,10 @@ interface Props {
     statusColor: string;
     list: Task[];
   };
-  onStateChange: (param: boolean) => void;
 }
 
-export default function TaskColumn({
-  col: { list, id, columnName, statusColor },
-  onStateChange
-}: Props) {
+export default function TaskColumn({ col: { list, id, columnName, statusColor } }: Props) {
+  const dispatch = useAppDispatch();
   return (
     <>
       <Droppable droppableId={id}>
@@ -27,7 +26,10 @@ export default function TaskColumn({
               <div className={`status-color status-color__${statusColor}`} />
               <p>{columnName}</p>
               {id === 'todo' && (
-                <IconAdd onClick={() => onStateChange(true)} className="add-task" />
+                <IconAdd
+                  onClick={() => dispatch(toggleTaskModal({ isOpen: true }))}
+                  className="add-task"
+                />
               )}
             </div>
 

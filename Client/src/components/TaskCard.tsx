@@ -1,6 +1,9 @@
 import { Draggable } from '@hello-pangea/dnd';
-import './TaskCard.scss';
 import { Task } from '../utils/interfaces/task';
+import { toggleTaskModal } from '../store/slices/taskSlice';
+import { useAppDispatch } from '../store/configureStore';
+import IconEdit from '../assets/icons/icon_edit.svg?react';
+import './TaskCard.scss';
 
 interface Props {
   task: Task;
@@ -8,6 +11,8 @@ interface Props {
 }
 
 export default function TaskCard({ task, index }: Props) {
+  const dispatch = useAppDispatch();
+
   return (
     <Draggable key={task.id} draggableId={task.id as string} index={index}>
       {(provided) => (
@@ -17,7 +22,13 @@ export default function TaskCard({ task, index }: Props) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {task.title}
+          <p className="task-card--title">
+            {task.title}{' '}
+            <IconEdit
+              onClick={() => dispatch(dispatch(toggleTaskModal({ isOpen: true, taskId: task.id })))}
+              className="icon__edit"
+            />
+          </p>
         </div>
       )}
     </Draggable>

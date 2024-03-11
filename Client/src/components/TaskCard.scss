@@ -4,6 +4,22 @@
   border-radius: 4px;
   color: $darkest-neutral;
   border: 2px solid rgba($darkest-neutral, 0.5);
-  text-decoration: underline;
-  // min-height: 100px;
+
+  .icon__edit {
+    display: none;
+    cursor: pointer;
+    margin-left: 2px;
+  }
+
+  &:hover .icon__edit {
+    display: inline-block;
+  }
+
+  &--title {
+    @include font-size(18, 400, none, 0, 21);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
