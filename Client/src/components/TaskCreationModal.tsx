@@ -5,7 +5,13 @@ import StyledDropdown from './micro/StyledDropdown';
 import { ColorOption } from '../utils/interfaces/color-options';
 import { colorOptions } from '../utils/data/colorOptions';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
-import { createTask, getTask, toggleTaskModal } from '../store/slices/taskSlice';
+import {
+  createTask,
+  editTask,
+  getTask,
+  resetSelectedTask,
+  toggleTaskModal
+} from '../store/slices/taskSlice';
 import IconClose from '../assets/icons/icon_close.svg?react';
 import './TaskCreationModal.scss';
 
@@ -18,13 +24,13 @@ export default function TaskCreationModal() {
     setValue,
     watch,
     formState: { errors }
-  } = useForm({
+  } = useForm<Task>({
     defaultValues: {
       title: '',
       description: '',
       severity: { value: 'Low', label: 'Low', color: '#00ff66' },
-      startDate: null,
-      endDate: null
+      startDate: '',
+      endDate: ''
     }
   });
 
@@ -35,21 +41,30 @@ export default function TaskCreationModal() {
 
     // Only using the value property from the severity object
     const payload = {
+      id: taskModal.taskId,
       ...data,
       severity: severityValue
     };
 
-    dispatch(createTask(payload));
+    if (selectedTask && taskModal.taskId) {
+      dispatch(editTask(payload));
+    } else {
+      // Backend will generate a new id
+      delete payload.id;
+      dispatch(createTask(payload));
+    }
   }
 
   useEffect(() => {
     if (taskModal.taskId) {
       dispatch(getTask(taskModal.taskId));
+    } else {
+      dispatch(resetSelectedTask());
     }
   }, [dispatch, taskModal]);
 
   useEffect(() => {
-    if (selectedTask) {
+    if (selectedTask && taskModal.taskId) {
       // Formatting severity string
       const colorOption = colorOptions.find(
         (option: ColorOption) => option.value === selectedTask.severity
@@ -58,11 +73,11 @@ export default function TaskCreationModal() {
       setValue('title', selectedTask.title);
       setValue('description', selectedTask.description);
       setValue('severity', colorOption as ColorOption);
-      // setValue('startDate', selectedTask.startDate);
-      // setValue('endDate', selectedTask.endDate);
+
+      setValue('startDate', new Date(selectedTask.startDate).toLocaleDateString('en-CA'));
+      setValue('endDate', new Date(selectedTask.endDate).toLocaleDateString('en-CA'));
     }
-    console.log('test');
-  }, [setValue, selectedTask]);
+  }, [setValue, selectedTask, taskModal.taskId]);
 
   return (
     <div className="task-creation-modal">
@@ -101,7 +116,7 @@ export default function TaskCreationModal() {
             <div className="caption">0/100</div>
           </div>
           <StyledDropdown
-            value={severityValue}
+            value={severityValue as ColorOption}
             onChange={(selectedOption) => setValue('severity', selectedOption)}
           />
           <div className="dates-container">

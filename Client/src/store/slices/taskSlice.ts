@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { Task } from '../../utils/interfaces/task';
 import agent from '../../api/agent';
 
@@ -34,7 +34,7 @@ export const getTask = createAsyncThunk<Task, string>('task/getTask', async (tas
 });
 
 export const createTask = createAsyncThunk<void, Task>(
-  'task/createTasks',
+  'task/createTask',
   async (payload, thunkAPI) => {
     try {
       return await agent.Tasks.create(payload);
@@ -44,16 +44,24 @@ export const createTask = createAsyncThunk<void, Task>(
   }
 );
 
-// export const editTask = createAsyncThunk<void, Task>(
-//   'task/createTasks',
-//   async (payload, thunkAPI) => {
-//     try {
-//       return await agent.Tasks.create(payload);
-//     } catch (err: any) {
-//       return thunkAPI.rejectWithValue({ error: err.data });
-//     }
-//   }
-// );
+export const editTask = createAsyncThunk<void, Task>('task/editTask', async (payload, thunkAPI) => {
+  try {
+    return await agent.Tasks.update(payload);
+  } catch (err: any) {
+    return thunkAPI.rejectWithValue({ error: err.data });
+  }
+});
+
+export const deleteTask = createAsyncThunk<void, string>(
+  'task/deleteTask',
+  async (taskId, thunkAPI) => {
+    try {
+      return await agent.Tasks.delete(taskId);
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue({ error: err.data });
+    }
+  }
+);
 
 export const taskSlice = createSlice({
   name: 'task',
@@ -61,22 +69,31 @@ export const taskSlice = createSlice({
   reducers: {
     toggleTaskModal: (state, action) => {
       state.taskModal = action.payload;
+    },
+    resetSelectedTask: (state) => {
+      state.selectedTask = null;
     }
   },
   extraReducers: (builder) => {
     builder.addCase(getTasks.fulfilled, (state, action) => {
       state.tasks = action.payload;
     });
-    builder.addCase(getTasks.rejected, (state, action) => {
-      console.log(action.payload);
-    });
     builder.addCase(getTask.fulfilled, (state, action) => {
       state.selectedTask = action.payload;
     });
-    builder.addCase(getTask.rejected, (state, action) => {
-      console.log(action.payload);
-    });
+    builder.addMatcher(
+      isAnyOf(
+        getTasks.rejected,
+        getTask.rejected,
+        createTask.rejected,
+        editTask.rejected,
+        deleteTask.rejected
+      ),
+      (state, action) => {
+        console.log(action.payload);
+      }
+    );
   }
 });
 
-export const { toggleTaskModal } = taskSlice.actions;
+export const { toggleTaskModal, resetSelectedTask } = taskSlice.actions;

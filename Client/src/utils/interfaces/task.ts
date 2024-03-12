@@ -1,8 +1,10 @@
+import { ColorOption } from './color-options';
+
 export interface Task {
   id?: string;
   title: string;
   description: string;
-  severity: { value: string; label: string; color: string } | string;
-  startDate: Date | null;
-  endDate: Date | null;
+  severity: ColorOption | string;
+  startDate: Date | string;
+  endDate: Date | string;
 }
