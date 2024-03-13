@@ -1,9 +1,54 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { router } from '../routes/router';
 import { Task } from '../utils/interfaces/task';
+import { toast } from 'react-toastify';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+
+axios.interceptors.response.use(
+  async (response) => {
+    return response;
+  },
+  (error: AxiosError) => {
+    const { data, status, config } = error.response as AxiosResponse;
+    switch (status) {
+      case 400:
+        // If id property is bad, go to not-found page
+        if (config.method === 'get' && Object.prototype.hasOwnProperty.call(data.errors, 'id')) {
+          router.navigate('/not-found');
+        }
+        // Restructuring errors object
+        if (data.errors) {
+          const modalStateErrors = [];
+          for (const key in data.errors) {
+            if (data.errors[key]) {
+              modalStateErrors.push(data.errors[key]);
+            }
+          }
+          // Pulling elements out of any subarrays
+          throw modalStateErrors.flat();
+        } else {
+          toast.error(data);
+        }
+        break;
+      case 401:
+        toast.error('unauthorized');
+        break;
+      case 403:
+        toast.error('forbidden');
+        break;
+      case 404:
+        router.navigate('/not-found');
+        break;
+      case 500:
+        toast.error('server error');
+        break;
+    }
+    return Promise.reject(error);
+  }
+);
 
 const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),

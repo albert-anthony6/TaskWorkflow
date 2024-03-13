@@ -1,4 +1,5 @@
 import { useLocation, Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import AppFooter from './components/AppFooter.tsx';
 import SideNav from './components/SideNav.tsx';
 import './assets/scss/_theme.scss';
@@ -9,6 +10,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer position="bottom-right" theme="colored" />
       {currentPath !== '/' && <SideNav />}
       <div className={currentPath !== '/' ? 'page' : ''}>
         <Outlet />
