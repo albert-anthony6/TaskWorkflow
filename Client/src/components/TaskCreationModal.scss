@@ -75,6 +75,10 @@
       &:not(:first-of-type) {
         margin: 0 0 0 40px;
       }
+
+      .date-input {
+        width: 100%;
+      }
     }
   }
 

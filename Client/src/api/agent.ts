@@ -34,16 +34,16 @@ axios.interceptors.response.use(
         }
         break;
       case 401:
-        toast.error('unauthorized');
+        toast.error('Unauthorized');
         break;
       case 403:
-        toast.error('forbidden');
+        toast.error('Forbidden');
         break;
       case 404:
         router.navigate('/not-found');
         break;
       case 500:
-        toast.error('server error');
+        toast.error('Server Error');
         break;
     }
     return Promise.reject(error);

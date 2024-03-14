@@ -5,6 +5,7 @@ import StyledDropdown from './micro/StyledDropdown';
 import { ColorOption } from '../utils/interfaces/color-options';
 import { colorOptions } from '../utils/data/colorOptions';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import {
   createTask,
   editTask,
@@ -15,7 +16,7 @@ import {
 import IconClose from '../assets/icons/icon_close.svg?react';
 import './TaskCreationModal.scss';
 
-export default function TaskCreationModal() {
+export default function TaskCreationModal(props: ReactDatePickerProps) {
   const { taskModal, selectedTask } = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch();
   const {
@@ -29,12 +30,14 @@ export default function TaskCreationModal() {
       title: '',
       description: '',
       severity: { value: 'Low', label: 'Low', color: '#00ff66' },
-      startDate: '',
-      endDate: ''
+      startDate: null,
+      endDate: null
     }
   });
 
   const severityValue = watch('severity');
+  const startDateValue = watch('startDate');
+  const endDateValue = watch('endDate');
 
   function onSubmit(data: Task) {
     const severityValue: string = (data.severity as ColorOption).value;
@@ -74,8 +77,8 @@ export default function TaskCreationModal() {
       setValue('description', selectedTask.description);
       setValue('severity', colorOption as ColorOption);
 
-      setValue('startDate', new Date(selectedTask.startDate).toLocaleDateString('en-CA'));
-      setValue('endDate', new Date(selectedTask.endDate).toLocaleDateString('en-CA'));
+      setValue('startDate', selectedTask.startDate);
+      setValue('endDate', selectedTask.endDate);
     }
   }, [setValue, selectedTask, taskModal.taskId]);
 
@@ -122,11 +125,33 @@ export default function TaskCreationModal() {
           <div className="dates-container">
             <div className="input-container">
               <label htmlFor="start-date">Start Date</label>
-              <input {...register('startDate')} id="start-date" type="date" />
+              <DatePicker
+                id="start-date"
+                {...register('startDate')}
+                {...props}
+                selected={(startDateValue && new Date(startDateValue)) || null}
+                onChange={(value) => setValue('startDate', value)}
+                placeholderText="Start Date"
+                showTimeSelect
+                timeCaption="time"
+                dateFormat="MMMM d, yyyy h:mm aa"
+                className="date-input"
+              />
             </div>
             <div className="input-container">
               <label htmlFor="end-date">End Date</label>
-              <input {...register('endDate')} id="end-date" type="date" />
+              <DatePicker
+                id="end-date"
+                {...register('endDate')}
+                {...props}
+                selected={(endDateValue && new Date(endDateValue)) || null}
+                onChange={(value) => setValue('endDate', value)}
+                placeholderText="End Date"
+                showTimeSelect
+                timeCaption="time"
+                dateFormat="MMMM d, yyyy h:mm aa"
+                className="date-input"
+              />
             </div>
           </div>
           <div className="buttons-container">

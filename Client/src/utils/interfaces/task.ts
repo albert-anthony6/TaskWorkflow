@@ -5,6 +5,6 @@ export interface Task {
   title: string;
   description: string;
   severity: ColorOption | string;
-  startDate: Date | string;
-  endDate: Date | string;
+  startDate: Date | null;
+  endDate: Date | null;
 }
