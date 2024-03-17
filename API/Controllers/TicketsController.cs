@@ -6,7 +6,6 @@ namespace API.Controllers
 {
     public class TicketsController : BaseApiController
     {
-
         [HttpGet]
         public async Task<IActionResult> GetTickets()
         {

@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <ToastContainer position="bottom-right" theme="colored" />
-      {currentPath !== '/' && <SideNav />}
+      {currentPath !== '/' && currentPath !== '/not-found' && <SideNav />}
       <div className={currentPath !== '/' ? 'page' : ''}>
         <Outlet />
       </div>
