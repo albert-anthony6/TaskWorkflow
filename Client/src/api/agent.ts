@@ -2,10 +2,17 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { router } from '../routes/router';
 import { Task } from '../utils/interfaces/task';
 import { toast } from 'react-toastify';
+import { User, UserFormValues } from '../utils/interfaces/user';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('jwt');
+  if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 axios.interceptors.response.use(
   async (response) => {
@@ -65,8 +72,15 @@ const Tasks = {
   delete: (id: string) => requests.delete<void>(`/tickets/${id}`)
 };
 
+const Account = {
+  current: () => requests.get<User>('/account'),
+  login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+  register: (user: UserFormValues) => requests.post<User>('/account/register', user)
+};
+
 const agent = {
-  Tasks
+  Tasks,
+  Account
 };
 
 export default agent;

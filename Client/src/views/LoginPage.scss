@@ -1,0 +1,59 @@
+.login-page {
+  min-height: 100vh;
+  padding-top: 133px;
+  background: rgb(59, 203, 255);
+  background: linear-gradient(180deg, rgba(59, 203, 255, 1) 0%, rgba(0, 101, 250, 1) 80%);
+  color: $lightest-neutral;
+  text-align: center;
+
+  .page-header {
+    width: fit-content;
+    margin: 0 auto;
+    text-align: left;
+
+    h2 {
+      margin-bottom: 55px;
+    }
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  form {
+    width: fit-content;
+    margin: 0 auto;
+    text-align: left;
+
+    .input-container {
+      display: flex;
+      width: 400px;
+      flex-direction: column;
+
+      label {
+        margin-bottom: 5px;
+      }
+
+      .caption {
+        margin: 0 0 20px;
+        color: $lightest-neutral;
+      }
+    }
+
+    button {
+      margin-top: 15px;
+      color: $dark-neutral;
+      background-color: $lightest-neutral;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: rgba($lightest-neutral, 0.9);
+      }
+    }
+
+    .caption {
+      margin-top: 30px;
+    }
+  }
+}

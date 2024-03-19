@@ -20,16 +20,16 @@ const initialState: TaskState = {
 export const getTasks = createAsyncThunk<Task[]>('task/getTasks', async (_, thunkAPI) => {
   try {
     return await agent.Tasks.list();
-  } catch (err: any) {
-    return thunkAPI.rejectWithValue({ error: err.data });
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue({ error });
   }
 });
 
 export const getTask = createAsyncThunk<Task, string>('task/getTask', async (taskId, thunkAPI) => {
   try {
     return await agent.Tasks.details(taskId);
-  } catch (err: any) {
-    return thunkAPI.rejectWithValue({ error: err.data });
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue({ error });
   }
 });
 
@@ -38,8 +38,8 @@ export const createTask = createAsyncThunk<void, Task>(
   async (payload, thunkAPI) => {
     try {
       return await agent.Tasks.create(payload);
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue({ error: err.data });
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
     }
   }
 );
@@ -47,8 +47,8 @@ export const createTask = createAsyncThunk<void, Task>(
 export const editTask = createAsyncThunk<void, Task>('task/editTask', async (payload, thunkAPI) => {
   try {
     return await agent.Tasks.update(payload);
-  } catch (err: any) {
-    return thunkAPI.rejectWithValue({ error: err.data });
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue({ error });
   }
 });
 
@@ -57,8 +57,8 @@ export const deleteTask = createAsyncThunk<void, string>(
   async (taskId, thunkAPI) => {
     try {
       return await agent.Tasks.delete(taskId);
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue({ error: err.data });
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
     }
   }
 );
@@ -90,7 +90,7 @@ export const taskSlice = createSlice({
         deleteTask.rejected
       ),
       (state, action) => {
-        console.log(action.payload);
+        throw action.payload;
       }
     );
   }

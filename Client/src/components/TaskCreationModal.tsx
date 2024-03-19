@@ -24,7 +24,8 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors }
+    formState: { errors },
+    setError
   } = useForm<Task>({
     defaultValues: {
       title: '',
@@ -49,13 +50,24 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
       severity: severityValue
     };
 
+    // If we're editing or creating the task
     if (selectedTask && taskModal.taskId) {
-      dispatch(editTask(payload));
+      dispatch(editTask(payload)).catch((err) => handleErrors(err.error));
     } else {
       // Backend will generate a new id
       delete payload.id;
-      dispatch(createTask(payload));
+      dispatch(createTask(payload)).catch((err) => handleErrors(err.error));
     }
+  }
+
+  function handleErrors(errors: any) {
+    errors.forEach((err: string) => {
+      if (err.includes('Title')) {
+        setError('title', { message: err });
+      } else if (err.includes('startDate')) {
+        setError('startDate', { message: err });
+      }
+    });
   }
 
   useEffect(() => {
@@ -127,7 +139,9 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
               <label htmlFor="start-date">Start Date</label>
               <DatePicker
                 id="start-date"
-                {...register('startDate')}
+                {...register('startDate', {
+                  required: 'Task must have a start date.'
+                })}
                 {...props}
                 selected={(startDateValue && new Date(startDateValue)) || null}
                 onChange={(value) => setValue('startDate', value)}
@@ -137,6 +151,9 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
                 dateFormat="MMMM d, yyyy h:mm aa"
                 className="date-input"
               />
+              <div className="input--helper">
+                <div className="caption text__error">{errors.startDate?.message}</div>
+              </div>
             </div>
             <div className="input-container">
               <label htmlFor="end-date">End Date</label>

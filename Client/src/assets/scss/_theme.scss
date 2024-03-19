@@ -25,7 +25,7 @@ p {
 }
 
 a {
-  @include font-size(16, 500, none, normal, 0);
+  @include font-size(16, 500, none, normal, 29);
   text-decoration: none;
 }
 
@@ -118,4 +118,14 @@ input {
 
 .text__error {
   color: $error;
+}
+
+.error__show {
+  height: auto;
+  opacity: 1;
+}
+
+.error__hide {
+  height: 0px;
+  opacity: 0;
 }
