@@ -1,6 +1,8 @@
-namespace Domain
+using Application.Profiles;
+
+namespace Application.Tickets
 {
-    public class Ticket
+    public class TicketDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -8,6 +10,7 @@ namespace Domain
         public string Severity { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
-        public ICollection<TicketAssignee> Assignees { get; set; } = new List<TicketAssignee>();
+        public string AuthorUsername { get; set; }
+        public ICollection<Profile> Assignees { get; set; }
     }
 }
