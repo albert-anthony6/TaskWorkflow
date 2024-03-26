@@ -15,6 +15,7 @@ import {
 } from '../store/slices/taskSlice';
 import IconClose from '../assets/icons/icon_close.svg?react';
 import './TaskCreationModal.scss';
+import MutliSelectDropdown from './micro/MultiSelectDropdown';
 
 export default function TaskCreationModal(props: ReactDatePickerProps) {
   const { taskModal, selectedTask } = useAppSelector((state) => state.task);
@@ -130,6 +131,7 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
             />
             <div className="caption">0/100</div>
           </div>
+          <MutliSelectDropdown />
           <StyledDropdown
             value={severityValue as ColorOption}
             onChange={(selectedOption) => setValue('severity', selectedOption)}

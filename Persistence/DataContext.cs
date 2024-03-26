@@ -12,6 +12,7 @@ namespace Persistence
 
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketAssignee> TicketAssignees { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

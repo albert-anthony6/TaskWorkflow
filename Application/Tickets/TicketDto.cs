@@ -11,6 +11,6 @@ namespace Application.Tickets
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
         public string AuthorUsername { get; set; }
-        public ICollection<Profile> Assignees { get; set; }
+        public ICollection<AssigneeDto> Assignees { get; set; }
     }
 }
