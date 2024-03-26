@@ -5,13 +5,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Tickets
+namespace Application.Profiles
 {
     public class List
     {
-        public class Query : IRequest<Result<List<TicketDto>>> {}
+        public class Query : IRequest<Result<List<ProfileDto>>> {}
 
-        public class Handler : IRequestHandler<Query, Result<List<TicketDto>>>
+        public class Handler : IRequestHandler<Query, Result<List<ProfileDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -21,13 +21,13 @@ namespace Application.Tickets
                 _context = context;
             }
 
-            public async Task<Result<List<TicketDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<ProfileDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var tickets = await _context.Tickets
-                    .ProjectTo<TicketDto>(_mapper.ConfigurationProvider)
+                var users = await _context.Users
+                    .ProjectTo<ProfileDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
-
-                return Result<List<TicketDto>>.Success(tickets);
+                
+                    return Result<List<ProfileDto>>.Success(users);
             }
         }
     }

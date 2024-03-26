@@ -1,8 +1,6 @@
 using System.Security.Claims;
 using API.DTOs;
 using API.Services;
-using AutoMapper;
-// using AutoMapper.QueryableExtensions;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,10 +15,8 @@ namespace API.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
-        // private readonly IMapper _mapper;
         public AccountController(UserManager<AppUser> userManager, TokenService tokenService)
         {
-            // _mapper = mapper;
             _tokenService = tokenService;
             _userManager = userManager;
         }
@@ -86,33 +82,6 @@ namespace API.Controllers
         
             return CreateUserObject(user);
         }
-
-        // [AllowAnonymous]
-        // [HttpGet("users")]
-        // public async Task<ActionResult<List<UsersDto>>> GetAllUsers()
-        // {
-        //     // var tickets = await _context.Tickets
-        //     //         .ProjectTo<TicketDto>(_mapper.ConfigurationProvider)
-        //     //         .ToListAsync();
-
-        //     var users = await _userManager.Users
-        //     .ProjectTo<UsersDto>(_mapper.ConfigurationProvider)
-        //     .ToListAsync();
-        //     // var usersDtos = new List<UsersDto>();
-
-        //     // foreach (var user in users)
-        //     // {
-        //     //     var usersDto = new UsersDto
-        //     //     {
-        //     //         DisplayName = user.DisplayName,
-        //     //         Image = null,
-        //     //         Username = user.UserName
-        //     //     };
-        //     //     usersDtos.Add(usersDto);
-        //     // }
-        
-        //     return users;
-        // }
 
         private UserDto CreateUserObject(AppUser user)
         {
