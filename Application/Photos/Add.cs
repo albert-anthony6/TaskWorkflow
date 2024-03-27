@@ -43,7 +43,7 @@ namespace Application.Photos
                         Id = photoUploadResult.PublicId
                     };
 
-                    if (!user.Photos.Any((x) => x.IsMain)) photo.IsMain = true;
+                    if (!user.Photos.Any((x) => x.IsAvatar)) photo.IsAvatar = true;
 
                     user.Photos.Add(photo);
 
