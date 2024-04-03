@@ -25,11 +25,17 @@ namespace Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Bio")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CoverImage")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DisplayName")
@@ -92,18 +98,15 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("AppUserId")
+                    b.Property<Guid?>("TicketId")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsAvatar")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Url")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("TicketId");
 
                     b.ToTable("Photos");
                 });
@@ -112,6 +115,9 @@ namespace Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AuthorId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -131,6 +137,8 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Tickets");
                 });
 
@@ -141,9 +149,6 @@ namespace Persistence.Migrations
 
                     b.Property<Guid>("TicketId")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsAuthor")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("AppUserId", "TicketId");
 
@@ -282,9 +287,18 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Photo", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Domain.Ticket", null)
                         .WithMany("Photos")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("TicketId");
+                });
+
+            modelBuilder.Entity("Domain.Ticket", b =>
+                {
+                    b.HasOne("Domain.AppUser", "Author")
+                        .WithMany("AuthoredTickets")
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("Domain.TicketAssignee", b =>
@@ -359,7 +373,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
-                    b.Navigation("Photos");
+                    b.Navigation("AuthoredTickets");
 
                     b.Navigation("Tickets");
                 });
@@ -367,6 +381,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Ticket", b =>
                 {
                     b.Navigation("Assignees");
+
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

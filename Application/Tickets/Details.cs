@@ -10,12 +10,12 @@ namespace Application.Tickets
 {
     public class Details
     {
-        public class Query : IRequest<Result<TicketDto>>
+        public class Query : IRequest<Result<RespTicketDto>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<TicketDto>>
+        public class Handler : IRequestHandler<Query, Result<RespTicketDto>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -25,13 +25,13 @@ namespace Application.Tickets
                 _context = context;   
             }
 
-            public async Task<Result<TicketDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<RespTicketDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var ticket = await _context.Tickets
-                .ProjectTo<TicketDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<RespTicketDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync((x) => x.Id == request.Id);
 
-                return Result<TicketDto>.Success(ticket);
+                return Result<RespTicketDto>.Success(ticket);
             }
         }
     }

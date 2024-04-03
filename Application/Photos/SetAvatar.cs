@@ -1,51 +1,44 @@
-using Application.Core;
-using Application.Interfaces;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
+// using Application.Core;
+// using Application.Interfaces;
+// using MediatR;
+// using Microsoft.EntityFrameworkCore;
+// using Persistence;
 
-namespace Application.Photos
-{
-    public class SetAvatar
-    {
-        public class Command : IRequest<Result<Unit>>
-        {
-            public string Id { get; set; }
-        }
+// namespace Application.Photos
+// {
+//     public class SetAvatar
+//     {
+//         public class Command : IRequest<Result<Unit>>
+//         {
+//             public string Id { get; set; }
+//         }
 
-        public class Handler : IRequestHandler<Command, Result<Unit>>
-        {
-            private readonly DataContext _context;
-            private readonly IUserAccessor _userAccessor;
-            public Handler(DataContext context, IUserAccessor userAccessor)
-            {
-                _userAccessor = userAccessor;
-                _context = context;
-            }
+//         public class Handler : IRequestHandler<Command, Result<Unit>>
+//         {
+//             private readonly DataContext _context;
+//             private readonly IUserAccessor _userAccessor;
+//             public Handler(DataContext context, IUserAccessor userAccessor)
+//             {
+//                 _userAccessor = userAccessor;
+//                 _context = context;
+//             }
 
-            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var user = await _context.Users.Include((p) => p.Photos)
-                    .FirstOrDefaultAsync((x) => x.UserName == _userAccessor.GetUsername());
+//             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+//             {
+//                 var user = await _context.Users.FirstOrDefaultAsync((x) => x.UserName == _userAccessor.GetUsername());
                 
-                if (user == null) return null;
+//                 if (user == null) return null;
 
-                var photo = user.Photos.FirstOrDefault((x) => x.Id == request.Id);
+//                 if (user.Avatar == null) return null;
 
-                if (photo == null) return null;
+//                 var currentAvatar = user.Avatar;
 
-                var currentAvatar = user.Photos.FirstOrDefault((x) => x.IsAvatar);
+//                 var success = await _context.SaveChangesAsync() > 0;
 
-                if (currentAvatar != null) currentAvatar.IsAvatar = false;
+//                 if (success) return Result<Unit>.Success(Unit.Value);
 
-                photo.IsAvatar = true;
-
-                var success = await _context.SaveChangesAsync() > 0;
-
-                if (success) return Result<Unit>.Success(Unit.Value);
-
-                return Result<Unit>.Failure("Problem setting avatar photo");
-            }
-        }
-    }
-}
+//                 return Result<Unit>.Failure("Problem setting avatar photo");
+//             }
+//         }
+//     }
+// }

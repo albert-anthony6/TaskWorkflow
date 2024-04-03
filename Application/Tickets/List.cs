@@ -9,9 +9,9 @@ namespace Application.Tickets
 {
     public class List
     {
-        public class Query : IRequest<Result<List<TicketDto>>> {}
+        public class Query : IRequest<Result<List<RespTicketDto>>> {}
 
-        public class Handler : IRequestHandler<Query, Result<List<TicketDto>>>
+        public class Handler : IRequestHandler<Query, Result<List<RespTicketDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -21,13 +21,13 @@ namespace Application.Tickets
                 _context = context;
             }
 
-            public async Task<Result<List<TicketDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<RespTicketDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var tickets = await _context.Tickets
-                    .ProjectTo<TicketDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<RespTicketDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
-                return Result<List<TicketDto>>.Success(tickets);
+                return Result<List<RespTicketDto>>.Success(tickets);
             }
         }
     }

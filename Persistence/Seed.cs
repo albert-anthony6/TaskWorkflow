@@ -46,12 +46,12 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[0],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[0],
-                                IsAuthor = true
                             }
                         }
                     },
@@ -62,17 +62,16 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[0],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[0],
-                                IsAuthor = true
                             },
                             new TicketAssignee
                             {
                                 AppUser = users[1],
-                                IsAuthor = false
                             },
                         }
                     },
@@ -83,17 +82,16 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[2],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[2],
-                                IsAuthor = true
                             },
                             new TicketAssignee
                             {
                                 AppUser = users[1],
-                                IsAuthor = false
                             },
                         }
                     },
@@ -104,17 +102,16 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[0],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[0],
-                                IsAuthor = true
                             },
                             new TicketAssignee
                             {
                                 AppUser = users[2],
-                                IsAuthor = false
                             },
                         }
                     },
@@ -125,17 +122,16 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[1],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[1],
-                                IsAuthor = true                            
                             },
                             new TicketAssignee
                             {
                                 AppUser = users[0],
-                                IsAuthor = false                            
                             },
                         }
                     },
@@ -146,12 +142,12 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[1],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[1],
-                                IsAuthor = true                            
                             }
                         }
                     },
@@ -162,17 +158,16 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[0],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[0],
-                                IsAuthor = true                            
                             },
                             new TicketAssignee
                             {
                                 AppUser = users[1],
-                                IsAuthor = false                            
                             },
                         }
                     },
@@ -183,17 +178,16 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[2],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[2],
-                                IsAuthor = true                            
                             },
                             new TicketAssignee
                             {
                                 AppUser = users[1],
-                                IsAuthor = false                            
                             },
                         }
                     },
@@ -204,17 +198,16 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[0],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[0],
-                                IsAuthor = true                            
                             },
                             new TicketAssignee
                             {
                                 AppUser = users[2],
-                                IsAuthor = false                            
                             },
                         }
                     },
@@ -225,17 +218,16 @@ namespace Persistence
                         Severity = "Low",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
+                        Author = users[2],
                         Assignees = new List<TicketAssignee>
                         {
                             new TicketAssignee
                             {
                                 AppUser = users[2],
-                                IsAuthor = true                            
                             },
                             new TicketAssignee
                             {
                                 AppUser = users[1],
-                                IsAuthor = false                            
                             },
                         }
                     }

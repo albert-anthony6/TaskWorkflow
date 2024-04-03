@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Application.Tickets
 {
-    public class TicketValidator : AbstractValidator<Ticket>
+    public class TicketValidator : AbstractValidator<ReqTicketDto>
     {
         public TicketValidator()
         {

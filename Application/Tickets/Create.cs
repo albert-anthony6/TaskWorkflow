@@ -12,14 +12,14 @@ namespace Application.Tickets
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Ticket Ticket { get; set; }
+            public ReqTicketDto ReqTicketDto { get; set; }
         }
 
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor((x) => x.Ticket).SetValidator(new TicketValidator());
+                RuleFor((x) => x.ReqTicketDto).SetValidator(new TicketValidator());
             }
         }
 
@@ -35,19 +35,43 @@ namespace Application.Tickets
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.FirstOrDefaultAsync((x) => 
+                var currentUser = await _context.Users.FirstOrDefaultAsync((x) => 
                     x.UserName == _userAccessor.GetUsername());
 
-                var assignee = new TicketAssignee
+                var ticket = new Ticket
                 {
-                    AppUser = user,
-                    Ticket = request.Ticket,
-                    IsAuthor = true
+                    Id = Guid.NewGuid(),
+                    Title = request.ReqTicketDto.Title,
+                    Description = request.ReqTicketDto.Description,
+                    Severity = request.ReqTicketDto.Severity,
+                    StartDate = request.ReqTicketDto.StartDate,
+                    EndDate = request.ReqTicketDto.EndDate,
+                    Author = currentUser,
+                    Photos = request.ReqTicketDto.Photos
                 };
 
-                request.Ticket.Assignees.Add(assignee);
+                // Loop through AppUserIds and find matching users
+                foreach (var userId in request.ReqTicketDto.AppUserIds)
+                {
+                    var appUser = await _context.Users.FindAsync(userId);
+                    
+                    if (appUser != null)
+                    {
+                        var assignee = new TicketAssignee
+                        {
+                            AppUser = appUser,
+                            Ticket = ticket
+                        };
 
-                _context.Tickets.Add(request.Ticket);
+                        ticket.Assignees.Add(assignee);
+                    }
+                    else
+                    {
+                        return Result<Unit>.Failure($"User with ID {userId} not found.");
+                    }
+                }
+
+                _context.Tickets.Add(ticket);
                 var result = await _context.SaveChangesAsync() > 0;
 
                 if (!result) return Result<Unit>.Failure("Failed to create ticket.");

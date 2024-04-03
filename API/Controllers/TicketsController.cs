@@ -19,16 +19,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTicket(Ticket ticket)
+        public async Task<IActionResult> CreateTicket([FromForm] ReqTicketDto ticket)
         {
-            return HandleResult(await Mediator.Send(new Create.Command { Ticket = ticket }));
+            return HandleResult(await Mediator.Send(new Create.Command { ReqTicketDto = ticket }));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditTicket(Guid id, Ticket ticket)
+        public async Task<IActionResult> EditTicket(Guid id, [FromForm] ReqTicketDto ticket)
         {
-            ticket.Id = id;
-            return HandleResult(await Mediator.Send(new Edit.Command { Ticket = ticket }));
+            return HandleResult(await Mediator.Send(new Edit.Command { Id = id, ReqTicketDto = ticket }));
         }
 
         [HttpDelete("{id}")]

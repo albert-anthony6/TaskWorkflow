@@ -6,6 +6,5 @@ namespace Domain
         public AppUser AppUser { get; set; }
         public Guid TicketId { get; set; }
         public Ticket Ticket { get; set; }
-        public bool IsAuthor { get; set; }
     }
 }
