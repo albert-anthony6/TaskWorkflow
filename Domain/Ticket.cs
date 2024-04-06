@@ -1,8 +1,3 @@
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Swashbuckle.AspNetCore.Annotations;
-
 namespace Domain
 {
     public class Ticket
@@ -14,7 +9,7 @@ namespace Domain
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
         public AppUser Author { get; set; }
-        public ICollection<Photo> Photos { get; set; }
+        public ICollection<Photo> Attachments { get; set; } = new List<Photo>();
         public ICollection<TicketAssignee> Assignees { get; set; } = new List<TicketAssignee>();
     }
 }

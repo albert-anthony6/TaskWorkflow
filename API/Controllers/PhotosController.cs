@@ -5,11 +5,11 @@ namespace API.Controllers
 {
     public class PhotosController : BaseApiController
     {
-        // [HttpPost]
-        // public async Task<IActionResult> Add([FromForm] Add.Command command)
-        // {
-        //     return HandleResult(await Mediator.Send(command));
-        // }
+        [HttpPost]
+        public async Task<IActionResult> Add([FromForm] Guid id)
+        {
+            return HandleResult(await Mediator.Send(new Add.Command{ Id = id }));
+        }
 
         // [HttpDelete("{id}")]
         // public async Task<IActionResult> Delete(string id)

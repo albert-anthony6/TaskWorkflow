@@ -47,7 +47,7 @@ namespace Application.Tickets
                     StartDate = request.ReqTicketDto.StartDate,
                     EndDate = request.ReqTicketDto.EndDate,
                     Author = currentUser,
-                    Photos = request.ReqTicketDto.Photos
+                    Attachments = request.ReqTicketDto.Attachments
                 };
 
                 // Loop through AppUserIds and find matching users

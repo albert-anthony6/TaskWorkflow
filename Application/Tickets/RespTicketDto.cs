@@ -10,8 +10,8 @@ namespace Application.Tickets
         public string Severity { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
-        public ICollection<Photo> Photos { get; set; }
         public AuthorDto Author { get; set; }
+        public ICollection<Photo> Attachments { get; set; }
         public ICollection<AssigneeDto> Assignees { get; set; }
     }
 }

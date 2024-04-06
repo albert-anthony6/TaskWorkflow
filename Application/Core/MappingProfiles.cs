@@ -1,3 +1,4 @@
+using Application.Photos;
 using Application.Tickets;
 using AutoMapper;
 using Domain;
@@ -8,6 +9,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
+            CreateMap<Photo, PhotoDto>();
             CreateMap<ReqTicketDto, Ticket>().IgnoreAllPropertiesWithAnInaccessibleSetter();
             CreateMap<Ticket, RespTicketDto>()
                 .ForMember((dest) => dest.Author, opt => opt.MapFrom((src) => new AuthorDto

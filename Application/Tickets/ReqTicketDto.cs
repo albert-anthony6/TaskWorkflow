@@ -9,7 +9,7 @@ namespace Application.Tickets
         public string Severity { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
-        public ICollection<Photo> Photos { get; set; }
+        public ICollection<Photo> Attachments { get; set; }
         public List<string> AppUserIds { get; set; } = new List<string>();
     }
 }

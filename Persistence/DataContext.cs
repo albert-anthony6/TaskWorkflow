@@ -29,6 +29,16 @@ namespace Persistence
                 .HasOne((t) => t.Ticket)
                 .WithMany((a) => a.Assignees)
                 .HasForeignKey((ta) => ta.TicketId);
+
+            builder.Entity<AppUser>()
+                .HasOne((u) => u.Avatar)
+                .WithOne((p) => p.AvatarUser)
+                .HasForeignKey<Photo>((p) => p.AvatarId);
+
+            builder.Entity<AppUser>()
+                .HasOne((u) => u.CoverImage)
+                .WithOne((p) => p.CoverImageUser)
+                .HasForeignKey<Photo>((p) => p.CoverImageId);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Application.Tickets
             {
                 var ticket = await _context.Tickets
                     .Include((x) => x.Assignees)
-                    .FirstOrDefaultAsync((x) => x.Id == request.Id);
+                    .SingleOrDefaultAsync((x) => x.Id == request.Id);
 
                 if (ticket == null) return null;
 

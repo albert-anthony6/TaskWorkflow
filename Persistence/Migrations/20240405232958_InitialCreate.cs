@@ -32,8 +32,6 @@ namespace Persistence.Migrations
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     DisplayName = table.Column<string>(type: "TEXT", nullable: true),
                     Bio = table.Column<string>(type: "TEXT", nullable: true),
-                    Avatar = table.Column<string>(type: "TEXT", nullable: true),
-                    CoverImage = table.Column<string>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -188,11 +186,23 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     Url = table.Column<string>(type: "TEXT", nullable: true),
+                    AvatarId = table.Column<string>(type: "TEXT", nullable: true),
+                    CoverImageId = table.Column<string>(type: "TEXT", nullable: true),
                     TicketId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photos_AspNetUsers_AvatarId",
+                        column: x => x.AvatarId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Photos_AspNetUsers_CoverImageId",
+                        column: x => x.CoverImageId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Photos_Tickets_TicketId",
                         column: x => x.TicketId,
@@ -259,6 +269,18 @@ namespace Persistence.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_AvatarId",
+                table: "Photos",
+                column: "AvatarId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_CoverImageId",
+                table: "Photos",
+                column: "CoverImageId",
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -25,17 +25,11 @@ namespace Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Avatar")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Bio")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CoverImage")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DisplayName")
@@ -98,6 +92,12 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("AvatarId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CoverImageId")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid?>("TicketId")
                         .HasColumnType("TEXT");
 
@@ -105,6 +105,12 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AvatarId")
+                        .IsUnique();
+
+                    b.HasIndex("CoverImageId")
+                        .IsUnique();
 
                     b.HasIndex("TicketId");
 
@@ -287,9 +293,21 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Photo", b =>
                 {
+                    b.HasOne("Domain.AppUser", "AvatarUser")
+                        .WithOne("Avatar")
+                        .HasForeignKey("Domain.Photo", "AvatarId");
+
+                    b.HasOne("Domain.AppUser", "CoverImageUser")
+                        .WithOne("CoverImage")
+                        .HasForeignKey("Domain.Photo", "CoverImageId");
+
                     b.HasOne("Domain.Ticket", null)
-                        .WithMany("Photos")
+                        .WithMany("Attachments")
                         .HasForeignKey("TicketId");
+
+                    b.Navigation("AvatarUser");
+
+                    b.Navigation("CoverImageUser");
                 });
 
             modelBuilder.Entity("Domain.Ticket", b =>
@@ -375,6 +393,10 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("AuthoredTickets");
 
+                    b.Navigation("Avatar");
+
+                    b.Navigation("CoverImage");
+
                     b.Navigation("Tickets");
                 });
 
@@ -382,7 +404,7 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("Assignees");
 
-                    b.Navigation("Photos");
+                    b.Navigation("Attachments");
                 });
 #pragma warning restore 612, 618
         }
