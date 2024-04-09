@@ -1,4 +1,4 @@
-using Domain;
+using Application.Photos;
 
 namespace API.DTOs
 {
@@ -6,7 +6,7 @@ namespace API.DTOs
     {
         public string DisplayName { get; set; }
         public string Token { get; set; }
-        public Photo Avatar { get; set; }
+        public PhotoDto Avatar { get; set; }
         public string Username { get; set; }
     }
 }

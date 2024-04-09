@@ -6,21 +6,21 @@ namespace API.Controllers
     public class PhotosController : BaseApiController
     {
         [HttpPost]
-        public async Task<IActionResult> Add([FromForm] Guid id)
+        public async Task<IActionResult> Add([FromForm] Add.Command command)
         {
-            return HandleResult(await Mediator.Send(new Add.Command{ Id = id }));
+            return HandleResult(await Mediator.Send(command));
         }
 
-        // [HttpDelete("{id}")]
-        // public async Task<IActionResult> Delete(string id)
-        // {
-        //     return HandleResult(await Mediator.Send(new Delete.Command{Id = id}));
-        // }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id, string photoId)
+        {
+            return HandleResult(await Mediator.Send(new Delete.Command{Id = id, PhotoId = photoId}));
+        }
 
-        // [HttpPost("{id}/SetAvatar")]
-        // public async Task<IActionResult> SetAvatar(string id)
-        // {
-        //     return HandleResult(await Mediator.Send(new SetAvatar.Command{Id = id}));
-        // }
+        [HttpPut]
+        public async Task<IActionResult> SetAvatar([FromForm] SetAvatar.Command command)
+        {
+            return HandleResult(await Mediator.Send(command));
+        }
     }
 }

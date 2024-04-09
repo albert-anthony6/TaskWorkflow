@@ -46,7 +46,7 @@ namespace Application.Tickets
                     Severity = request.ReqTicketDto.Severity,
                     StartDate = request.ReqTicketDto.StartDate,
                     EndDate = request.ReqTicketDto.EndDate,
-                    Author = currentUser,
+                    // Author = currentUser,
                     Attachments = request.ReqTicketDto.Attachments
                 };
 

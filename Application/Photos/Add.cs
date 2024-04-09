@@ -10,13 +10,13 @@ namespace Application.Photos
 {
     public class Add
     {
-        public class Command : IRequest<Result<Photo>>
+        public class Command : IRequest<Result<PhotoDto>>
         {
             public IFormFile File { get; set; }
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, Result<Photo>>
+        public class Handler : IRequestHandler<Command, Result<PhotoDto>>
         {
             private readonly DataContext _context;
             private readonly IPhotoAccessor _photoAccessor;
@@ -26,7 +26,7 @@ namespace Application.Photos
                 _context = context;
             }
 
-            public async Task<Result<Photo>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<PhotoDto>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ticket = await _context.Tickets.Include((p) => p.Attachments)
                     .FirstOrDefaultAsync((x) => x.Id == request.Id);
@@ -45,9 +45,18 @@ namespace Application.Photos
 
                     var result = await _context.SaveChangesAsync() > 0;
 
-                    if (result) return Result<Photo>.Success(photo);
+                    if (result) 
+                    {
+                        var photoDto = new PhotoDto
+                        {
+                            Url = photo.Url,
+                            Id = photo.Id
+                        };
 
-                    return Result<Photo>.Failure("Problem adding photo");
+                        return Result<PhotoDto>.Success(photoDto);
+                    }
+
+                    return Result<PhotoDto>.Failure("Problem adding photo");
             }
         }
     }

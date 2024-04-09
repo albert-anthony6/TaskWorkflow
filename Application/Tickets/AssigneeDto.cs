@@ -1,3 +1,5 @@
+using Application.Photos;
+
 namespace Application.Tickets
 {
     public class AssigneeDto
@@ -5,6 +7,6 @@ namespace Application.Tickets
         public string AppUserId { get; set; }
         public string Username { get; set; }
         public string DisplayName { get; set; }
-        public string Avatar { get; set; }
+        public PhotoDto Avatar { get; set; }
     }
 }

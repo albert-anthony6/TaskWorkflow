@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using API.DTOs;
 using API.Services;
+using Application.Photos;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -86,7 +87,7 @@ namespace API.Controllers
             return new UserDto
             {
                 DisplayName = user.DisplayName,
-                Avatar = user.Avatar,
+                Avatar = user.Avatar != null ? new PhotoDto { Id = user.Avatar.Id, Url = user.Avatar.Url } : null,
                 Token = _tokenService.CreateToken(user),
                 Username = user.UserName
             };

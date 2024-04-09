@@ -9,24 +9,46 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<Photo, PhotoDto>();
             CreateMap<ReqTicketDto, Ticket>().IgnoreAllPropertiesWithAnInaccessibleSetter();
+
             CreateMap<Ticket, RespTicketDto>()
-                .ForMember((dest) => dest.Author, opt => opt.MapFrom((src) => new AuthorDto
+                .ForMember((dest) => dest.Attachments, (opt) => opt.MapFrom((src) => src.Attachments.Select((photo) => new PhotoDto
+                {
+                    Id = photo.Id,
+                    Url = photo.Url
+                })))
+                .ForMember((dest) => dest.Author, (opt) => opt.MapFrom((src) => new AuthorDto
                 {
                     AuthorId = src.Author.Id,
                     AuthorDisplayName = src.Author.DisplayName,
                     AuthorUserName = src.Author.UserName,
-                    AuthorAvatar = src.Author.Avatar
+                    AuthorAvatar = src.Author.Avatar != null ? new PhotoDto
+                        { 
+                            Id = src.Author.Avatar.Id,
+                            Url = src.Author.Avatar.Url 
+                        }
+                        : null
                 }));
+
             CreateMap<TicketAssignee, AssigneeDto>()
                 .ForMember((dest) => dest.DisplayName, (opt) => opt.MapFrom((src) => src.AppUser.DisplayName))
                 .ForMember((dest) => dest.Username, (opt) => opt.MapFrom((src) => src.AppUser.UserName))
-                .ForMember((dest) => dest.Avatar, (opt) => opt.MapFrom((src) => src.AppUser.Avatar));
+                .ForMember((dest) => dest.Avatar, (opt) => opt.MapFrom((src) =>
+                    src.AppUser.Avatar != null
+                        ? new PhotoDto { Id = src.AppUser.Avatar.Id, Url = src.AppUser.Avatar.Url }
+                        : null));
+
             CreateMap<AppUser, Profiles.Profile>()
-                .ForMember((dest) => dest.Avatar, (opt) => opt.MapFrom((src) => src.Avatar));
+                .ForMember((dest) => dest.Avatar, (opt) => opt.MapFrom((src) =>
+                    src.Avatar != null
+                        ? new PhotoDto { Id = src.Avatar.Id, Url = src.Avatar.Url }
+                        : null));
+
             CreateMap<AppUser, Profiles.ProfileDto>()
-                .ForMember((dest) => dest.Avatar, (opt) => opt.MapFrom((src) => src.Avatar));
+                .ForMember((dest) => dest.Avatar, (opt) => opt.MapFrom((src) =>
+                    src.Avatar != null
+                        ? new PhotoDto { Id = src.Avatar.Id, Url = src.Avatar.Url }
+                        : null));
         }
     }
 }

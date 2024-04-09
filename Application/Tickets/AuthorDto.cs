@@ -1,4 +1,4 @@
-using Domain;
+using Application.Photos;
 
 namespace Application.Tickets
 {
@@ -7,6 +7,6 @@ namespace Application.Tickets
         public string AuthorId { get; set; }
         public string AuthorDisplayName { get; set; }
         public string AuthorUserName { get; set; }
-        public Photo AuthorAvatar { get; set; }
+        public PhotoDto AuthorAvatar { get; set; }
     }
 }

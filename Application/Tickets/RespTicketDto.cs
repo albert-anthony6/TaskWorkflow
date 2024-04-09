@@ -1,4 +1,4 @@
-using Domain;
+using Application.Photos;
 
 namespace Application.Tickets
 {
@@ -11,7 +11,7 @@ namespace Application.Tickets
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
         public AuthorDto Author { get; set; }
-        public ICollection<Photo> Attachments { get; set; }
+        public ICollection<PhotoDto> Attachments { get; set; }
         public ICollection<AssigneeDto> Assignees { get; set; }
     }
 }
