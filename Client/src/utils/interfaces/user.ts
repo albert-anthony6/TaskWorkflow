@@ -2,7 +2,7 @@ export interface User {
   username: string;
   displayName: string;
   token: string;
-  avatar?: string;
+  avatar: { id: string; url: string };
 }
 
 export interface UserFormValues {

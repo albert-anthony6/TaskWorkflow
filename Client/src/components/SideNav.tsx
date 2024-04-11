@@ -10,14 +10,21 @@ import IconInfo from '../assets/icons/icon_info.svg?react';
 import IconLogout from '../assets/icons/icon_logout.svg?react';
 import './SideNav.scss';
 import { Link, NavLink } from 'react-router-dom';
+import { useAppSelector } from '../store/configureStore';
 
 export default function SideNav() {
+  const { user } = useAppSelector((state) => state.user);
+
   return (
     <aside className="side-nav">
       <div className="top-nav">
         <IconLogo className="logo__white" />
         <Link to="/user/bob" className="profile-link">
-          <IconAvatar />
+          {user?.avatar ? (
+            <img src={user?.avatar.url} className="avatar avatar__small" />
+          ) : (
+            <IconAvatar className="avatar avatar__small" />
+          )}
           <div className="username">
             <p>John Doe</p>
             <div className="caption">Developer at HighRise</div>

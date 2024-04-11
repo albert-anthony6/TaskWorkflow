@@ -95,6 +95,24 @@ button {
   }
 }
 
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  &__big {
+    width: 230px;
+    height: 230px;
+    border: 5px solid $lightest-neutral;
+  }
+
+  &__small {
+    width: 56px;
+    height: 56px;
+  }
+}
+
 input {
   font-size: 16px;
   padding: 14px 16px 13px;

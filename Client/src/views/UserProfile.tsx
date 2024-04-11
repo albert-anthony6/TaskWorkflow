@@ -15,11 +15,11 @@ export default function UserProfile() {
     <main className="user-profile">
       <div className="banner">
         {profile?.avatar ? (
-          <img src={profile.avatar.url} className="avatar" alt="User Avatar." />
+          <img src={profile.avatar.url} className="avatar avatar__big" alt="User Avatar." />
         ) : (
           <img
             src="/src/assets/icons/icon_avatar.svg?react"
-            className="avatar"
+            className="avatar avatar__big"
             alt="User Avatar."
           />
         )}
