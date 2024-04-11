@@ -16,7 +16,7 @@ export default function SideNav() {
     <aside className="side-nav">
       <div className="top-nav">
         <IconLogo className="logo__white" />
-        <Link to="/profile/123" className="profile-link">
+        <Link to="/user/bob" className="profile-link">
           <IconAvatar />
           <div className="username">
             <p>John Doe</p>

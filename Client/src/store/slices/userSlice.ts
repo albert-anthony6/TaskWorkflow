@@ -2,15 +2,18 @@ import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import agent from '../../api/agent';
 import { User, UserFormValues } from '../../utils/interfaces/user';
 import { router } from '../../routes/router';
+import { UserProfile } from '../../utils/interfaces/user-profile';
 
 interface UserState {
   user: User | null;
   token: string | null;
+  profile: UserProfile | null;
 }
 
 const initialState: UserState = {
   user: null,
-  token: localStorage.getItem('jwt') || null
+  token: localStorage.getItem('jwt') || null,
+  profile: null
 };
 
 export const signInUser = createAsyncThunk<User, UserFormValues>(
@@ -49,6 +52,17 @@ export const getUser = createAsyncThunk<User>('user/getUser', async (_, thunkAPI
   }
 });
 
+export const getProfile = createAsyncThunk<UserProfile, string>(
+  'user/getProfile',
+  async (id, thunkAPI) => {
+    try {
+      return await agent.Profile.details(id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -64,6 +78,9 @@ export const userSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
+    builder.addCase(getProfile.fulfilled, (state, action) => {
+      state.profile = action.payload;
+    });
     builder.addMatcher(
       isAnyOf(signInUser.fulfilled, registerUser.fulfilled, getUser.fulfilled),
       (state, action) => {
@@ -71,7 +88,7 @@ export const userSlice = createSlice({
       }
     );
     builder.addMatcher(
-      isAnyOf(signInUser.rejected, registerUser.rejected, getUser.rejected),
+      isAnyOf(signInUser.rejected, registerUser.rejected, getUser.rejected, getProfile.rejected),
       (state, action) => {
         throw action.payload;
       }
