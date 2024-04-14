@@ -10,6 +10,7 @@ namespace Persistence
         {
         }
 
+        public DbSet<Project> Projects { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketAssignee> TicketAssignees { get; set; }
         public DbSet<Photo> Photos { get; set; }
@@ -17,6 +18,12 @@ namespace Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Project>()
+                .HasMany((p) => p.Tickets)
+                .WithOne((t) => t.Project)
+                .HasForeignKey((t) => t.ProjectId)
+                .IsRequired();
 
             builder.Entity<TicketAssignee>((x) => x.HasKey((ta) => new { ta.AppUserId, ta.TicketId }));
         

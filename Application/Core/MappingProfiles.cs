@@ -1,4 +1,5 @@
 using Application.Photos;
+using Application.Projects;
 using Application.Tickets;
 using AutoMapper;
 using Domain;
@@ -9,6 +10,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
+            CreateMap<Project, ProjectDto>();
             CreateMap<ReqTicketDto, Ticket>().IgnoreAllPropertiesWithAnInaccessibleSetter();
 
             CreateMap<Ticket, RespTicketDto>()

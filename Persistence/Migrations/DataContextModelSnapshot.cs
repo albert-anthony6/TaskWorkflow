@@ -117,6 +117,23 @@ namespace Persistence.Migrations
                     b.ToTable("Photos");
                 });
 
+            modelBuilder.Entity("Domain.Project", b =>
+                {
+                    b.Property<Guid>("ProjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Owner")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ProjectId");
+
+                    b.ToTable("Projects");
+                });
+
             modelBuilder.Entity("Domain.Ticket", b =>
                 {
                     b.Property<Guid>("Id")
@@ -132,6 +149,9 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Severity")
                         .HasColumnType("TEXT");
 
@@ -144,6 +164,8 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Tickets");
                 });
@@ -316,7 +338,15 @@ namespace Persistence.Migrations
                         .WithMany("AuthoredTickets")
                         .HasForeignKey("AuthorId");
 
+                    b.HasOne("Domain.Project", "Project")
+                        .WithMany("Tickets")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Author");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Domain.TicketAssignee", b =>
@@ -397,6 +427,11 @@ namespace Persistence.Migrations
 
                     b.Navigation("CoverImage");
 
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("Domain.Project", b =>
+                {
                     b.Navigation("Tickets");
                 });
 

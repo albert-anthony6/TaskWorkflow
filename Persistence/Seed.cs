@@ -37,10 +37,31 @@ namespace Persistence
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
 
+                // Create projects
+                var projects = new List<Project>
+                {
+                    new Project
+                    {
+                        ProjectId = Guid.NewGuid(),
+                        Name = "Project 1",
+                        Owner = "Bob"
+                    },
+                    new Project
+                    {
+                        ProjectId = Guid.NewGuid(),
+                        Name = "Project 2",
+                        Owner = "Jane"
+                    }
+                };
+
+                await context.Projects.AddRangeAsync(projects);
+                await context.SaveChangesAsync();
+
                 var tickets = new List<Ticket>
                 {
                     new Ticket
                     {
+                        ProjectId = projects[0].ProjectId,
                         Title = "Past Ticket 1",
                         Description = "Ticket 2 months ago",
                         Severity = "Low",
@@ -57,6 +78,7 @@ namespace Persistence
                     },
                     new Ticket
                     {
+                        ProjectId = projects[1].ProjectId,
                         Title = "Past Ticket 2",
                         Description = "Ticket 1 month ago",
                         Severity = "Low",
@@ -77,6 +99,7 @@ namespace Persistence
                     },
                     new Ticket
                     {
+                        ProjectId = projects[0].ProjectId,
                         Title = "Future Ticket 1",
                         Description = "Ticket 1 month in future",
                         Severity = "Low",
@@ -97,6 +120,7 @@ namespace Persistence
                     },
                     new Ticket
                     {
+                        ProjectId = projects[1].ProjectId,
                         Title = "Future Ticket 2",
                         Description = "Ticket 2 months in future",
                         Severity = "Low",
@@ -117,6 +141,7 @@ namespace Persistence
                     },
                     new Ticket
                     {
+                        ProjectId = projects[0].ProjectId,
                         Title = "Future Ticket 3",
                         Description = "Ticket 3 months in future",
                         Severity = "Low",
@@ -137,6 +162,7 @@ namespace Persistence
                     },
                     new Ticket
                     {
+                        ProjectId = projects[1].ProjectId,
                         Title = "Future Ticket 4",
                         Description = "Ticket 4 months in future",
                         Severity = "Low",
@@ -153,6 +179,7 @@ namespace Persistence
                     },
                     new Ticket
                     {
+                        ProjectId = projects[0].ProjectId,
                         Title = "Future Ticket 5",
                         Description = "Ticket 5 months in future",
                         Severity = "Low",
@@ -173,6 +200,7 @@ namespace Persistence
                     },
                     new Ticket
                     {
+                        ProjectId = projects[1].ProjectId,
                         Title = "Future Ticket 6",
                         Description = "Ticket 6 months in future",
                         Severity = "Low",
@@ -193,6 +221,7 @@ namespace Persistence
                     },
                     new Ticket
                     {
+                        ProjectId = projects[0].ProjectId,
                         Title = "Future Ticket 7",
                         Description = "Ticket 7 months in future",
                         Severity = "Low",
@@ -213,6 +242,7 @@ namespace Persistence
                     },
                     new Ticket
                     {
+                        ProjectId = projects[1].ProjectId,
                         Title = "Future Ticket 8",
                         Description = "Ticket 8 months in future",
                         Severity = "Low",
