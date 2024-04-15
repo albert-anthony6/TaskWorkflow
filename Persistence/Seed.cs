@@ -44,13 +44,13 @@ namespace Persistence
                     {
                         ProjectId = Guid.NewGuid(),
                         Name = "Project 1",
-                        Owner = "Bob"
+                        Owner = users[0].Id
                     },
                     new Project
                     {
                         ProjectId = Guid.NewGuid(),
                         Name = "Project 2",
-                        Owner = "Jane"
+                        Owner = users[2].Id
                     }
                 };
 

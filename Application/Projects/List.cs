@@ -9,9 +9,9 @@ namespace Application.Projects
 {
     public class List
     {
-        public class Query : IRequest<Result<List<ProjectDto>>> {}
+        public class Query : IRequest<Result<List<RespProjectDto>>> {}
 
-        public class Handler : IRequestHandler<Query, Result<List<ProjectDto>>>
+        public class Handler : IRequestHandler<Query, Result<List<RespProjectDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -21,13 +21,13 @@ namespace Application.Projects
                 _context = context;
             }
 
-            public async Task<Result<List<ProjectDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<RespProjectDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var projects = await _context.Projects
-                    .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<RespProjectDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
-                return Result<List<ProjectDto>>.Success(projects);
+                return Result<List<RespProjectDto>>.Success(projects);
             }
         }
     }

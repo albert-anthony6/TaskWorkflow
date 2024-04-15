@@ -1,6 +1,6 @@
 namespace Application.Projects
 {
-    public class ProjectDto
+    public class RespProjectDto
     {
         public Guid ProjectId { get; set; }
         public string Name { get; set; }
