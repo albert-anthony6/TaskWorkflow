@@ -11,10 +11,10 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new List.Query()));
         }
 
-        [HttpGet("{username}")]
-        public async Task<IActionResult> GetProfile(string username)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProfile(string id)
         {
-            return HandleResult(await Mediator.Send(new Details.Query{Username = username}));
+            return HandleResult(await Mediator.Send(new Details.Query{Id = id}));
         }
     }
 }

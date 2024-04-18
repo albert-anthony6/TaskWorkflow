@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
-import './UserProfile.scss';
+import './ProfilePage.scss';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { getProfile } from '../store/slices/userSlice';
+import { useParams } from 'react-router-dom';
 
-export default function UserProfile() {
+export default function ProfilePage() {
+  const { userId } = useParams();
   const dispatch = useAppDispatch();
-  const { user, profile } = useAppSelector((state) => state.user);
+  const { profile } = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(getProfile('bob'));
-  }, [dispatch, user?.username]);
+    dispatch(getProfile(userId as string));
+  }, [dispatch, userId]);
 
   return (
-    <main className="user-profile">
+    <main className="profile-page">
       <div className="banner">
         {profile?.avatar ? (
           <img src={profile.avatar.url} className="avatar avatar__big" alt="User Avatar." />

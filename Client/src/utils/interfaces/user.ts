@@ -11,3 +11,10 @@ export interface UserFormValues {
   displayName?: string;
   username?: string;
 }
+
+export interface UserProfile {
+  id: string;
+  username: string;
+  displayName: string;
+  avatar: { id: string; url: string };
+}

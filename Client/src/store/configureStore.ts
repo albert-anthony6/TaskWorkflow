@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { taskSlice } from './slices/taskSlice';
 import { userSlice } from './slices/userSlice';
+import { usersSlice } from './slices/usersSlice';
 
 export const store = configureStore({
   reducer: {
     task: taskSlice.reducer,
-    user: userSlice.reducer
+    user: userSlice.reducer,
+    users: usersSlice.reducer
   }
 });
 

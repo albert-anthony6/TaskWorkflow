@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import agent from '../../api/agent';
 import { User, UserFormValues } from '../../utils/interfaces/user';
 import { router } from '../../routes/router';
-import { UserProfile } from '../../utils/interfaces/user-profile';
+import { UserProfile } from '../../utils/interfaces/user';
 
 interface UserState {
   user: User | null;
@@ -44,7 +44,7 @@ export const registerUser = createAsyncThunk<User, UserFormValues>(
   }
 );
 
-export const getUser = createAsyncThunk<User>('user/getUser', async (_, thunkAPI) => {
+export const getCurrentUser = createAsyncThunk<User>('user/getCurrentUser', async (_, thunkAPI) => {
   try {
     return await agent.Account.current();
   } catch (error: any) {
@@ -82,13 +82,18 @@ export const userSlice = createSlice({
       state.profile = action.payload;
     });
     builder.addMatcher(
-      isAnyOf(signInUser.fulfilled, registerUser.fulfilled, getUser.fulfilled),
+      isAnyOf(signInUser.fulfilled, registerUser.fulfilled, getCurrentUser.fulfilled),
       (state, action) => {
         state.user = action.payload;
       }
     );
     builder.addMatcher(
-      isAnyOf(signInUser.rejected, registerUser.rejected, getUser.rejected, getProfile.rejected),
+      isAnyOf(
+        signInUser.rejected,
+        registerUser.rejected,
+        getCurrentUser.rejected,
+        getProfile.rejected
+      ),
       (state, action) => {
         throw action.payload;
       }

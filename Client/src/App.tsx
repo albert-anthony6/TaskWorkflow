@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from './store/configureStore.ts';
-import { getUser } from './store/slices/userSlice.ts';
+import { getCurrentUser } from './store/slices/userSlice.ts';
 import AppFooter from './components/AppFooter.tsx';
 import SideNav from './components/SideNav.tsx';
 import './assets/scss/_theme.scss';
@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      dispatch(getUser());
+      dispatch(getCurrentUser());
     }
   }, [dispatch, token]);
 

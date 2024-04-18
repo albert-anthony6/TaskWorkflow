@@ -4,8 +4,9 @@ import LandingPage from '../views/LandingPage';
 import ProjectPage from '../views/ProjectPage';
 import NotFound from '../views/NotFound';
 import LoginPage from '../views/LoginPage';
+import PeoplePage from '../views/PeoplePage';
 import LogoutPage from '../views/LogoutPage';
-import UserProfile from '../views/UserProfile';
+import ProfilePage from '../views/ProfilePage';
 
 export const routes: RouteObject[] = [
   {
@@ -15,8 +16,9 @@ export const routes: RouteObject[] = [
       { path: '', element: <LandingPage /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <LoginPage /> },
-      { path: '/user/:userId', element: <UserProfile /> },
+      { path: '/user/:userId', element: <ProfilePage /> },
       { path: 'projects/:projectId', element: <ProjectPage /> },
+      { path: 'people', element: <PeoplePage /> },
       { path: '/logout', element: <LogoutPage /> },
       { path: 'not-found', element: <NotFound /> },
       { path: '*', element: <Navigate to="/not-found" replace /> }

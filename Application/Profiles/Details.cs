@@ -11,7 +11,7 @@ namespace Application.Profiles
     {
         public class Query : IRequest<Result<Profile>>
         {
-            public string Username { get; set; }
+            public string Id { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<Profile>>
@@ -28,7 +28,7 @@ namespace Application.Profiles
             {
                 var user = await _context.Users
                     .ProjectTo<Profile>(_mapper.ConfigurationProvider)
-                    .SingleOrDefaultAsync((x) => x.Username == request.Username);
+                    .SingleOrDefaultAsync((x) => x.Id == request.Id);
 
                 return Result<Profile>.Success(user);
             }

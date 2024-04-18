@@ -3,7 +3,7 @@ import { router } from '../routes/router';
 import { Task } from '../utils/interfaces/task';
 import { toast } from 'react-toastify';
 import { User, UserFormValues } from '../utils/interfaces/user';
-import { UserProfile } from '../utils/interfaces/user-profile';
+import { UserProfile } from '../utils/interfaces/user';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -80,6 +80,7 @@ const Account = {
 };
 
 const Profile = {
+  list: () => requests.get<UserProfile[]>('/profiles'),
   details: (id: string) => requests.get<UserProfile>(`/profiles/${id}`)
 };
 
