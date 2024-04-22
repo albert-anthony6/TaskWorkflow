@@ -79,6 +79,7 @@ namespace API.Controllers
         {
             var user = await _userManager.Users
                 .Include((u) => u.Avatar)
+                .Include((u) => u.CoverImage)
                 .FirstOrDefaultAsync((x) => x.Email == User.FindFirstValue(ClaimTypes.Email));
         
             return CreateUserObject(user);
@@ -90,6 +91,7 @@ namespace API.Controllers
             {
                 DisplayName = user.DisplayName,
                 Avatar = user.Avatar != null ? new PhotoDto { Id = user.Avatar.Id, Url = user.Avatar.Url } : null,
+                CoverImage = user.CoverImage != null ? new PhotoDto { Id = user.CoverImage.Id, Url = user.CoverImage.Url } : null,
                 Token = _tokenService.CreateToken(user),
                 Username = user.UserName
             };

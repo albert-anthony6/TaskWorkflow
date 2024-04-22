@@ -87,11 +87,11 @@ const Profile = {
   uploadImage: (file: Blob) => {
     const formData = new FormData();
     formData.append('File', file);
-    if (file.size > 10485760) {
+    if (file?.size > 10485760) {
       toast.error('File size too large. Maximum is 10 MB.');
       return;
     }
-    return axios.put<Photo>('photos', formData, {
+    return axios.put<Photo>('photos/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
   }

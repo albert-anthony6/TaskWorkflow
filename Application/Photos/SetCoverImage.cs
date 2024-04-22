@@ -8,7 +8,7 @@ using Persistence;
 
 namespace Application.Photos
 {
-    public class SetAvatar
+    public class SetCoverImage
     {
         public class Command : IRequest<Result<Unit>>
         {
@@ -30,15 +30,15 @@ namespace Application.Photos
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users
-                    .Include((u) => u.Avatar)
+                    .Include((u) => u.CoverImage)
                     .FirstOrDefaultAsync((x) => x.UserName == _userAccessor.GetUsername());
                 
                 if (user == null) return null;
 
-                // No file and no existing avatar image
+                // No file and no existing cover image
                 if (request.File == null)
                 {
-                    if (user.Avatar == null)
+                    if (user.CoverImage == null)
                     {
                         return Result<Unit>.Failure("No file was provided");
                     }
@@ -52,14 +52,14 @@ namespace Application.Photos
                     }
                 }
 
-                // Delete the existing avatar image
-                if (user.Avatar != null)
+                // Delete the existing cover image
+                if (user.CoverImage != null)
                 {
-                    var result = await _photoAccessor.DeletePhoto(user.Avatar.Id);
+                    var result = await _photoAccessor.DeletePhoto(user.CoverImage.Id);
 
-                    if (result == null) return Result<Unit>.Failure("Problem updating avatar image");
+                    if (result == null) return Result<Unit>.Failure("Problem updating cover image");
                 
-                    user.Avatar = null;
+                    user.CoverImage = null;
                 }
 
                 // Upload the file if there's a file included with this api call
@@ -73,14 +73,14 @@ namespace Application.Photos
                         Id = photoUploadResult.PublicId
                     };
 
-                    user.Avatar = photo;
+                    user.CoverImage = photo;
                 }
 
                 var success = await _context.SaveChangesAsync() > 0;
 
                 if (success) return Result<Unit>.Success(Unit.Value);
 
-                return Result<Unit>.Failure("Problem updating avatar image");
+                return Result<Unit>.Failure("Problem updating cover image");
             }
         }
     }
