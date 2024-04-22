@@ -6,6 +6,7 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Persistence;
@@ -44,6 +45,10 @@ namespace API.Extensions
                         jwtSecurityScheme, Array.Empty<string>()
                     }
                 });
+            });
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // 10 MB limit
             });
             services.AddDbContext<DataContext>((opt) => 
             {

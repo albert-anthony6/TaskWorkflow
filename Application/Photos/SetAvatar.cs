@@ -40,6 +40,12 @@ namespace Application.Photos
                     return Result<Unit>.Failure("No file was provided");
                 }
 
+                // 10 MB limit (10485760 bytes)
+                if (request.File.Length > 10485760)
+                {
+                    return Result<Unit>.Failure("File size too large. Maximum is 10 MB.");
+                }
+
                 if (user.Avatar != null || request.File == null)
                 {
                     var result = await _photoAccessor.DeletePhoto(user.Avatar.Id);

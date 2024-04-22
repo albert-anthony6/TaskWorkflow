@@ -4,6 +4,7 @@ import { Task } from '../utils/interfaces/task';
 import { toast } from 'react-toastify';
 import { User, UserFormValues } from '../utils/interfaces/user';
 import { UserProfile } from '../utils/interfaces/user';
+import { Photo } from '../utils/interfaces/photo';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -20,6 +21,7 @@ axios.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
+    console.log(error);
     const { data, status, config } = error.response as AxiosResponse;
     switch (status) {
       case 400:
@@ -81,7 +83,18 @@ const Account = {
 
 const Profile = {
   list: () => requests.get<UserProfile[]>('/profiles'),
-  details: (id: string) => requests.get<UserProfile>(`/profiles/${id}`)
+  details: (id: string) => requests.get<UserProfile>(`/profiles/${id}`),
+  uploadImage: (file: Blob) => {
+    const formData = new FormData();
+    formData.append('File', file);
+    if (file.size > 10485760) {
+      toast.error('File size too large. Maximum is 10 MB.');
+      return;
+    }
+    return axios.put<Photo>('photos', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  }
 };
 
 const agent = {

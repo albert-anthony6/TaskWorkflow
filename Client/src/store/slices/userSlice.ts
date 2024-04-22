@@ -3,6 +3,7 @@ import agent from '../../api/agent';
 import { User, UserFormValues } from '../../utils/interfaces/user';
 import { router } from '../../routes/router';
 import { UserProfile } from '../../utils/interfaces/user';
+import { Photo } from '../../utils/interfaces/photo';
 
 interface UserState {
   user: User | null;
@@ -63,6 +64,18 @@ export const getProfile = createAsyncThunk<UserProfile, string>(
   }
 );
 
+export const uploadImage = createAsyncThunk<Photo, Blob>(
+  'user/uploadImage',
+  async (file, thunkAPI) => {
+    try {
+      const response = await agent.Profile.uploadImage(file);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -92,7 +105,8 @@ export const userSlice = createSlice({
         signInUser.rejected,
         registerUser.rejected,
         getCurrentUser.rejected,
-        getProfile.rejected
+        getProfile.rejected,
+        uploadImage.rejected
       ),
       (state, action) => {
         throw action.payload;

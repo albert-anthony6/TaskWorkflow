@@ -1,8 +1,10 @@
+import { Photo } from './photo';
+
 export interface User {
   username: string;
   displayName: string;
   token: string;
-  avatar: { id: string; url: string };
+  avatar: Photo;
 }
 
 export interface UserFormValues {
@@ -16,5 +18,5 @@ export interface UserProfile {
   id: string;
   username: string;
   displayName: string;
-  avatar: { id: string; url: string };
+  avatar: Photo;
 }
