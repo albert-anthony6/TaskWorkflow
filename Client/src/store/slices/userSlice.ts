@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import agent from '../../api/agent';
-import { User, UserFormValues } from '../../utils/interfaces/user';
+import { CurrentUser, UserFormValues } from '../../utils/interfaces/user';
 import { router } from '../../routes/router';
 import { UserProfile } from '../../utils/interfaces/user';
-import { Photo } from '../../utils/interfaces/photo';
 
 interface UserState {
-  user: User | null;
+  user: CurrentUser | null;
   token: string | null;
   profile: UserProfile | null;
 }
@@ -17,7 +16,7 @@ const initialState: UserState = {
   profile: null
 };
 
-export const signInUser = createAsyncThunk<User, UserFormValues>(
+export const signInUser = createAsyncThunk<CurrentUser, UserFormValues>(
   'user/signInUser',
   async (user, thunkAPI) => {
     try {
@@ -31,7 +30,7 @@ export const signInUser = createAsyncThunk<User, UserFormValues>(
   }
 );
 
-export const registerUser = createAsyncThunk<User, UserFormValues>(
+export const registerUser = createAsyncThunk<CurrentUser, UserFormValues>(
   'user/registerUser',
   async (user, thunkAPI) => {
     try {
@@ -45,13 +44,16 @@ export const registerUser = createAsyncThunk<User, UserFormValues>(
   }
 );
 
-export const getCurrentUser = createAsyncThunk<User>('user/getCurrentUser', async (_, thunkAPI) => {
-  try {
-    return await agent.Account.current();
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ error });
+export const getCurrentUser = createAsyncThunk<CurrentUser>(
+  'user/getCurrentUser',
+  async (_, thunkAPI) => {
+    try {
+      return await agent.Account.current();
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
   }
-});
+);
 
 export const getProfile = createAsyncThunk<UserProfile, string>(
   'user/getProfile',
@@ -64,12 +66,11 @@ export const getProfile = createAsyncThunk<UserProfile, string>(
   }
 );
 
-export const uploadImage = createAsyncThunk<Photo, Blob>(
+export const uploadImage = createAsyncThunk<void, Blob>(
   'user/uploadImage',
   async (file, thunkAPI) => {
     try {
-      const response = await agent.Profile.uploadImage(file);
-      return response.data;
+      await agent.Profile.uploadImage(file);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error });
     }

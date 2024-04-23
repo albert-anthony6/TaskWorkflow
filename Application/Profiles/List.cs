@@ -9,9 +9,9 @@ namespace Application.Profiles
 {
     public class List
     {
-        public class Query : IRequest<Result<List<ProfileDto>>> {}
+        public class Query : IRequest<Result<List<UserDto>>> {}
 
-        public class Handler : IRequestHandler<Query, Result<List<ProfileDto>>>
+        public class Handler : IRequestHandler<Query, Result<List<UserDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -21,13 +21,13 @@ namespace Application.Profiles
                 _context = context;
             }
 
-            public async Task<Result<List<ProfileDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<UserDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var users = await _context.Users
-                    .ProjectTo<ProfileDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
                 
-                    return Result<List<ProfileDto>>.Success(users);
+                    return Result<List<UserDto>>.Success(users);
             }
         }
     }

@@ -19,7 +19,7 @@ export default function SideNav() {
     <aside className="side-nav">
       <div className="top-nav">
         <IconLogo className="logo__white" />
-        <Link to="/user/bob" className="profile-link">
+        <Link to={`/user/${user?.id}`} className="profile-link">
           {user?.avatar ? (
             <img src={user?.avatar.url} className="avatar avatar__small" />
           ) : (

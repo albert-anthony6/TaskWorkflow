@@ -12,7 +12,7 @@ export default function ProfilePage() {
   useEffect(() => {
     dispatch(getProfile(userId as string));
   }, [dispatch, userId]);
-
+  // style={{ backgroundImage: `url(${profile || '/src/assets/default_banner_image.jpg'})` }}
   return (
     <main className="profile-page">
       <div className="banner">

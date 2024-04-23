@@ -24,7 +24,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        public async Task<ActionResult<CurrentUserDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync((x) => x.Email == loginDto.Email);
 
@@ -42,7 +42,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<CurrentUserDto>> Register(RegisterDto registerDto)
         {
             if (await _userManager.Users.AnyAsync((x) => x.UserName == registerDto.Username))
             {
@@ -75,7 +75,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        public async Task<ActionResult<CurrentUserDto>> GetCurrentUser()
         {
             var user = await _userManager.Users
                 .Include((u) => u.Avatar)
@@ -85,10 +85,11 @@ namespace API.Controllers
             return CreateUserObject(user);
         }
 
-        private UserDto CreateUserObject(AppUser user)
+        private CurrentUserDto CreateUserObject(AppUser user)
         {
-            return new UserDto
+            return new CurrentUserDto
             {
+                Id = user.Id,
                 DisplayName = user.DisplayName,
                 Avatar = user.Avatar != null ? new PhotoDto { Id = user.Avatar.Id, Url = user.Avatar.Url } : null,
                 CoverImage = user.CoverImage != null ? new PhotoDto { Id = user.CoverImage.Id, Url = user.CoverImage.Url } : null,

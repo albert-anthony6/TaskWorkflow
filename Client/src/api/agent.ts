@@ -2,9 +2,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { router } from '../routes/router';
 import { Task } from '../utils/interfaces/task';
 import { toast } from 'react-toastify';
-import { User, UserFormValues } from '../utils/interfaces/user';
+import { CurrentUser, User, UserFormValues } from '../utils/interfaces/user';
 import { UserProfile } from '../utils/interfaces/user';
-import { Photo } from '../utils/interfaces/photo';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -76,13 +75,13 @@ const Tasks = {
 };
 
 const Account = {
-  current: () => requests.get<User>('/account'),
-  login: (user: UserFormValues) => requests.post<User>('/account/login', user),
-  register: (user: UserFormValues) => requests.post<User>('/account/register', user)
+  current: () => requests.get<CurrentUser>('/account'),
+  login: (user: UserFormValues) => requests.post<CurrentUser>('/account/login', user),
+  register: (user: UserFormValues) => requests.post<CurrentUser>('/account/register', user)
 };
 
 const Profile = {
-  list: () => requests.get<UserProfile[]>('/profiles'),
+  list: () => requests.get<User[]>('/profiles/users'),
   details: (id: string) => requests.get<UserProfile>(`/profiles/${id}`),
   uploadImage: (file: Blob) => {
     const formData = new FormData();
@@ -91,7 +90,7 @@ const Profile = {
       toast.error('File size too large. Maximum is 10 MB.');
       return;
     }
-    return axios.put<Photo>('photos/avatar', formData, {
+    return axios.put<void>('photos/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
   }

@@ -51,6 +51,12 @@ namespace Application.Core
                     src.Avatar != null
                         ? new PhotoDto { Id = src.Avatar.Id, Url = src.Avatar.Url }
                         : null));
+                        
+            CreateMap<AppUser, Profiles.UserDto>()
+                .ForMember((dest) => dest.Avatar, (opt) => opt.MapFrom((src) =>
+                    src.Avatar != null
+                        ? new PhotoDto { Id = src.Avatar.Id, Url = src.Avatar.Url }
+                        : null));
         }
     }
 }

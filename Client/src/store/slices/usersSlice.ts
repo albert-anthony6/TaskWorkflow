@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import agent from '../../api/agent';
-import { UserProfile } from '../../utils/interfaces/user';
+import { User, UserProfile } from '../../utils/interfaces/user';
 
 interface UserState {
-  users: UserProfile[] | null;
+  users: User[] | null;
   profile: UserProfile | null;
 }
 
@@ -12,7 +12,7 @@ const initialState: UserState = {
   profile: null
 };
 
-export const getUsers = createAsyncThunk<UserProfile[]>('users/getUsers', async (_, thunkAPI) => {
+export const getUsers = createAsyncThunk<User[]>('users/getUsers', async (_, thunkAPI) => {
   try {
     return await agent.Profile.list();
   } catch (error: any) {
