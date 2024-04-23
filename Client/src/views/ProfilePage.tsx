@@ -12,10 +12,16 @@ export default function ProfilePage() {
   useEffect(() => {
     dispatch(getProfile(userId as string));
   }, [dispatch, userId]);
-  // style={{ backgroundImage: `url(${profile || '/src/assets/default_banner_image.jpg'})` }}
   return (
     <main className="profile-page">
-      <div className="banner">
+      <div
+        className="banner"
+        style={{
+          backgroundImage: `url(${
+            profile?.coverImage.url || '/src/assets/images/placeholder_image.png'
+          })`
+        }}
+      >
         {profile?.avatar ? (
           <img src={profile.avatar.url} className="avatar avatar__big" alt="User Avatar." />
         ) : (

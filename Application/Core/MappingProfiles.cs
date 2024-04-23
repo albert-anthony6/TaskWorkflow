@@ -44,6 +44,10 @@ namespace Application.Core
                 .ForMember((dest) => dest.Avatar, (opt) => opt.MapFrom((src) =>
                     src.Avatar != null
                         ? new PhotoDto { Id = src.Avatar.Id, Url = src.Avatar.Url }
+                        : null))
+                .ForMember((dest) => dest.CoverImage, (opt) => opt.MapFrom((src) =>
+                    src.CoverImage != null
+                        ? new PhotoDto { Id = src.CoverImage.Id, Url = src.CoverImage.Url }
                         : null));
 
             CreateMap<AppUser, Profiles.ProfileDto>()

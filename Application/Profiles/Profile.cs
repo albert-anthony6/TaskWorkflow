@@ -9,5 +9,6 @@ namespace Application.Profiles
         public string DisplayName { get; set; }
         public string Bio { get; set; }
         public PhotoDto Avatar { get; set; }
+        public PhotoDto CoverImage { get; set; }
     }
 }

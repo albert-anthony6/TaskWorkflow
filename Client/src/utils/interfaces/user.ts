@@ -27,4 +27,5 @@ export interface UserProfile {
   username: string;
   displayName: string;
   avatar: Photo;
+  coverImage: Photo;
 }
