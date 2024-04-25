@@ -83,16 +83,22 @@ const Account = {
 const Profile = {
   list: () => requests.get<User[]>('/profiles/users'),
   details: (id: string) => requests.get<UserProfile>(`/profiles/${id}`),
-  uploadImage: (file: Blob) => {
+  uploadImage: (file: Blob, type: string) => {
     const formData = new FormData();
     formData.append('File', file);
     if (file?.size > 10485760) {
       toast.error('File size too large. Maximum is 10 MB.');
       return;
     }
-    return axios.put<void>('photos/avatar', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
+    if (type === 'avatar') {
+      return axios.put<void>('photos/avatar', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+    } else if (type === 'coverImage') {
+      return axios.put<void>('photos/cover-image', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+    }
   }
 };
 

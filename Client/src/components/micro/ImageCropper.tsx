@@ -1,20 +1,51 @@
+import { useEffect, useRef, useState } from 'react';
 import './ImageCropper.scss';
 import { Cropper } from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-// import { useEffect, useRef } from 'react';
 
 interface Props {
-  imagePreview: string;
-  setCropper: (cropper: Cropper) => void;
-  onCrop: () => void;
+  files: any[];
+  setBlob: (prop: Blob | null) => void;
   setFiles: (files: any) => void;
 }
 
-export default function ImageCropper({ onCrop, setFiles, imagePreview, setCropper }: Props) {
+export default function ImageCropper({ setFiles, setBlob, files }: Props) {
+  const isUnmounting = useRef(false);
+  const [cropper, setCropper] = useState<Cropper | null>(null);
+
+  function handleCrop() {
+    if (cropper) {
+      cropper.getCroppedCanvas().toBlob((blobObj) => {
+        setBlob(blobObj);
+      });
+    }
+  }
+
+  // Effect to update isUnmounting on component unmount
+  useEffect(() => {
+    // Component is mounted
+    isUnmounting.current = false;
+
+    // Component is unmounting
+    return () => {
+      isUnmounting.current = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (isUnmounting.current) {
+        if (cropper) {
+          cropper.destroy();
+        }
+      }
+    };
+  }, [cropper]);
+
   return (
     <div className="image-cropper">
       <Cropper
-        src={imagePreview}
+        src={files.length > 0 ? files[0].preview : ''}
         initialAspectRatio={1}
         aspectRatio={1}
         preview=".img-preview"
@@ -25,7 +56,7 @@ export default function ImageCropper({ onCrop, setFiles, imagePreview, setCroppe
         zoomOnWheel={false}
         onInitialized={(cropper) => setCropper(cropper)}
       />
-      <button type="button" className="button__primary" onClick={onCrop}>
+      <button type="button" className="button__primary" onClick={handleCrop}>
         Save
       </button>
       <button type="button" className="button__secondary" onClick={() => setFiles([])}>

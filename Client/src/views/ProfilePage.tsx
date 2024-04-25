@@ -18,7 +18,7 @@ export default function ProfilePage() {
         className="banner"
         style={{
           backgroundImage: `url(${
-            profile?.coverImage.url || '/src/assets/images/placeholder_image.png'
+            profile?.coverImage?.url || '/src/assets/images/placeholder_image.png'
           })`
         }}
       >

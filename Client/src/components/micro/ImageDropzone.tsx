@@ -5,22 +5,23 @@ import IconUpload from '../../assets/icons/icon_upload.svg?react';
 
 interface Props {
   files: any;
-  blob: Blob;
+  blobUrl: string;
   setFiles: (files: any) => void;
-  setBlob: (prop: null) => void;
+  setBlob: (param: null) => void;
+  setBlobUrl: (param: string) => void;
 }
 
-export default function ImageDropzone({ files, blob, setFiles, setBlob }: Props) {
+export default function ImageDropzone({ files, blobUrl, setFiles, setBlob, setBlobUrl }: Props) {
   function handleReset() {
     setFiles([]);
-    if (blob) {
-      const objectUrl = URL.createObjectURL(blob);
-      URL.revokeObjectURL(objectUrl); // Revoke the object URL associated with the Blob
-      setBlob(null); // Reset the Blob state
+    if (blobUrl) {
+      URL.revokeObjectURL(blobUrl);
+      setBlob(null);
+      setBlobUrl('');
     }
   }
   function preventEvent(event: React.MouseEvent<HTMLDivElement>) {
-    if (blob) {
+    if (blobUrl) {
       event.stopPropagation();
     }
   }
@@ -46,9 +47,13 @@ export default function ImageDropzone({ files, blob, setFiles, setBlob }: Props)
       className={isDragActive ? 'dropzone dropzone__active' : 'dropzone'}
     >
       <input {...getInputProps()} />
-      {files && files.length > 0 ? (
+      {files.length > 0 ? (
         <>
-          <div className="img-preview" />
+          {blobUrl ? (
+            <img className="img-preview" src={blobUrl} alt="Uploaded Image" />
+          ) : (
+            <div className="img-preview" />
+          )}
           <div onClick={handleReset}>
             <IconUpload />
             Cancel Image

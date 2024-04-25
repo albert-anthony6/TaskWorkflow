@@ -66,11 +66,11 @@ export const getProfile = createAsyncThunk<UserProfile, string>(
   }
 );
 
-export const uploadImage = createAsyncThunk<void, Blob>(
+export const uploadImage = createAsyncThunk<void, { file: Blob; type: string }>(
   'user/uploadImage',
-  async (file, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      await agent.Profile.uploadImage(file);
+      await agent.Profile.uploadImage(payload.file, payload.type);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error });
     }
