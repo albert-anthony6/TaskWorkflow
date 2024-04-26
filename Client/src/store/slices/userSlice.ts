@@ -5,13 +5,13 @@ import { router } from '../../routes/router';
 import { UserProfile } from '../../utils/interfaces/user';
 
 interface UserState {
-  user: CurrentUser | null;
+  currentUser: CurrentUser | null;
   token: string | null;
   profile: UserProfile | null;
 }
 
 const initialState: UserState = {
-  user: null,
+  currentUser: null,
   token: localStorage.getItem('jwt') || null,
   profile: null
 };
@@ -88,7 +88,7 @@ export const userSlice = createSlice({
     logoutUser: (state) => {
       state.token = null;
       localStorage.removeItem('jwt');
-      state.user = null;
+      state.currentUser = null;
     }
   },
   extraReducers: (builder) => {
@@ -98,7 +98,7 @@ export const userSlice = createSlice({
     builder.addMatcher(
       isAnyOf(signInUser.fulfilled, registerUser.fulfilled, getCurrentUser.fulfilled),
       (state, action) => {
-        state.user = action.payload;
+        state.currentUser = action.payload;
       }
     );
     builder.addMatcher(

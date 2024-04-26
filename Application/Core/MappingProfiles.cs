@@ -50,7 +50,9 @@ namespace Application.Core
                         ? new PhotoDto { Id = src.CoverImage.Id, Url = src.CoverImage.Url }
                         : null));
 
-            CreateMap<AppUser, Profiles.ProfileDto>()
+            CreateMap<Profiles.ReqProfileDto, AppUser>().IgnoreAllPropertiesWithAnInaccessibleSetter();
+
+            CreateMap<AppUser, Profiles.RespProfileDto>()
                 .ForMember((dest) => dest.Avatar, (opt) => opt.MapFrom((src) =>
                     src.Avatar != null
                         ? new PhotoDto { Id = src.Avatar.Id, Url = src.Avatar.Url }

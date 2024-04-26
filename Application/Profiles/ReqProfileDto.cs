@@ -1,18 +1,12 @@
-using Application.Photos;
-
 namespace Application.Profiles
 {
-    public class Profile
+    public class ReqProfileDto
     {
-        public string Id { get; set; }
-        public string Username { get; set; }
         public string DisplayName { get; set; }
         public string Bio { get; set; }
         public string FacebookLink { get; set; }
         public string LinkedinLink { get; set; }
         public string InstagramLink { get; set; }
         public string TwitterLink { get; set; }
-        public PhotoDto Avatar { get; set; }
-        public PhotoDto CoverImage { get; set; }
     }
 }

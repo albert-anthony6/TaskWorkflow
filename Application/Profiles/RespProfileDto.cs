@@ -2,7 +2,7 @@ using Application.Photos;
 
 namespace Application.Profiles
 {
-    public class ProfileDto
+    public class RespProfileDto
     {
         public string Id { get; set; }
         public string Username { get; set; }

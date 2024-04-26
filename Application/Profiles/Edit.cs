@@ -1,4 +1,5 @@
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,26 +11,29 @@ namespace Application.Profiles
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public ProfileDto Profile { get; set; }
+            public ReqProfileDto ReqProfileDto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
-            public Handler (DataContext context, IMapper mapper)
+            private readonly IUserAccessor _userAccessor;
+            public Handler (DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _mapper = mapper;
                 _context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.SingleOrDefaultAsync((u) => u.Id == request.Profile.Id);
+                var currentUser = await _context.Users.FirstOrDefaultAsync((u) =>
+                    u.UserName == _userAccessor.GetUsername());
 
-                if (user == null) return null;
+                if (currentUser == null) return null;
 
-                _mapper.Map(user, request.Profile);
+                _mapper.Map(request.ReqProfileDto, currentUser);
 
                 var result = await _context.SaveChangesAsync() > 0;
 

@@ -13,15 +13,15 @@ import { Link, NavLink } from 'react-router-dom';
 import { useAppSelector } from '../store/configureStore';
 
 export default function SideNav() {
-  const { user } = useAppSelector((state) => state.user);
+  const { currentUser } = useAppSelector((state) => state.user);
 
   return (
     <aside className="side-nav">
       <div className="top-nav">
         <IconLogo className="logo__white" />
-        <Link to={`/user/${user?.id}`} className="profile-link">
-          {user?.avatar ? (
-            <img src={user?.avatar.url} className="avatar avatar__small" />
+        <Link to={`/user/${currentUser?.id}`} className="profile-link">
+          {currentUser?.avatar ? (
+            <img src={currentUser?.avatar.url} className="avatar avatar__small" />
           ) : (
             <IconAvatar className="avatar avatar__small" />
           )}

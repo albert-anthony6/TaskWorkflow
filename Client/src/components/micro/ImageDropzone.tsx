@@ -1,18 +1,31 @@
 import './ImageDropzone.scss';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import IconUpload from '../../assets/icons/icon_upload.svg?react';
 
 interface Props {
   files: any;
   blobUrl: string;
+  image: string;
+  hasImage: boolean;
+  setHasImage: (param: boolean) => void;
   setFiles: (files: any) => void;
   setBlob: (param: null) => void;
   setBlobUrl: (param: string) => void;
 }
 
-export default function ImageDropzone({ files, blobUrl, setFiles, setBlob, setBlobUrl }: Props) {
+export default function ImageDropzone({
+  files,
+  blobUrl,
+  setFiles,
+  setBlob,
+  setBlobUrl,
+  image,
+  hasImage,
+  setHasImage
+}: Props) {
   function handleReset() {
+    setHasImage(false);
     setFiles([]);
     if (blobUrl) {
       URL.revokeObjectURL(blobUrl);
@@ -21,7 +34,7 @@ export default function ImageDropzone({ files, blobUrl, setFiles, setBlob, setBl
     }
   }
   function preventEvent(event: React.MouseEvent<HTMLDivElement>) {
-    if (blobUrl) {
+    if (blobUrl || hasImage) {
       event.stopPropagation();
     }
   }
@@ -39,6 +52,10 @@ export default function ImageDropzone({ files, blobUrl, setFiles, setBlob, setBl
     [setFiles]
   );
 
+  useEffect(() => {
+    if (image) setHasImage(true);
+  }, [image]);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
@@ -47,18 +64,15 @@ export default function ImageDropzone({ files, blobUrl, setFiles, setBlob, setBl
       className={isDragActive ? 'dropzone dropzone__active' : 'dropzone'}
     >
       <input {...getInputProps()} />
-      {files.length > 0 ? (
-        <>
-          {blobUrl ? (
-            <img className="img-preview" src={blobUrl} alt="Uploaded Image" />
-          ) : (
-            <div className="img-preview" />
-          )}
-          <div onClick={handleReset}>
-            <IconUpload />
-            Cancel Image
-          </div>
-        </>
+      {(blobUrl || hasImage) && (
+        <img className="img-preview" src={blobUrl || image} alt="Uploaded Image" />
+      )}
+      {files.length > 0 && !blobUrl && <div className="img-preview" />}
+      {files.length > 0 || hasImage ? (
+        <div onClick={handleReset}>
+          <IconUpload />
+          Cancel Image
+        </div>
       ) : (
         <div>
           <IconUpload />

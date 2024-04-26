@@ -11,16 +11,16 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new List.Query()));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("users/{id}")]
         public async Task<IActionResult> GetProfile(string id)
         {
             return HandleResult(await Mediator.Send(new Details.Query{ Id = id }));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditUser([FromForm] ProfileDto profile)
+        [HttpPut("user")]
+        public async Task<IActionResult> EditUser([FromForm] ReqProfileDto profile)
         {
-            return HandleResult(await Mediator.Send(new Edit.Command{ Profile = profile }));
+            return HandleResult(await Mediator.Send(new Edit.Command{ ReqProfileDto = profile }));
         }
     }
 }

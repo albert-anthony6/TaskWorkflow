@@ -3,19 +3,22 @@ import ImageDropzone from '../components/micro/ImageDropzone';
 import { useEffect, useRef, useState } from 'react';
 import ImageCropper from '../components/micro/ImageCropper';
 import { getCurrentUser, uploadImage } from '../store/slices/userSlice';
-import { useAppDispatch } from '../store/configureStore';
+import { useAppDispatch, useAppSelector } from '../store/configureStore';
 
 export default function SettingsPage() {
   const isUnmounting = useRef(false);
   const dispatch = useAppDispatch();
+  const { currentUser } = useAppSelector((state) => state.user);
 
   const [avatarBlob, setAvatarBlob] = useState<Blob | null>();
   const [avatarBlobUrl, setAvatarBlobUrl] = useState<string>('');
   const [avatarFiles, setAvatarFiles] = useState<any>([]);
+  const [hasAvatarImage, setHasAvatarImage] = useState(false);
 
   const [coverBlob, setCoverBlob] = useState<Blob | null>();
   const [coverBlobUrl, setCoverBlobUrl] = useState<string>('');
   const [coverFiles, setCoverFiles] = useState<any>([]);
+  const [hasCoverImage, setHasCoverImage] = useState(false);
 
   const {
     register,
@@ -71,14 +74,20 @@ export default function SettingsPage() {
 
   async function onSubmit() {
     try {
-      const uploadAvatarPromise = dispatch(
-        uploadImage({ file: avatarBlob as Blob, type: 'avatar' })
-      );
-      const uploadCoverImagePromise = dispatch(
-        uploadImage({ file: coverBlob as Blob, type: 'coverImage' })
-      );
-
-      await Promise.all([uploadAvatarPromise, uploadCoverImagePromise]);
+      const promises = [];
+      if (avatarBlob || (currentUser?.avatar && !avatarBlob && !hasAvatarImage)) {
+        const uploadAvatarPromise = dispatch(
+          uploadImage({ file: avatarBlob as Blob, type: 'avatar' })
+        );
+        promises.push(uploadAvatarPromise);
+      }
+      if (coverBlob || (currentUser?.coverImage && !coverBlob && !hasCoverImage)) {
+        const uploadCoverImagePromise = dispatch(
+          uploadImage({ file: coverBlob as Blob, type: 'coverImage' })
+        );
+        promises.push(uploadCoverImagePromise);
+      }
+      if (promises.length) await Promise.all(promises);
 
       await dispatch(getCurrentUser());
     } catch (err) {
@@ -110,6 +119,9 @@ export default function SettingsPage() {
         <ImageDropzone
           files={avatarFiles}
           blobUrl={avatarBlobUrl}
+          image={currentUser?.avatar?.url as string}
+          hasImage={hasAvatarImage}
+          setHasImage={setHasAvatarImage}
           setFiles={setAvatarFiles}
           setBlob={setAvatarBlob}
           setBlobUrl={setAvatarBlobUrl}
@@ -121,6 +133,9 @@ export default function SettingsPage() {
         <ImageDropzone
           files={coverFiles}
           blobUrl={coverBlobUrl}
+          image={currentUser?.coverImage?.url as string}
+          hasImage={hasCoverImage}
+          setHasImage={setHasCoverImage}
           setFiles={setCoverFiles}
           setBlob={setCoverBlob}
           setBlobUrl={setCoverBlobUrl}

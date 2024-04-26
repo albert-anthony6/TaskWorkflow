@@ -11,7 +11,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240422140520_InitialCreate")]
+    [Migration("20240425054707_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -45,6 +45,15 @@ namespace Persistence.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("FacebookLink")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("InstagramLink")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LinkedinLink")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
@@ -69,6 +78,9 @@ namespace Persistence.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TwitterLink")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("TwoFactorEnabled")
