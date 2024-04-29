@@ -32,7 +32,10 @@ export default function SettingsPage() {
     defaultValues: {
       displayName: '',
       bio: '',
-      facebookLink: ''
+      facebookLink: '',
+      twitterLink: '',
+      instagramLink: '',
+      linkedinLink: ''
     }
   });
 
@@ -46,18 +49,117 @@ export default function SettingsPage() {
         data.facebookLink = `https://www.facebook.com/${username}`;
         return true;
       } else {
+        setError('facebookLink', {
+          type: 'custom',
+          message: 'Please provide a valid Facebook URL.'
+        });
         return false;
       }
     }
     return true;
   }
 
-  async function onSubmit(data: EditUserFormValues) {
-    if (data.facebookLink && !validateFacebook(data)) {
-      setError('facebookLink', {
+  function validateTwitter(data: EditUserFormValues) {
+    if (data.twitterLink) {
+      const twitterRegex =
+        /(^(http|https):\/\/|)(www\.|)(twitter\.com)\/([a-z0-9_.]{1,30})\/?|^(@?(\w{1,30}))$/i;
+      const match = data.twitterLink.match(twitterRegex);
+      if (match) {
+        twitterRegex.lastIndex = 0;
+        const [, , , , , username, , id] = match;
+        if (username) {
+          setValue('twitterLink', `@${username}`);
+          data.twitterLink = `@${username}`;
+          return true;
+        }
+        if (id) {
+          setValue('twitterLink', `@${id}`);
+          data.twitterLink = `@${id}`;
+          return true;
+        }
+        setError('twitterLink', {
+          type: 'custom',
+          message: 'Please provide a valid Twitter URL or ID'
+        });
+        return false;
+      }
+      setError('twitterLink', {
         type: 'custom',
-        message: 'Please provide a valid Facebook UlRL.'
+        message: 'Please provide a valid Twitter URL or ID'
       });
+      return false;
+    }
+    return true;
+  }
+
+  function validateInstagram(data: EditUserFormValues) {
+    if (data.instagramLink) {
+      const igRegex =
+        /(^https?:\/\/)?(www\.)?(instagram\.com)\/([a-z0-9_.]{1,30})\/?|^(@?(\w{1,30}))$/i;
+      const match = data.instagramLink.match(igRegex);
+      if (match) {
+        igRegex.lastIndex = 0;
+        const [, , , , username, , id] = match;
+        if (username) {
+          setValue('instagramLink', `@${username}`);
+          data.instagramLink = `@${username}`;
+          return true;
+        }
+        if (id) {
+          setValue('instagramLink', `@${id}`);
+          data.instagramLink = `@${id}`;
+          return true;
+        }
+        setError('instagramLink', {
+          type: 'custom',
+          message: 'Please provide a valid Instagram URL or ID'
+        });
+        return false;
+      }
+      setError('instagramLink', {
+        type: 'custom',
+        message: 'Please provide a valid Instagram URL or ID'
+      });
+      return false;
+    }
+    return true;
+  }
+
+  function validateLinkedin(data: EditUserFormValues) {
+    if (data.linkedinLink) {
+      const liRegex = /((http|https):\/\/|)(www\.|)(linkedin\.com\/in)\/([a-z0-9._-]+)/i;
+      const liRegexCompany =
+        /((http|https):\/\/|)(www\.|)(linkedin\.com\/company)\/([a-z0-9._-]+)/i;
+      const match = data.linkedinLink.match(liRegex);
+      const matchCompany = data.linkedinLink.match(liRegexCompany);
+      if (match) {
+        const [, , , , , username] = match;
+        setValue('linkedinLink', `https://www.linkedin.com/in/${username}`);
+        data.linkedinLink = `https://www.linkedin.com/in/${username}`;
+        return true;
+      }
+      if (matchCompany) {
+        const [, , , , , username] = matchCompany;
+        setValue('linkedinLink', `https://www.linkedin.com/company/${username}`);
+        data.linkedinLink = `https://www.linkedin.com/company/${username}`;
+        return true;
+      }
+      setError('linkedinLink', {
+        type: 'custom',
+        message: 'Please provide a valid LinkedIn URL.'
+      });
+      return false;
+    }
+    return true;
+  }
+
+  async function onSubmit(data: EditUserFormValues) {
+    if (
+      !validateFacebook(data) ||
+      !validateTwitter(data) ||
+      !validateInstagram(data) ||
+      !validateLinkedin(data)
+    ) {
       return;
     }
     try {
@@ -177,10 +279,31 @@ export default function SettingsPage() {
           setBlob={setCoverBlob}
           setBlobUrl={setCoverBlobUrl}
         />
-        <label htmlFor="facebookLink">Facebook URL</label>
+        {/* Social Links */}
+        <label htmlFor="facebookLink">Facebook</label>
         <input {...register('facebookLink')} id="facebookLink" type="text" placeholder="Facebook" />
         <div className="input--helper">
           <div className="caption text__error">{errors.facebookLink?.message}</div>
+        </div>
+        <label htmlFor="twitterLink">Twitter</label>
+        <input {...register('twitterLink')} id="twitterLink" type="text" placeholder="Twitter" />
+        <div className="input--helper">
+          <div className="caption text__error">{errors.twitterLink?.message}</div>
+        </div>
+        <label htmlFor="instagramLink">Instagram</label>
+        <input
+          {...register('instagramLink')}
+          id="instagramLink"
+          type="text"
+          placeholder="Instagram"
+        />
+        <div className="input--helper">
+          <div className="caption text__error">{errors.instagramLink?.message}</div>
+        </div>
+        <label htmlFor="linkedinLink">LinkedIn</label>
+        <input {...register('linkedinLink')} id="linkedinLink" type="text" placeholder="LinkedIn" />
+        <div className="input--helper">
+          <div className="caption text__error">{errors.linkedinLink?.message}</div>
         </div>
         <button type="submit" className="button__primary">
           Save Profile
