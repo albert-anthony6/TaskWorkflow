@@ -1,9 +1,11 @@
+import './SettingsPage.scss';
 import { useForm } from 'react-hook-form';
 import ImageDropzone from '../components/micro/ImageDropzone';
 import { useEffect, useRef, useState } from 'react';
 import ImageCropper from '../components/micro/ImageCropper';
-import { getCurrentUser, uploadImage } from '../store/slices/userSlice';
+import { editProfile, getCurrentUser, uploadImage } from '../store/slices/userSlice';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
+import { EditUserFormValues } from '../utils/interfaces/user';
 
 export default function SettingsPage() {
   const isUnmounting = useRef(false);
@@ -22,13 +24,68 @@ export default function SettingsPage() {
 
   const {
     register,
-    handleSubmit
-    // formState: { errors }
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors }
   } = useForm({
     defaultValues: {
-      displayName: ''
+      displayName: '',
+      bio: '',
+      facebookLink: ''
     }
   });
+
+  function validateFacebook(data: EditUserFormValues) {
+    if (data.facebookLink) {
+      const fbRegex = /((http|https):\/\/|)(www\.|)(facebook\.com)\/([a-z0-9.]+)/i;
+      const match = data.facebookLink.match(fbRegex);
+      if (match) {
+        const [, , , , , username] = match;
+        setValue('facebookLink', `https://www.facebook.com/${username}`);
+        data.facebookLink = `https://www.facebook.com/${username}`;
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  async function onSubmit(data: EditUserFormValues) {
+    if (data.facebookLink && !validateFacebook(data)) {
+      setError('facebookLink', {
+        type: 'custom',
+        message: 'Please provide a valid Facebook UlRL.'
+      });
+      return;
+    }
+    try {
+      const promises = [];
+      if (avatarBlob || (currentUser?.avatar && !avatarBlob && !hasAvatarImage)) {
+        const uploadAvatarPromise = dispatch(
+          uploadImage({ file: avatarBlob as Blob, type: 'avatar' })
+        );
+        promises.push(uploadAvatarPromise);
+      }
+
+      if (coverBlob || (currentUser?.coverImage && !coverBlob && !hasCoverImage)) {
+        const uploadCoverImagePromise = dispatch(
+          uploadImage({ file: coverBlob as Blob, type: 'coverImage' })
+        );
+        promises.push(uploadCoverImagePromise);
+      }
+
+      const editUserProfile = dispatch(editProfile(data));
+      promises.push(editUserProfile);
+
+      await Promise.all(promises);
+
+      await dispatch(getCurrentUser());
+    } catch (err) {
+      console.error('Error during dispatch:', err);
+    }
+  }
 
   // Effect to update isUnmounting on component unmount
   useEffect(() => {
@@ -72,46 +129,26 @@ export default function SettingsPage() {
     };
   }, [avatarBlob, coverBlob, avatarFiles, coverFiles, avatarBlobUrl, coverBlobUrl]);
 
-  async function onSubmit() {
-    try {
-      const promises = [];
-      if (avatarBlob || (currentUser?.avatar && !avatarBlob && !hasAvatarImage)) {
-        const uploadAvatarPromise = dispatch(
-          uploadImage({ file: avatarBlob as Blob, type: 'avatar' })
-        );
-        promises.push(uploadAvatarPromise);
-      }
-      if (coverBlob || (currentUser?.coverImage && !coverBlob && !hasCoverImage)) {
-        const uploadCoverImagePromise = dispatch(
-          uploadImage({ file: coverBlob as Blob, type: 'coverImage' })
-        );
-        promises.push(uploadCoverImagePromise);
-      }
-      if (promises.length) await Promise.all(promises);
-
-      await dispatch(getCurrentUser());
-    } catch (err) {
-      console.error('Error during dispatch:', err);
-    }
-  }
-
   return (
     <main className="settings-page">
       <h1>Settings Page</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="input-container">
-          <label htmlFor="displayName">Display Name</label>
+          <label htmlFor="displayName">Display Name*</label>
           <input
-            {...register('displayName')}
+            {...register('displayName', {
+              required: 'Please provide a display name.'
+            })}
             id="displayName"
             type="text"
             placeholder="Display Name"
           />
-          {/* <div className="input--helper">
+          <div className="input--helper">
             <div className="caption text__error">{errors.displayName?.message}</div>
-            <div className="caption">0/100</div>
-          </div> */}
+          </div>
         </div>
+        <label htmlFor="bio">Bio</label>
+        <input {...register('bio')} id="bio" type="text" placeholder="Display Name" />
         {/* Avatar Upload */}
         {avatarFiles.length > 0 && !avatarBlob && (
           <ImageCropper files={avatarFiles} setFiles={setAvatarFiles} setBlob={setAvatarBlob} />
@@ -140,6 +177,11 @@ export default function SettingsPage() {
           setBlob={setCoverBlob}
           setBlobUrl={setCoverBlobUrl}
         />
+        <label htmlFor="facebookLink">Facebook URL</label>
+        <input {...register('facebookLink')} id="facebookLink" type="text" placeholder="Facebook" />
+        <div className="input--helper">
+          <div className="caption text__error">{errors.facebookLink?.message}</div>
+        </div>
         <button type="submit" className="button__primary">
           Save Profile
         </button>

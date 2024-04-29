@@ -54,7 +54,7 @@ export default function ImageDropzone({
 
   useEffect(() => {
     if (image) setHasImage(true);
-  }, [image]);
+  }, [image, setHasImage]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 

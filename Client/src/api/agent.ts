@@ -2,7 +2,12 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { router } from '../routes/router';
 import { Task } from '../utils/interfaces/task';
 import { toast } from 'react-toastify';
-import { CurrentUser, User, UserFormValues } from '../utils/interfaces/user';
+import {
+  CurrentUser,
+  User,
+  AuthUserFormValues,
+  EditUserFormValues
+} from '../utils/interfaces/user';
 import { UserProfile } from '../utils/interfaces/user';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
@@ -76,8 +81,8 @@ const Tasks = {
 
 const Account = {
   current: () => requests.get<CurrentUser>('/account'),
-  login: (user: UserFormValues) => requests.post<CurrentUser>('/account/login', user),
-  register: (user: UserFormValues) => requests.post<CurrentUser>('/account/register', user)
+  login: (user: AuthUserFormValues) => requests.post<CurrentUser>('/account/login', user),
+  register: (user: AuthUserFormValues) => requests.post<CurrentUser>('/account/register', user)
 };
 
 const Profile = {
@@ -99,7 +104,8 @@ const Profile = {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
     }
-  }
+  },
+  update: (user: EditUserFormValues) => requests.put<void>('/profiles/user', user)
 };
 
 const agent = {

@@ -18,7 +18,7 @@ namespace API.Controllers
         }
 
         [HttpPut("user")]
-        public async Task<IActionResult> EditUser([FromForm] ReqProfileDto profile)
+        public async Task<IActionResult> EditProfile(ReqProfileDto profile)
         {
             return HandleResult(await Mediator.Send(new Edit.Command{ ReqProfileDto = profile }));
         }

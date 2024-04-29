@@ -26,8 +26,8 @@ export default function SideNav() {
             <IconAvatar className="avatar avatar__small" />
           )}
           <div className="username">
-            <p>John Doe</p>
-            <div className="caption">Developer at HighRise</div>
+            <p>{currentUser?.displayName}</p>
+            <div className="caption">{currentUser?.bio}</div>
           </div>
         </Link>
         <nav className="page-links">

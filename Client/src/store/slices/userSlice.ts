@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import agent from '../../api/agent';
-import { CurrentUser, UserFormValues } from '../../utils/interfaces/user';
+import { CurrentUser, AuthUserFormValues, EditUserFormValues } from '../../utils/interfaces/user';
 import { router } from '../../routes/router';
 import { UserProfile } from '../../utils/interfaces/user';
 
@@ -16,7 +16,7 @@ const initialState: UserState = {
   profile: null
 };
 
-export const signInUser = createAsyncThunk<CurrentUser, UserFormValues>(
+export const signInUser = createAsyncThunk<CurrentUser, AuthUserFormValues>(
   'user/signInUser',
   async (user, thunkAPI) => {
     try {
@@ -30,7 +30,7 @@ export const signInUser = createAsyncThunk<CurrentUser, UserFormValues>(
   }
 );
 
-export const registerUser = createAsyncThunk<CurrentUser, UserFormValues>(
+export const registerUser = createAsyncThunk<CurrentUser, AuthUserFormValues>(
   'user/registerUser',
   async (user, thunkAPI) => {
     try {
@@ -60,6 +60,17 @@ export const getProfile = createAsyncThunk<UserProfile, string>(
   async (id, thunkAPI) => {
     try {
       return await agent.Profile.details(id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
+
+export const editProfile = createAsyncThunk<void, EditUserFormValues>(
+  'user/editProfile',
+  async (payload, thunkAPI) => {
+    try {
+      return await agent.Profile.update(payload);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error });
     }
@@ -107,6 +118,7 @@ export const userSlice = createSlice({
         registerUser.rejected,
         getCurrentUser.rejected,
         getProfile.rejected,
+        editProfile.rejected,
         uploadImage.rejected
       ),
       (state, action) => {

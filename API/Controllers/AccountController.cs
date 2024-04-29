@@ -91,10 +91,15 @@ namespace API.Controllers
             {
                 Id = user.Id,
                 DisplayName = user.DisplayName,
+                Bio = user.Bio,
                 Avatar = user.Avatar != null ? new PhotoDto { Id = user.Avatar.Id, Url = user.Avatar.Url } : null,
                 CoverImage = user.CoverImage != null ? new PhotoDto { Id = user.CoverImage.Id, Url = user.CoverImage.Url } : null,
                 Token = _tokenService.CreateToken(user),
-                Username = user.UserName
+                Username = user.UserName,
+                FacebookLink = user.FacebookLink,
+                LinkedinLink = user.LinkedinLink,
+                InstagramLink = user.InstagramLink,
+                TwitterLink = user.TwitterLink
             };
         }
     }

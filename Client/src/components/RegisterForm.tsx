@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../store/configureStore';
 import { registerUser } from '../store/slices/userSlice';
-import { UserFormValues } from '../utils/interfaces/user';
+import { AuthUserFormValues } from '../utils/interfaces/user';
 import { Link } from 'react-router-dom';
 
 export default function RegisterForm() {
@@ -11,7 +11,7 @@ export default function RegisterForm() {
     handleSubmit,
     formState: { errors },
     setError
-  } = useForm<UserFormValues>({
+  } = useForm<AuthUserFormValues>({
     defaultValues: {
       email: '',
       password: '',
@@ -20,7 +20,7 @@ export default function RegisterForm() {
     }
   });
 
-  function onSubmit(data: UserFormValues) {
+  function onSubmit(data: AuthUserFormValues) {
     dispatch(registerUser(data)).catch((err) => {
       if (err.error) {
         err.error.forEach((err: string) => {

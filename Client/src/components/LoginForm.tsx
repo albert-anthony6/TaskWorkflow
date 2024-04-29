@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { UserFormValues } from '../utils/interfaces/user';
+import { AuthUserFormValues } from '../utils/interfaces/user';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../store/configureStore';
 import { signInUser } from '../store/slices/userSlice';
@@ -11,7 +11,7 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
     setError
-  } = useForm<UserFormValues>({
+  } = useForm<AuthUserFormValues>({
     defaultValues: {
       email: '',
       password: '',
@@ -20,7 +20,7 @@ export default function LoginForm() {
     }
   });
 
-  function onSubmit(data: UserFormValues) {
+  function onSubmit(data: AuthUserFormValues) {
     dispatch(signInUser(data)).catch(() => {
       setError('password', { message: 'Invalid email or password' });
     });

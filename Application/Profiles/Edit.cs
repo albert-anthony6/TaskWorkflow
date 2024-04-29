@@ -33,11 +33,16 @@ namespace Application.Profiles
 
                 if (currentUser == null) return null;
 
+                if (request.ReqProfileDto.DisplayName == null)
+                {
+                    return Result<Unit>.Failure("Display Name is required.");
+                }
+
                 _mapper.Map(request.ReqProfileDto, currentUser);
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Failed to update ticket.");
+                if (!result) return Result<Unit>.Failure("Failed to update user profile.");
 
                 return Result<Unit>.Success(Unit.Value);
             }

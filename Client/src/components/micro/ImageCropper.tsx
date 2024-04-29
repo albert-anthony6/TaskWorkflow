@@ -43,25 +43,27 @@ export default function ImageCropper({ setFiles, setBlob, files }: Props) {
   }, [cropper]);
 
   return (
-    <div className="image-cropper">
-      <Cropper
-        src={files.length > 0 ? files[0].preview : ''}
-        initialAspectRatio={1}
-        aspectRatio={1}
-        preview=".img-preview"
-        guides={true}
-        viewMode={1}
-        responsive={true}
-        background={false}
-        zoomOnWheel={false}
-        onInitialized={(cropper) => setCropper(cropper)}
-      />
-      <button type="button" className="button__primary" onClick={handleCrop}>
-        Save
-      </button>
-      <button type="button" className="button__secondary" onClick={() => setFiles([])}>
-        Cancel
-      </button>
+    <div className="image-cropper" onClick={() => setFiles([])}>
+      <div className="cropper-container" onClick={(e) => e.stopPropagation()}>
+        <Cropper
+          src={files.length > 0 ? files[0].preview : ''}
+          initialAspectRatio={1}
+          aspectRatio={1}
+          preview=".img-preview"
+          guides={true}
+          viewMode={1}
+          responsive={true}
+          background={false}
+          zoomOnWheel={false}
+          onInitialized={(cropper) => setCropper(cropper)}
+        />
+        <button type="button" className="button__primary" onClick={handleCrop}>
+          Save
+        </button>
+        <button type="button" className="button__secondary" onClick={() => setFiles([])}>
+          Cancel
+        </button>
+      </div>
     </div>
   );
 }
