@@ -185,7 +185,7 @@ export default function SettingsPage() {
 
       await dispatch(getCurrentUser());
     } catch (err) {
-      console.error('Error during dispatch:', err);
+      console.error('Error during submission:', err);
     }
   }
 
@@ -230,6 +230,18 @@ export default function SettingsPage() {
       }
     };
   }, [avatarBlob, coverBlob, avatarFiles, coverFiles, avatarBlobUrl, coverBlobUrl]);
+
+  // Set input values with currentUser data
+  useEffect(() => {
+    if (currentUser) {
+      setValue('displayName', currentUser.displayName || '');
+      setValue('bio', currentUser.bio || '');
+      setValue('facebookLink', currentUser.facebookLink || '');
+      setValue('twitterLink', currentUser.twitterLink || '');
+      setValue('instagramLink', currentUser.instagramLink || '');
+      setValue('linkedinLink', currentUser.linkedinLink || '');
+    }
+  }, [currentUser, setValue]);
 
   return (
     <main className="settings-page">

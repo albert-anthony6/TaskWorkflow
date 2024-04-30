@@ -14,6 +14,10 @@ export interface CurrentUser {
   token: string;
   avatar: Photo;
   coverImage: Photo;
+  facebookLink: string;
+  twitterLink: string;
+  instagramLink: string;
+  linkedinLink: string;
 }
 
 export interface AuthUserFormValues {
