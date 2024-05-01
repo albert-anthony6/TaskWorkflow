@@ -12,6 +12,7 @@ namespace Application.Tickets
     {
         public class Command : IRequest<Result<Unit>>
         {
+            public Guid ProjectId { get; set; }
             public ReqTicketDto ReqTicketDto { get; set; }
         }
 
@@ -40,6 +41,7 @@ namespace Application.Tickets
 
                 var ticket = new Ticket
                 {
+                    ProjectId = request.ProjectId,
                     Id = Guid.NewGuid(),
                     Title = request.ReqTicketDto.Title,
                     Description = request.ReqTicketDto.Description,
@@ -72,6 +74,22 @@ namespace Application.Tickets
                 }
 
                 _context.Tickets.Add(ticket);
+
+                // Update the associated Project's ActiveTickets count
+                var project = await _context.Projects
+                    .Include((p) => p.Tickets)
+                    .FirstOrDefaultAsync(p => p.ProjectId == request.ProjectId);
+
+                if (project != null)
+                {
+                    // Increment by 1 for the new ticket
+                    project.ActiveTickets++;
+                }
+                else
+                {
+                    return Result<Unit>.Failure($"Project with ID {request.ProjectId} not found.");
+                }
+
                 var result = await _context.SaveChangesAsync() > 0;
 
                 if (!result) return Result<Unit>.Failure("Failed to create ticket.");

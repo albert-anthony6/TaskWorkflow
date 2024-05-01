@@ -33,7 +33,10 @@ namespace Application.Projects
                 {
                     ProjectId = Guid.NewGuid(),
                     Name = request.Project.Name,
-                    Owner = currentUser.Id
+                    Owner = currentUser.DisplayName,
+                    ActiveTickets = 0,
+                    Members = 1,
+                    CurrentUserTickets = 0
                 };
 
                 _context.Projects.Add(project);

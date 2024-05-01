@@ -19,9 +19,9 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTicket([FromForm] ReqTicketDto ticket)
+        public async Task<IActionResult> CreateTicket(Guid projectId, [FromForm] ReqTicketDto ticket)
         {
-            return HandleResult(await Mediator.Send(new Create.Command { ReqTicketDto = ticket }));
+            return HandleResult(await Mediator.Send(new Create.Command { ProjectId = projectId, ReqTicketDto = ticket }));
         }
 
         [HttpPut("{id}")]

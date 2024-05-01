@@ -11,7 +11,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240427102536_InitialCreate")]
+    [Migration("20240501043730_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -137,6 +137,15 @@ namespace Persistence.Migrations
                     b.Property<Guid>("ProjectId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("ActiveTickets")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CurrentUserTickets")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Members")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");

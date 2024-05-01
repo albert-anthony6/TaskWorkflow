@@ -1,5 +1,6 @@
 using Application.Core;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Tickets
@@ -26,6 +27,20 @@ namespace Application.Tickets
                 if (ticket == null) return null;
                 
                 _context.Remove(ticket);
+
+                // Update the associated Project's ActiveTickets count
+                var project = await _context.Projects
+                    .Include(p => p.Tickets)
+                    .FirstOrDefaultAsync((p) => p.ProjectId == ticket.ProjectId);
+
+                if (project != null)
+                {
+                    project.ActiveTickets--;
+                }
+                else
+                {
+                    return Result<Unit>.Failure($"Project with ID {ticket.ProjectId} not found.");
+                }
 
                 var result = await _context.SaveChangesAsync() > 0;
 
