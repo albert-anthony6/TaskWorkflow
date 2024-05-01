@@ -8,6 +8,7 @@ interface Props {
   blobUrl: string;
   image: string;
   hasImage: boolean;
+  customPreview?: string;
   setHasImage: (param: boolean) => void;
   setFiles: (files: any) => void;
   setBlob: (param: null) => void;
@@ -22,6 +23,7 @@ export default function ImageDropzone({
   setBlobUrl,
   image,
   hasImage,
+  customPreview,
   setHasImage
 }: Props) {
   function handleReset() {
@@ -65,9 +67,13 @@ export default function ImageDropzone({
     >
       <input {...getInputProps()} />
       {(blobUrl || hasImage) && (
-        <img className="img-preview" src={blobUrl || image} alt="Uploaded Image" />
+        <img
+          className={`img-preview ${customPreview}`}
+          src={blobUrl || image}
+          alt="Uploaded Image"
+        />
       )}
-      {files.length > 0 && !blobUrl && <div className="img-preview" />}
+      {/* {files.length > 0 && !blobUrl && <div className="img-preview" />} */}
       {files.length > 0 || hasImage ? (
         <div onClick={handleReset}>
           <IconUpload />

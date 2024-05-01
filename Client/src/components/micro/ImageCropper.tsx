@@ -7,9 +7,10 @@ interface Props {
   files: any[];
   setBlob: (prop: Blob | null) => void;
   setFiles: (files: any) => void;
+  aspectRatio?: number;
 }
 
-export default function ImageCropper({ setFiles, setBlob, files }: Props) {
+export default function ImageCropper({ setFiles, setBlob, files, aspectRatio }: Props) {
   const isUnmounting = useRef(false);
   const [cropper, setCropper] = useState<Cropper | null>(null);
 
@@ -47,9 +48,9 @@ export default function ImageCropper({ setFiles, setBlob, files }: Props) {
       <div className="cropper-container" onClick={(e) => e.stopPropagation()}>
         <Cropper
           src={files.length > 0 ? files[0].preview : ''}
-          initialAspectRatio={1}
-          aspectRatio={1}
-          preview=".img-preview"
+          initialAspectRatio={aspectRatio || 1}
+          aspectRatio={aspectRatio || 1}
+          // preview=".img-preview"
           guides={true}
           viewMode={1}
           responsive={true}

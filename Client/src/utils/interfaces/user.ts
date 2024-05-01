@@ -43,4 +43,8 @@ export interface UserProfile {
   bio: string;
   avatar: Photo;
   coverImage: Photo;
+  facebookLink: string;
+  twitterLink: string;
+  instagramLink: string;
+  linkedinLink: string;
 }

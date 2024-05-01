@@ -65,7 +65,7 @@ namespace Application.Photos
                 // Upload the file if there's a file included with this api call
                 if (request.File != null)
                 {
-                    var photoUploadResult = await _photoAccessor.AddPhoto(request.File);
+                    var photoUploadResult = await _photoAccessor.AddPhoto(request.File, true);
                 
                     var photo = new Photo
                     {

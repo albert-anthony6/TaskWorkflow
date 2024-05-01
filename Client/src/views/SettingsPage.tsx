@@ -279,7 +279,12 @@ export default function SettingsPage() {
         />
         {/* Cover Image Upload */}
         {coverFiles.length > 0 && !coverBlob && (
-          <ImageCropper files={coverFiles} setFiles={setCoverFiles} setBlob={setCoverBlob} />
+          <ImageCropper
+            aspectRatio={5.15}
+            files={coverFiles}
+            setFiles={setCoverFiles}
+            setBlob={setCoverBlob}
+          />
         )}
         <ImageDropzone
           files={coverFiles}
@@ -290,6 +295,7 @@ export default function SettingsPage() {
           setFiles={setCoverFiles}
           setBlob={setCoverBlob}
           setBlobUrl={setCoverBlobUrl}
+          customPreview="img-preview__cover"
         />
         {/* Social Links */}
         <label htmlFor="facebookLink">Facebook</label>
