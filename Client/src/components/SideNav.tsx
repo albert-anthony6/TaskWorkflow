@@ -33,7 +33,7 @@ export default function SideNav() {
         <nav className="page-links">
           <ul>
             <li>
-              <NavLink to="/home">
+              <NavLink to={`/user/${currentUser?.id}`}>
                 <IconHome />
                 <p>Home</p>
               </NavLink>
