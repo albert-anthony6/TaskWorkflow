@@ -75,7 +75,7 @@ namespace Application.Tickets
 
                 _context.Tickets.Add(ticket);
 
-                // Update the associated Project's ActiveTickets count
+                // Update the associated Project's ActiveTicketsCount count
                 var project = await _context.Projects
                     .Include((p) => p.Tickets)
                     .FirstOrDefaultAsync(p => p.ProjectId == request.ProjectId);
@@ -83,7 +83,7 @@ namespace Application.Tickets
                 if (project != null)
                 {
                     // Increment by 1 for the new ticket
-                    project.ActiveTickets++;
+                    project.ActiveTicketsCount++;
                 }
                 else
                 {

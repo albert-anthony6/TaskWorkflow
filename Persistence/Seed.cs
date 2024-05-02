@@ -45,8 +45,8 @@ namespace Persistence
                         ProjectId = Guid.NewGuid(),
                         Name = "Project 1",
                         Owner = users[0].DisplayName,
-                        ActiveTickets = 5,
-                        Members = 3,
+                        ActiveTicketsCount = 5,
+                        MembersCount = 3,
                         CurrentUserTickets = 0
                     },
                     new Project
@@ -54,8 +54,8 @@ namespace Persistence
                         ProjectId = Guid.NewGuid(),
                         Name = "Project 2",
                         Owner = users[2].DisplayName,
-                        ActiveTickets = 5,
-                        Members = 3,
+                        ActiveTicketsCount = 5,
+                        MembersCount = 3,
                         CurrentUserTickets = 0
                     }
                 };

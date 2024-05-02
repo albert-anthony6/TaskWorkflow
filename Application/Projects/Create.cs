@@ -34,8 +34,8 @@ namespace Application.Projects
                     ProjectId = Guid.NewGuid(),
                     Name = request.Project.Name,
                     Owner = currentUser.DisplayName,
-                    ActiveTickets = 0,
-                    Members = 1,
+                    ActiveTicketsCount = 0,
+                    MembersCount = 1,
                     CurrentUserTickets = 0
                 };
 

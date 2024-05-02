@@ -135,7 +135,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ActiveTickets")
+                    b.Property<int>("ActiveTicketsCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CurrentUserTickets")

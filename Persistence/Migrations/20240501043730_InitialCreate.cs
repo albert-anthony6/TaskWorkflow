@@ -63,7 +63,7 @@ namespace Persistence.Migrations
                     ProjectId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Owner = table.Column<string>(type: "TEXT", nullable: true),
-                    ActiveTickets = table.Column<int>(type: "INTEGER", nullable: false),
+                    ActiveTicketsCount = table.Column<int>(type: "INTEGER", nullable: false),
                     Members = table.Column<int>(type: "INTEGER", nullable: false),
                     CurrentUserTickets = table.Column<int>(type: "INTEGER", nullable: false)
                 },
