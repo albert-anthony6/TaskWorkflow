@@ -30,6 +30,78 @@ namespace Persistence
                         UserName = "tom",
                         Email = "tom@test.com"
                     },
+                    new AppUser
+                    {
+                        DisplayName = "Bob2",
+                        UserName = "bob2",
+                        Email = "bob2@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Jane2",
+                        UserName = "jane2",
+                        Email = "jane2@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Tom2",
+                        UserName = "tom2",
+                        Email = "tom2@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Bob3",
+                        UserName = "bob3",
+                        Email = "bob3@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Jane3",
+                        UserName = "jane3",
+                        Email = "jane3@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Tom3",
+                        UserName = "tom3",
+                        Email = "tom3@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Bob4",
+                        UserName = "bob4",
+                        Email = "bob4@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Jane4",
+                        UserName = "jane4",
+                        Email = "jane4@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Tom4",
+                        UserName = "tom4",
+                        Email = "tom4@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Bob5",
+                        UserName = "bob5",
+                        Email = "bob5@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Jane5",
+                        UserName = "jane5",
+                        Email = "jane5@test.com"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Tom5",
+                        UserName = "tom5",
+                        Email = "tom5@test.com"
+                    },
                 };
 
                 foreach (var user in users)
