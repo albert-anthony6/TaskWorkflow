@@ -10,7 +10,8 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<Project, RespProjectDto>();
+            CreateMap<Project, RespProjectDto>()
+                .ForMember((dest) => dest.MembersCount, (opt) => opt.MapFrom((src) => src.Members.Count));
 
             CreateMap<ReqTicketDto, Ticket>().IgnoreAllPropertiesWithAnInaccessibleSetter();
 

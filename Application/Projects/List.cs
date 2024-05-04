@@ -23,14 +23,17 @@ namespace Application.Projects
 
             public async Task<Result<List<RespProjectDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var projects = await _context.Projects
+                var projectDtos = await _context.Projects
+                    .Select(project => new RespProjectDto
+                    {
+                        ProjectId = project.ProjectId,
+                        Name = project.Name,
+                        Owner = project.Owner,
+                        ActiveTicketsCount = project.ActiveTicketsCount,
+                        MembersCount = project.Members.Count(),
+                        CurrentUserTickets = project.CurrentUserTickets
+                    })
                     .ToListAsync();
-
-                var projectDtos = projects.Select((project) =>
-                {
-                    var respProjectDto = _mapper.Map<RespProjectDto>(project);
-                    return respProjectDto;
-                }).ToList();
 
                 return Result<List<RespProjectDto>>.Success(projectDtos);
             }
