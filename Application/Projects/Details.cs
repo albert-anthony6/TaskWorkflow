@@ -10,12 +10,12 @@ namespace Application.Projects
 {
     public class Details
     {
-        public class Query : IRequest<Result<List<RespTicketDto>>>
+        public class Query : IRequest<Result<RespProjectDto>>
         {
             public Guid Id { get; set;}
         }
 
-        public class Handler : IRequestHandler<Query, Result<List<RespTicketDto>>>
+        public class Handler : IRequestHandler<Query, Result<RespProjectDto>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -25,14 +25,16 @@ namespace Application.Projects
                 _context = context;
             }
 
-            public async Task<Result<List<RespTicketDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<RespProjectDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var tickets = await _context.Tickets
-                    .Where((t) => t.ProjectId == request.Id)
-                    .ProjectTo<RespTicketDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync();
+                var project = await _context.Projects
+                    .Include((p) => p.Members)
+                    .Include((p) => p.Tickets)
+                    .FirstOrDefaultAsync((p) => p.ProjectId == request.Id);
 
-                return Result<List<RespTicketDto>>.Success(tickets);
+                var respProjectDto = _mapper.Map<RespProjectDto>(project);
+                
+                return Result<RespProjectDto>.Success(respProjectDto);
             }
         }
     }

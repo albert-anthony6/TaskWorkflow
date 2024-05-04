@@ -11,6 +11,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<Project, RespProjectDto>();
+
             CreateMap<ReqTicketDto, Ticket>().IgnoreAllPropertiesWithAnInaccessibleSetter();
 
             CreateMap<Ticket, RespTicketDto>()

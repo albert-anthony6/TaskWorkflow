@@ -9,6 +9,6 @@ namespace Domain
         public int MembersCount { get; set; }
         public int CurrentUserTickets { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
-        // public ICollection <AppUser> Members { get; set; }
+        public ICollection <AppUser> Members { get; set; } = new List<AppUser>();
     }
 }

@@ -12,6 +12,7 @@ namespace Domain
         public string TwitterLink { get; set; }
         public Photo Avatar { get; set; }
         public Photo CoverImage { get; set; }
+        public ICollection<Project> Projects { get; set; }
         public ICollection<Ticket> AuthoredTickets { get; set; }
         public ICollection<TicketAssignee> Tickets { get; set; }
     }

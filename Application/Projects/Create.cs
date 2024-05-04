@@ -39,6 +39,9 @@ namespace Application.Projects
                     CurrentUserTickets = 0
                 };
 
+                // Add the creator as a member of the project
+                project.Members.Add(currentUser);
+
                 _context.Projects.Add(project);
                 var result = await _context.SaveChangesAsync() > 0;
 

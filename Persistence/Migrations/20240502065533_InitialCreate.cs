@@ -64,7 +64,7 @@ namespace Persistence.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Owner = table.Column<string>(type: "TEXT", nullable: true),
                     ActiveTicketsCount = table.Column<int>(type: "INTEGER", nullable: false),
-                    Members = table.Column<int>(type: "INTEGER", nullable: false),
+                    MembersCount = table.Column<int>(type: "INTEGER", nullable: false),
                     CurrentUserTickets = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -179,6 +179,30 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AppUserProject",
+                columns: table => new
+                {
+                    MembersId = table.Column<string>(type: "TEXT", nullable: false),
+                    ProjectsProjectId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUserProject", x => new { x.MembersId, x.ProjectsProjectId });
+                    table.ForeignKey(
+                        name: "FK_AppUserProject_AspNetUsers_MembersId",
+                        column: x => x.MembersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AppUserProject_Projects_ProjectsProjectId",
+                        column: x => x.ProjectsProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "ProjectId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tickets",
                 columns: table => new
                 {
@@ -262,6 +286,11 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AppUserProject_ProjectsProjectId",
+                table: "AppUserProject",
+                column: "ProjectsProjectId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -334,6 +363,9 @@ namespace Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AppUserProject");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

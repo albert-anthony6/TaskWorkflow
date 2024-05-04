@@ -11,7 +11,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240501043730_InitialCreate")]
+    [Migration("20240502065533_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,6 +19,21 @@ namespace Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
+
+            modelBuilder.Entity("AppUserProject", b =>
+                {
+                    b.Property<string>("MembersId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ProjectsProjectId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MembersId", "ProjectsProjectId");
+
+                    b.HasIndex("ProjectsProjectId");
+
+                    b.ToTable("AppUserProject");
+                });
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
@@ -144,7 +159,7 @@ namespace Persistence.Migrations
                     b.Property<int>("CurrentUserTickets")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Members")
+                    b.Property<int>("MembersCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -335,6 +350,21 @@ namespace Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AppUserProject", b =>
+                {
+                    b.HasOne("Domain.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Photo", b =>
