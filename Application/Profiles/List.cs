@@ -9,9 +9,12 @@ namespace Application.Profiles
 {
     public class List
     {
-        public class Query : IRequest<Result<List<UserDto>>> {}
+        public class Query : IRequest<Result<PagedList<UserDto>>> 
+        {
+            public PagingParams Params { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Result<List<UserDto>>>
+        public class Handler : IRequestHandler<Query, Result<PagedList<UserDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -21,13 +24,16 @@ namespace Application.Profiles
                 _context = context;
             }
 
-            public async Task<Result<List<UserDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PagedList<UserDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var users = await _context.Users
+                var query = _context.Users
                     .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync();
+                    .AsQueryable();
                 
-                    return Result<List<UserDto>>.Success(users);
+                    return Result<PagedList<UserDto>>.Success(
+                        await PagedList<UserDto>.CreateAsync(query, request.Params.PageNumber, 
+                            request.Params.PageSize)
+                    );
             }
         }
     }

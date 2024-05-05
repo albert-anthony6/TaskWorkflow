@@ -1,3 +1,4 @@
+using Application.Core;
 using Application.Profiles;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,9 +7,9 @@ namespace API.Controllers
     public class ProfilesController : BaseApiController
     {
         [HttpGet("users")]
-        public async Task<IActionResult> GetProfiles()
+        public async Task<IActionResult> GetProfiles([FromQuery]PagingParams param)
         {
-            return HandleResult(await Mediator.Send(new List.Query()));
+            return HandlePagedResult(await Mediator.Send(new List.Query{Params = param}));
         }
 
         [HttpGet("users/{id}")]
