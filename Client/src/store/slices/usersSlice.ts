@@ -1,20 +1,25 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import agent from '../../api/agent';
 import { User, UserProfile } from '../../utils/interfaces/user';
+import { Pagination } from '../../utils/interfaces/pagination';
 
 interface UserState {
   users: User[] | null;
   profile: UserProfile | null;
+  pagination: Pagination | null;
 }
 
 const initialState: UserState = {
   users: null,
-  profile: null
+  profile: null,
+  pagination: null
 };
 
 export const getUsers = createAsyncThunk<User[]>('users/getUsers', async (_, thunkAPI) => {
   try {
-    return await agent.Profile.list();
+    const results = await agent.Profile.list();
+    thunkAPI.dispatch(setPagination(results.pagination));
+    return results.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue({ error });
   }
@@ -34,7 +39,11 @@ export const getProfile = createAsyncThunk<UserProfile, string>(
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    setPagination: (state, action) => {
+      state.pagination = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getProfile.fulfilled, (state, action) => {
       state.profile = action.payload;
@@ -47,3 +56,5 @@ export const usersSlice = createSlice({
     });
   }
 });
+
+export const { setPagination } = usersSlice.actions;

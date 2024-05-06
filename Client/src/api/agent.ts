@@ -9,6 +9,7 @@ import {
   EditUserFormValues
 } from '../utils/interfaces/user';
 import { UserProfile } from '../utils/interfaces/user';
+import { PaginatedResult } from '../utils/interfaces/pagination';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -22,6 +23,11 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   async (response) => {
+    const pagination = response.headers['pagination'];
+    if (pagination) {
+      response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+      return response as AxiosResponse<PaginatedResult<unknown>>;
+    }
     return response;
   },
   (error: AxiosError) => {
@@ -86,7 +92,7 @@ const Account = {
 };
 
 const Profile = {
-  list: () => requests.get<User[]>('/profiles/users'),
+  list: () => requests.get<PaginatedResult<User[]>>('/profiles/users'),
   details: (id: string) => requests.get<UserProfile>(`/profiles/users/${id}`),
   uploadImage: (file: Blob, type: string) => {
     const formData = new FormData();
