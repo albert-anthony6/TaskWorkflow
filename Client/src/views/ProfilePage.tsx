@@ -16,11 +16,12 @@ export default function ProfilePage() {
   useEffect(() => {
     dispatch(getProfile(userId as string));
   }, [dispatch, userId]);
+
   return (
     <main className="profile-page">
-      <div className="banner-container">
+      <div className="banner">
         <div
-          className="banner"
+          className="banner--image"
           style={{
             backgroundImage: `url(${
               profile?.coverImage?.url || '/src/assets/images/placeholder_image.png'
@@ -59,6 +60,52 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+      <table className="all-projects data-table">
+        <thead>
+          <th scope="col">Name</th>
+          <th scope="col">Your Tasks</th>
+          <th scope="col">Members</th>
+          <th scope="col">Active Tasks</th>
+          <th scope="col">Owner</th>
+        </thead>
+        <tbody>
+          <tr className="active-row">
+            <td>Apple 2.0</td>
+            <td>2</td>
+            <td>4</td>
+            <td>6</td>
+            <td>Samantha S.</td>
+          </tr>
+          <tr>
+            <td>Apple 2.0</td>
+            <td>2</td>
+            <td>4</td>
+            <td>6</td>
+            <td>Samantha S.</td>
+          </tr>
+          <tr>
+            <td>Apple 2.0</td>
+            <td>2</td>
+            <td>4</td>
+            <td>6</td>
+            <td>Samantha S.</td>
+          </tr>
+          <tr>
+            <td>Apple 2.0</td>
+            <td>2</td>
+            <td>4</td>
+            <td>6</td>
+            <td>Samantha S.</td>
+          </tr>
+          <tr>
+            <td>Apple 2.0</td>
+            <td>2</td>
+            <td>4</td>
+            <td>6</td>
+            <td>Samantha S.</td>
+          </tr>
+        </tbody>
+      </table>
     </main>
   );
 }
