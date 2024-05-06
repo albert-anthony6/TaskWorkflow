@@ -92,7 +92,12 @@ const Account = {
 };
 
 const Profile = {
-  list: () => requests.get<PaginatedResult<User[]>>('/profiles/users'),
+  list: (pageNumber?: number, pageSize?: number) =>
+    axios
+      .get<PaginatedResult<User[]>>(
+        `/profiles/users/?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      )
+      .then(responseBody),
   details: (id: string) => requests.get<UserProfile>(`/profiles/users/${id}`),
   uploadImage: (file: Blob, type: string) => {
     const formData = new FormData();

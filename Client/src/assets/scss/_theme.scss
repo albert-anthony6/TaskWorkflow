@@ -6,10 +6,6 @@
   box-sizing: border-box;
 }
 
-// ::selection {
-//   background-color: $dark-orange;
-// }
-
 html,
 body {
   font-family: $secondary-font-stack;
@@ -183,4 +179,40 @@ input {
 .multiselect--avatar {
   border-radius: 50%;
   vertical-align: middle;
+}
+
+.pagination {
+  display: flex;
+  width: 400px;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: space-between;
+
+  &__active {
+    background-color: $dark-neutral;
+    color: $light-grey;
+  }
+
+  .page-item,
+  .page-item a {
+    display: block;
+    width: 35px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+
+    &--next,
+    &--prev {
+      width: fit-content;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+
+      &.disabled {
+        cursor: default;
+        opacity: 0.5;
+      }
+    }
+  }
 }
