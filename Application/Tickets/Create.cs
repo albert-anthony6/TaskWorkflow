@@ -46,9 +46,10 @@ namespace Application.Tickets
                     Title = request.ReqTicketDto.Title,
                     Description = request.ReqTicketDto.Description,
                     Severity = request.ReqTicketDto.Severity,
+                    Status = request.ReqTicketDto.Status,
                     StartDate = request.ReqTicketDto.StartDate,
                     EndDate = request.ReqTicketDto.EndDate,
-                    // Author = currentUser,
+                    Author = currentUser,
                     Attachments = request.ReqTicketDto.Attachments
                 };
 

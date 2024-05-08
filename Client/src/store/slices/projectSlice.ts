@@ -5,11 +5,13 @@ import agent from '../../api/agent';
 interface ProjectState {
   projects: Project[] | [];
   myProjects: Project[] | [];
+  project: Project | null;
 }
 
 const initialState: ProjectState = {
   projects: [],
-  myProjects: []
+  myProjects: [],
+  project: null
 };
 
 export const setMyProjects = createAction<Project[]>('project/setMyProjects');
@@ -30,6 +32,17 @@ export const getProjects = createAsyncThunk<Project[] | void, boolean>(
   }
 );
 
+export const getProject = createAsyncThunk<Project, string>(
+  'project/getProject',
+  async (projectId, thunkAPI) => {
+    try {
+      return await agent.Projects.details(projectId);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
+
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
@@ -43,6 +56,9 @@ export const projectSlice = createSlice({
     });
     builder.addCase(setMyProjects, (state, action) => {
       state.myProjects = action.payload;
+    });
+    builder.addCase(getProject.fulfilled, (state, action) => {
+      state.project = action.payload;
     });
     builder.addMatcher(isAnyOf(getProjects.rejected), (state, action) => {
       throw action.payload;

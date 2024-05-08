@@ -83,15 +83,23 @@ export default function ProfilePage() {
           <th scope="col">Owner</th>
         </thead>
         <tbody>
-          {myProjects.map((project, index) => (
-            <tr key={index} onClick={() => handleRowClick(project.projectId)}>
-              <td>{project.name}</td>
-              <td>{project.currentUserTickets}</td>
-              <td>{project.membersCount}</td>
-              <td>{project.activeTicketsCount}</td>
-              <td>{project.owner}</td>
+          {!myProjects.length ? (
+            <tr>
+              <td colSpan={5} className="empty-row">
+                You have no current projects
+              </td>
             </tr>
-          ))}
+          ) : (
+            myProjects.map((project, index) => (
+              <tr key={index} onClick={() => handleRowClick(project.projectId)}>
+                <td>{project.name}</td>
+                <td>{project.currentUserTickets}</td>
+                <td>{project.membersCount}</td>
+                <td>{project.activeTicketsCount}</td>
+                <td>{project.owner}</td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
       <h3>All Projects</h3>
@@ -104,15 +112,23 @@ export default function ProfilePage() {
           <th scope="col">Owner</th>
         </thead>
         <tbody>
-          {projects.map((project, index) => (
-            <tr key={index} onClick={() => handleRowClick(project.projectId)}>
-              <td>{project.name}</td>
-              <td>{project.currentUserTickets}</td>
-              <td>{project.membersCount}</td>
-              <td>{project.activeTicketsCount}</td>
-              <td>{project.owner}</td>
+          {!projects.length ? (
+            <tr>
+              <td colSpan={5} className="empty-row">
+                No projects found
+              </td>
             </tr>
-          ))}
+          ) : (
+            projects.map((project, index) => (
+              <tr key={index} onClick={() => handleRowClick(project.projectId)}>
+                <td>{project.name}</td>
+                <td>{project.currentUserTickets}</td>
+                <td>{project.membersCount}</td>
+                <td>{project.activeTicketsCount}</td>
+                <td>{project.owner}</td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </main>

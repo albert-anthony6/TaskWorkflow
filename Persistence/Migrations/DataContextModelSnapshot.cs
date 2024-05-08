@@ -194,6 +194,9 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 

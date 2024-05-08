@@ -1,3 +1,5 @@
+import { Task } from './task';
+
 export interface Project {
   projectId: string;
   name: string;
@@ -5,4 +7,5 @@ export interface Project {
   activeTicketsCount: number;
   membersCount: number;
   currentUserTickets: number;
+  tickets: Task[];
 }

@@ -210,6 +210,7 @@ namespace Persistence.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Severity = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<string>(type: "TEXT", nullable: true),
                     StartDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     EndDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     AuthorId = table.Column<string>(type: "TEXT", nullable: true),

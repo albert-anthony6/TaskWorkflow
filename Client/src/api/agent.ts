@@ -80,7 +80,8 @@ const requests = {
 
 const Projects = {
   list: (filterUserTasks: boolean) =>
-    requests.get<Project[]>(`/projects/?filterUserTickets=${filterUserTasks}`)
+    requests.get<Project[]>(`/projects/?filterUserTickets=${filterUserTasks}`),
+  details: (projectId: string) => requests.get<Project>(`/projects/${projectId}`)
 };
 
 const Tasks = {

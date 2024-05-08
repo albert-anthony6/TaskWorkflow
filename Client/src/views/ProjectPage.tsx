@@ -1,14 +1,20 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { Task } from '../utils/interfaces/task';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import TaskColumn from '../components/TaskColumn';
-import TaskCreationModal from '../components/TaskCreationModal';
-import { getTasks } from '../store/slices/taskSlice';
+// import TaskCreationModal from '../components/TaskCreationModal';
+// import { getTasks } from '../store/slices/taskSlice';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import './ProjectPage.scss';
+import { getProject } from '../store/slices/projectSlice';
 
 export default function ProjectPage() {
+  const params = useParams();
+  const { project } = useAppSelector((state) => state.project);
+  const dispatch = useAppDispatch();
+  // const { taskModal } = useAppSelector((state) => state.task);
+
   interface Column {
     id: string;
     columnName: string;
@@ -52,22 +58,32 @@ export default function ProjectPage() {
   };
 
   const [columns, setColumns] = useState(initialColumns);
-  const dispatch = useAppDispatch();
-  const { tasks, taskModal } = useAppSelector((state) => state.task);
+  const initialColumnsRef = useRef(initialColumns);
 
   useEffect(() => {
-    dispatch(getTasks());
-  }, [dispatch]);
+    dispatch(getProject(`${params.projectId}`)).then((action) => {
+      const { tickets } = action.payload as { tickets: Task[] };
+      const newColumns: Columns = {
+        todo: { ...initialColumnsRef.current.todo, list: [] },
+        inProgress: { ...initialColumnsRef.current.inProgress, list: [] },
+        readyForReview: { ...initialColumnsRef.current.readyForReview, list: [] },
+        done: { ...initialColumnsRef.current.done, list: [] }
+      };
 
-  useEffect(() => {
-    setColumns((prevState) => ({
-      ...prevState,
-      todo: {
-        ...prevState.todo,
-        list: tasks
-      }
-    }));
-  }, [tasks]);
+      tickets.forEach((ticket: Task) => {
+        const columnName = ticket.status || 'todo';
+        if (columnName in newColumns) {
+          // Add the ticket to the appropriate column
+          newColumns[columnName].list.push(ticket);
+        } else {
+          console.warn(`Invalid column name '${columnName}' for ticket ${ticket.id}`);
+        }
+      });
+
+      // Update the state with the new columns
+      setColumns(newColumns);
+    });
+  }, [dispatch, params.projectId]);
 
   function onDragEnd({ source, destination }: DropResult) {
     // Make sure we have a valid destination
@@ -142,8 +158,8 @@ export default function ProjectPage() {
   return (
     <main className="project-page">
       <div className="project-page--header">
-        <h1>Apple 2.0</h1>
-        <Link to="/projects">Projects/Apple2.0</Link>
+        <h1>{project?.name}</h1>
+        <Link to="/projects">Projects/{project?.name}</Link>
       </div>
       <div className="main-content">
         <DragDropContext onDragEnd={onDragEnd}>
@@ -154,7 +170,7 @@ export default function ProjectPage() {
           </div>
         </DragDropContext>
       </div>
-      {taskModal.isOpen && <TaskCreationModal />}
+      {/* {taskModal.isOpen && <TaskCreationModal />} */}
     </main>
   );
 }
