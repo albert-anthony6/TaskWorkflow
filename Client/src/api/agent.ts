@@ -10,6 +10,7 @@ import {
 } from '../utils/interfaces/user';
 import { UserProfile } from '../utils/interfaces/user';
 import { PaginatedResult } from '../utils/interfaces/pagination';
+import { Project } from '../utils/interfaces/project';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -77,6 +78,11 @@ const requests = {
   delete: <T>(url: string) => axios.delete<T>(url).then(responseBody)
 };
 
+const Projects = {
+  list: (filterUserTasks: boolean) =>
+    requests.get<Project[]>(`/projects/?filterUserTickets=${filterUserTasks}`)
+};
+
 const Tasks = {
   list: () => requests.get<Task[]>('/tickets'),
   details: (id: string) => requests.get<Task>(`/tickets/${id}`),
@@ -120,6 +126,7 @@ const Profile = {
 };
 
 const agent = {
+  Projects,
   Tasks,
   Account,
   Profile

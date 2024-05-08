@@ -2,19 +2,32 @@ import { useEffect } from 'react';
 import './ProfilePage.scss';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { getProfile } from '../store/slices/userSlice';
-import { useParams } from 'react-router-dom';
+import { getProjects } from '../store/slices/projectSlice';
+import { useParams, useNavigate } from 'react-router-dom';
 import IconFacebook from '../assets/icons/icon_facebook.svg?react';
 import IconTwitter from '../assets/icons/icon_twitter.svg?react';
 import IconInstagram from '../assets/icons/icon_instagram.svg?react';
 import IconLinkedin from '../assets/icons/icon_linkedin.svg?react';
 
 export default function ProfilePage() {
+  const navigate = useNavigate();
   const { userId } = useParams();
   const dispatch = useAppDispatch();
+  const { projects, myProjects } = useAppSelector((state) => state.project);
   const { profile } = useAppSelector((state) => state.user);
 
+  function handleRowClick(projectId: string) {
+    navigate(`/projects/${projectId}`);
+  }
+
   useEffect(() => {
-    dispatch(getProfile(userId as string));
+    (async () => {
+      await Promise.all([
+        dispatch(getProfile(userId as string)),
+        dispatch(getProjects(true)),
+        dispatch(getProjects(false))
+      ]);
+    })();
   }, [dispatch, userId]);
 
   return (
@@ -60,7 +73,8 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <table className="all-projects data-table">
+      <h3>Your Projects</h3>
+      <table className="data-table">
         <thead>
           <th scope="col">Name</th>
           <th scope="col">Your Tasks</th>
@@ -69,41 +83,36 @@ export default function ProfilePage() {
           <th scope="col">Owner</th>
         </thead>
         <tbody>
-          <tr className="active-row">
-            <td>Apple 2.0</td>
-            <td>2</td>
-            <td>4</td>
-            <td>6</td>
-            <td>Samantha S.</td>
-          </tr>
-          <tr>
-            <td>Apple 2.0</td>
-            <td>2</td>
-            <td>4</td>
-            <td>6</td>
-            <td>Samantha S.</td>
-          </tr>
-          <tr>
-            <td>Apple 2.0</td>
-            <td>2</td>
-            <td>4</td>
-            <td>6</td>
-            <td>Samantha S.</td>
-          </tr>
-          <tr>
-            <td>Apple 2.0</td>
-            <td>2</td>
-            <td>4</td>
-            <td>6</td>
-            <td>Samantha S.</td>
-          </tr>
-          <tr>
-            <td>Apple 2.0</td>
-            <td>2</td>
-            <td>4</td>
-            <td>6</td>
-            <td>Samantha S.</td>
-          </tr>
+          {myProjects.map((project, index) => (
+            <tr key={index} onClick={() => handleRowClick(project.projectId)}>
+              <td>{project.name}</td>
+              <td>{project.currentUserTickets}</td>
+              <td>{project.membersCount}</td>
+              <td>{project.activeTicketsCount}</td>
+              <td>{project.owner}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <h3>All Projects</h3>
+      <table className="data-table">
+        <thead>
+          <th scope="col">Name</th>
+          <th scope="col">Your Tasks</th>
+          <th scope="col">Members</th>
+          <th scope="col">Active Tasks</th>
+          <th scope="col">Owner</th>
+        </thead>
+        <tbody>
+          {projects.map((project, index) => (
+            <tr key={index} onClick={() => handleRowClick(project.projectId)}>
+              <td>{project.name}</td>
+              <td>{project.currentUserTickets}</td>
+              <td>{project.membersCount}</td>
+              <td>{project.activeTicketsCount}</td>
+              <td>{project.owner}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </main>

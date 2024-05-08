@@ -180,6 +180,7 @@ input {
 
 tbody {
   tr {
+    transition: all 0.3s ease;
     border-bottom: 1px solid #dddddd;
 
     &:nth-of-type(even) {
@@ -189,10 +190,10 @@ tbody {
     &:last-of-type {
       border-bottom: 2px solid $dark-neutral;
     }
-  }
 
-  & .active-row {
-    font-weight: bold;
+    &:hover {
+      font-weight: bold;
+    }
   }
 }
 
