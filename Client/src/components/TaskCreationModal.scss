@@ -10,18 +10,23 @@
 
   .form-container {
     position: absolute;
-    padding: 25px 25px 47px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    padding: 25px 35px 47px;
+    top: 0;
+    right: 0;
     width: 800px;
-    height: 800px;
-    border-radius: 8px;
+    min-height: 100vh;
     background-color: $lightest-neutral;
 
     h2 {
       font-size: 32px;
       font-weight: 500;
+    }
+
+    label {
+      @include font-size(20, 500, none, normal, 29);
+      display: inline-block;
+      margin-bottom: 5px;
+      color: $dark-neutral;
     }
 
     .form-note {
@@ -40,14 +45,12 @@
       display: flex;
       flex-direction: column;
 
-      &:not(:first-of-type) {
+      &__error {
         margin-top: -12px;
       }
 
-      label {
-        @include font-size(20, 500, none, normal, 29);
-        margin-bottom: 5px;
-        color: $dark-neutral;
+      &:not(:first-of-type) {
+        margin-bottom: -12px;
       }
 
       .input--helper {

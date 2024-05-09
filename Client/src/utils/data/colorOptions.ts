@@ -1,6 +1,6 @@
 import { ColorOption } from '../../utils/interfaces/color-options';
 
-export const colorOptions: readonly ColorOption[] = [
+export const colorOptionsData: readonly ColorOption[] = [
   { value: 'Trivial', label: 'Trivial', color: '#3bcbff ' },
   { value: 'Low', label: 'Low', color: '#00ff66' },
   { value: 'Medium', label: 'Medium', color: '#ffbb00' },

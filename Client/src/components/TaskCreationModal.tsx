@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
+import './TaskCreationModal.scss';
 import { useForm } from 'react-hook-form';
 import { Task } from '../utils/interfaces/task';
-import StyledDropdown from './micro/StyledDropdown';
 import { ColorOption } from '../utils/interfaces/color-options';
-import { colorOptions } from '../utils/data/colorOptions';
+import { colorOptionsData } from '../utils/data/colorOptions';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import {
@@ -13,11 +13,11 @@ import {
   resetSelectedTask,
   toggleTaskModal
 } from '../store/slices/taskSlice';
-import IconClose from '../assets/icons/icon_close.svg?react';
-import './TaskCreationModal.scss';
+import StyledDropdown from './micro/StyledDropdown';
 import MutliSelectDropdown from './micro/MultiSelectDropdown';
+import IconClose from '../assets/icons/icon_close.svg?react';
 
-export default function TaskCreationModal(props: ReactDatePickerProps) {
+export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) {
   const { taskModal, selectedTask } = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch();
   const {
@@ -55,7 +55,7 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
     if (selectedTask && taskModal.taskId) {
       dispatch(editTask(payload)).catch((err) => handleErrors(err.error));
     } else {
-      // Backend will generate a new id
+      // Backend will generate the id on task creation
       delete payload.id;
       dispatch(createTask(payload)).catch((err) => handleErrors(err.error));
     }
@@ -82,7 +82,7 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
   useEffect(() => {
     if (selectedTask && taskModal.taskId) {
       // Formatting severity string
-      const colorOption = colorOptions.find(
+      const colorOption = colorOptionsData.find(
         (option: ColorOption) => option.value === selectedTask.severity
       );
 
@@ -98,8 +98,14 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
   return (
     <div className="task-creation-modal">
       <div className="form-container">
-        <h2>Create new task</h2>
-        <p className="form-note">Use this form to setup your new task</p>
+        {selectedTask ? (
+          <h2>Edit this task</h2>
+        ) : (
+          <>
+            <h2>Create new task</h2>
+            <p className="form-note">Use this form to setup your new task</p>
+          </>
+        )}
         <IconClose
           onClick={() => dispatch(dispatch(toggleTaskModal({ isOpen: false })))}
           className="icon-close"
@@ -121,7 +127,7 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
               <div className="caption">0/100</div>
             </div>
           </div>
-          <div className="input-container">
+          <div className={`input-container ${!errors.title?.message && 'input-container__error'}`}>
             <label htmlFor="description">Description</label>
             <input
               {...register('description')}
@@ -131,6 +137,7 @@ export default function TaskCreationModal(props: ReactDatePickerProps) {
             />
             <div className="caption">0/100</div>
           </div>
+          <label>Assignees</label>
           <MutliSelectDropdown />
           <StyledDropdown
             value={severityValue as ColorOption}

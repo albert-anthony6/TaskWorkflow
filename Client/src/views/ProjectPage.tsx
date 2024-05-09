@@ -3,8 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Task } from '../utils/interfaces/task';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import TaskColumn from '../components/TaskColumn';
-// import TaskCreationModal from '../components/TaskCreationModal';
-// import { getTasks } from '../store/slices/taskSlice';
+import TaskCreationModal from '../components/TaskCreationModal';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import './ProjectPage.scss';
 import { getProject } from '../store/slices/projectSlice';
@@ -15,7 +14,7 @@ export default function ProjectPage() {
   const params = useParams();
   const { project } = useAppSelector((state) => state.project);
   const dispatch = useAppDispatch();
-  // const { taskModal } = useAppSelector((state) => state.task);
+  const { taskModal } = useAppSelector((state) => state.task);
 
   interface Column {
     id: string;
@@ -182,7 +181,7 @@ export default function ProjectPage() {
           </div>
         </DragDropContext>
       </div>
-      {/* {taskModal.isOpen && <TaskCreationModal />} */}
+      {taskModal.isOpen && <TaskCreationModal />}
     </main>
   );
 }

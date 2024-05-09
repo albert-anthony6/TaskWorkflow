@@ -1,6 +1,6 @@
 import Select, { StylesConfig } from 'react-select';
 import { ColorOption } from '../../utils/interfaces/color-options';
-import { colorOptions } from '../../utils/data/colorOptions';
+import { colorOptionsData } from '../../utils/data/colorOptions';
 import './StyledDropdown.scss';
 
 const dot = (color = 'transparent') => ({
@@ -35,8 +35,8 @@ export default function StyledDropdown({ value, onChange }: Props) {
         isSearchable={false}
         value={value}
         onChange={(selectedOption) => onChange(selectedOption as ColorOption)}
-        defaultValue={colorOptions[2]}
-        options={colorOptions}
+        defaultValue={colorOptionsData[2]}
+        options={colorOptionsData}
         styles={colorStyles}
         classNamePrefix="react-select"
       />
