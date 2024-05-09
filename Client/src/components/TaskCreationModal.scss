@@ -17,6 +17,20 @@
     min-height: 100vh;
     background-color: $lightest-neutral;
 
+    .edit-task {
+      display: inline-block;
+      cursor: pointer;
+      margin-top: 20px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .title {
+      margin-bottom: 15px;
+    }
+
     h2 {
       font-size: 32px;
       font-weight: 500;
@@ -36,7 +50,7 @@
 
     .icon-close {
       position: absolute;
-      top: 41px;
+      top: 35px;
       right: 25px;
       cursor: pointer;
     }

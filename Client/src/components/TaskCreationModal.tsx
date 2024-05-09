@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './TaskCreationModal.scss';
 import { useForm } from 'react-hook-form';
 import { Task } from '../utils/interfaces/task';
@@ -16,10 +16,12 @@ import {
 import StyledDropdown from './micro/StyledDropdown';
 import MutliSelectDropdown from './micro/MultiSelectDropdown';
 import IconClose from '../assets/icons/icon_close.svg?react';
+import IconEdit from '../assets/icons/icon_edit.svg?react';
 
 export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) {
   const { taskModal, selectedTask } = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch();
+  const [isWriting, setIsWriting] = useState(false);
   const {
     register,
     handleSubmit,
@@ -72,14 +74,18 @@ export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) 
   }
 
   useEffect(() => {
+    // Viewing an existing task
     if (taskModal.taskId) {
       dispatch(getTask(taskModal.taskId));
     } else {
+      // Creating a new task
       dispatch(resetSelectedTask());
+      setIsWriting(true);
     }
   }, [dispatch, taskModal]);
 
   useEffect(() => {
+    // Populating fields with values from existing task
     if (selectedTask && taskModal.taskId) {
       // Formatting severity string
       const colorOption = colorOptionsData.find(
@@ -95,15 +101,32 @@ export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) 
     }
   }, [setValue, selectedTask, taskModal.taskId]);
 
+  // Computed properties
+  const isViewing = !isWriting && selectedTask;
+  const isCreating = isWriting && !selectedTask;
+  const isEditing = isWriting && selectedTask;
+
   return (
     <div className="task-creation-modal">
       <div className="form-container">
-        {selectedTask ? (
-          <h2>Edit this task</h2>
-        ) : (
+        {isEditing && (
+          <>
+            <h2>Edit task</h2>
+            <p className="form-note">Use this form to edit the task</p>
+          </>
+        )}
+        {isCreating && (
           <>
             <h2>Create new task</h2>
             <p className="form-note">Use this form to setup your new task</p>
+          </>
+        )}
+        {isViewing && (
+          <>
+            <p className="edit-task" onClick={() => setIsWriting(true)}>
+              Edit task <IconEdit />
+            </p>
+            <h2 className="title">{selectedTask.title}</h2>
           </>
         )}
         <IconClose
@@ -111,28 +134,30 @@ export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) 
           className="icon-close"
         />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-container">
-            <label htmlFor="title">Title</label>
-            <input
-              {...register('title', {
-                required: 'Task must have a title.',
-                minLength: { value: 4, message: 'Title must be at least 4 characters long.' }
-              })}
-              id="title"
-              type="text"
-              placeholder="Enter title"
-            />
-            <div className="input--helper">
-              <div className="caption text__error">{errors.title?.message}</div>
-              <div className="caption">0/100</div>
+          {(isCreating || isEditing) && (
+            <div className="input-container">
+              <label htmlFor="title">Title</label>
+              <input
+                {...register('title', {
+                  required: 'Task must have a title.',
+                  minLength: { value: 4, message: 'Title must be at least 4 characters long.' }
+                })}
+                id="title"
+                type="text"
+                placeholder="Enter title"
+              />
+              <div className="input--helper">
+                <div className="caption text__error">{errors.title?.message}</div>
+                <div className="caption">0/100</div>
+              </div>
             </div>
-          </div>
+          )}
           <div className={`input-container ${!errors.title?.message && 'input-container__error'}`}>
             <label htmlFor="description">Description</label>
-            <input
+            <textarea
+              className={isViewing ? 'disabled' : ''}
               {...register('description')}
               id="description"
-              type="text"
               placeholder="Enter description"
             />
             <div className="caption">0/100</div>
@@ -180,16 +205,22 @@ export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) 
               />
             </div>
           </div>
-          <div className="buttons-container">
-            <button
-              type="button"
-              onClick={() => dispatch(dispatch(toggleTaskModal({ isOpen: false })))}
-              className="button__cancel"
-            >
-              Cancel
-            </button>
-            <button className="button__primary">Create Task</button>
-          </div>
+          {(isCreating || isEditing) && (
+            <div className="buttons-container">
+              <button
+                type="button"
+                onClick={() => dispatch(dispatch(toggleTaskModal({ isOpen: false })))}
+                className="button__cancel"
+              >
+                Cancel
+              </button>
+              {isCreating ? (
+                <button className="button__primary">Create Task</button>
+              ) : (
+                <button className="button__primary">Edit Task</button>
+              )}
+            </div>
+          )}
         </form>
       </div>
     </div>

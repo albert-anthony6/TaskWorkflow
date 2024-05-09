@@ -50,6 +50,10 @@ ul {
   list-style: none;
 }
 
+.disabled {
+  pointer-events: none;
+}
+
 button {
   @include font-size(16, 500, none, 1, 24);
   padding: 16px 38px;
@@ -141,9 +145,11 @@ button {
   }
 }
 
-input {
+input,
+textarea {
+  font-family: $primary-font-stack;
   font-size: 16px;
-  padding: 14px 16px 13px;
+  padding: 10px 16px;
   border-radius: 4px;
   border: 2px solid rgba($grey, 0.5);
   outline: none;
@@ -151,6 +157,11 @@ input {
   &::placeholder {
     color: $grey;
   }
+}
+
+textarea {
+  min-height: 150px;
+  resize: none;
 }
 
 .data-table {
