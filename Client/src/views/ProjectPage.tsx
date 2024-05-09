@@ -8,6 +8,8 @@ import TaskColumn from '../components/TaskColumn';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import './ProjectPage.scss';
 import { getProject } from '../store/slices/projectSlice';
+import { updateStatus } from '../store/slices/taskSlice';
+import { toast } from 'react-toastify';
 
 export default function ProjectPage() {
   const params = useParams();
@@ -88,6 +90,16 @@ export default function ProjectPage() {
   function onDragEnd({ source, destination }: DropResult) {
     // Make sure we have a valid destination
     if (destination === undefined || destination === null) return null;
+
+    const draggedItem = columns[source.droppableId].list[source.index];
+    console.log('Dragged Item:', draggedItem, destination.droppableId);
+
+    dispatch(updateStatus({ id: `${draggedItem.id}`, status: destination.droppableId })).catch(
+      () => {
+        toast.error('Task transition failed.');
+        return;
+      }
+    );
 
     // If the source and destination columns are the same
     // AND if the index is the same, the item isn't moving

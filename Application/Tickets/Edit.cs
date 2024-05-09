@@ -71,7 +71,7 @@ namespace Application.Tickets
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Failed to update ticket.");
+                if (!result) return Result<Unit>.Failure("Failed to edit task.");
 
                 return Result<Unit>.Success(Unit.Value);
             }

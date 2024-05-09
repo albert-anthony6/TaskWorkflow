@@ -70,7 +70,7 @@ export const editProfile = createAsyncThunk<void, EditUserFormValues>(
   'user/editProfile',
   async (payload, thunkAPI) => {
     try {
-      return await agent.Profile.update(payload);
+      return await agent.Profile.edit(payload);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error });
     }

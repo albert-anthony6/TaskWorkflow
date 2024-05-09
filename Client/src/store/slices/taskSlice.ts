@@ -46,11 +46,22 @@ export const createTask = createAsyncThunk<void, Task>(
 
 export const editTask = createAsyncThunk<void, Task>('task/editTask', async (payload, thunkAPI) => {
   try {
-    return await agent.Tasks.update(payload);
+    return await agent.Tasks.edit(payload);
   } catch (error: any) {
     return thunkAPI.rejectWithValue({ error });
   }
 });
+
+export const updateStatus = createAsyncThunk<void, { id: string; status: string }>(
+  'task/updateStatus',
+  async (payload, thunkAPI) => {
+    try {
+      return await agent.Tasks.update(payload.id, payload.status);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
 
 export const deleteTask = createAsyncThunk<void, string>(
   'task/deleteTask',
@@ -87,6 +98,7 @@ export const taskSlice = createSlice({
         getTask.rejected,
         createTask.rejected,
         editTask.rejected,
+        updateStatus.rejected,
         deleteTask.rejected
       ),
       (state, action) => {

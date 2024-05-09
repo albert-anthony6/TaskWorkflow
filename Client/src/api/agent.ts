@@ -75,6 +75,7 @@ const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
   post: <T>(url: string, body: object) => axios.post<T>(url, body).then(responseBody),
   put: <T>(url: string, body: object) => axios.put<T>(url, body).then(responseBody),
+  patch: <T>(url: string) => axios.patch<T>(url).then(responseBody),
   delete: <T>(url: string) => axios.delete<T>(url).then(responseBody)
 };
 
@@ -88,7 +89,8 @@ const Tasks = {
   list: () => requests.get<Task[]>('/tickets'),
   details: (id: string) => requests.get<Task>(`/tickets/${id}`),
   create: (task: Task) => requests.post<void>('/tickets', task),
-  update: (task: Task) => requests.put<void>(`/tickets/${task.id}`, task),
+  edit: (task: Task) => requests.put<void>(`/tickets/${task.id}`, task),
+  update: (id: string, status: string) => requests.patch<void>(`/tickets/${id}/?status=${status}`),
   delete: (id: string) => requests.delete<void>(`/tickets/${id}`)
 };
 
@@ -123,7 +125,7 @@ const Profile = {
       });
     }
   },
-  update: (user: EditUserFormValues) => requests.put<void>('/profiles/user', user)
+  edit: (user: EditUserFormValues) => requests.put<void>('/profiles/user', user)
 };
 
 const agent = {

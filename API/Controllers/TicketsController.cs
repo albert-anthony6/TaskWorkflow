@@ -30,6 +30,12 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Edit.Command { Id = id, ReqTicketDto = ticket }));
         }
 
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateTicket(Guid id, string status)
+        {
+            return HandleResult(await Mediator.Send(new Update.Command { Id = id, Status = status }));
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicket(Guid id)
         {
