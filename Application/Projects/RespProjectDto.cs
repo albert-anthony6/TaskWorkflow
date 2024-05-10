@@ -11,7 +11,7 @@ namespace Application.Projects
         public int ActiveTicketsCount { get; set; }
         public int MembersCount { get; set; }
         public int CurrentUserTickets { get; set; }
-        public ICollection<RespTicketDto> Tickets { get; set; }
+        public ICollection<MinRespTicketDto> Tickets { get; set; }
         public ICollection <RespProfileDto> Members { get; set; }
     }
 }

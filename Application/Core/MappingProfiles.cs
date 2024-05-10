@@ -15,6 +15,7 @@ namespace Application.Core
 
             CreateMap<ReqTicketDto, Ticket>().IgnoreAllPropertiesWithAnInaccessibleSetter();
 
+            CreateMap<Ticket, MinRespTicketDto>();
             CreateMap<Ticket, RespTicketDto>()
                 .ForMember((dest) => dest.Attachments, (opt) => opt.MapFrom((src) => src.Attachments.Select((photo) => new PhotoDto
                 {
