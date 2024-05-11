@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './TaskCreationModal.scss';
 import { useForm } from 'react-hook-form';
+import { User } from '../utils/interfaces/user';
 import { Task } from '../utils/interfaces/task';
 import { ColorOption } from '../utils/interfaces/color-options';
 import { colorOptionsData } from '../utils/data/colorOptions';
@@ -18,7 +19,11 @@ import MutliSelectDropdown from './micro/MultiSelectDropdown';
 import IconClose from '../assets/icons/icon_close.svg?react';
 import IconEdit from '../assets/icons/icon_edit.svg?react';
 
-export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) {
+interface Props extends Partial<ReactDatePickerProps> {
+  members: User[];
+}
+
+export default function TaskCreationModal(props: Props) {
   const { taskModal, selectedTask } = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch();
   const [isWriting, setIsWriting] = useState(false);
@@ -35,7 +40,8 @@ export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) 
       description: '',
       severity: { value: 'Low', label: 'Low', color: '#00ff66' },
       startDate: null,
-      endDate: null
+      endDate: null,
+      assignees: null
     }
   });
 
@@ -44,6 +50,8 @@ export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) 
   const endDateValue = watch('endDate');
 
   function onSubmit(data: Task) {
+    console.log(data);
+    return;
     const severityValue: string = (data.severity as ColorOption).value;
 
     // Only using the value property from the severity object
@@ -163,7 +171,7 @@ export default function TaskCreationModal(props: Partial<ReactDatePickerProps>) 
             <div className="caption">0/100</div>
           </div>
           <label>Assignees</label>
-          <MutliSelectDropdown />
+          <MutliSelectDropdown options={props.members} register={register} setValue={setValue} />
           <StyledDropdown
             value={severityValue as ColorOption}
             onChange={(selectedOption) => setValue('severity', selectedOption)}

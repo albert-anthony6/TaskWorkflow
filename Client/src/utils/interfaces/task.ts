@@ -1,4 +1,5 @@
 import { ColorOption } from './color-options';
+import { User } from './user';
 
 export interface Task {
   id?: string;
@@ -8,4 +9,5 @@ export interface Task {
   status: string;
   startDate: Date | null;
   endDate: Date | null;
+  assignees: User[] | null;
 }

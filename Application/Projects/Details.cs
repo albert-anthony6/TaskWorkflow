@@ -29,6 +29,7 @@ namespace Application.Projects
             {
                 var project = await _context.Projects
                     .Include((p) => p.Members)
+                        .ThenInclude((u) => u.Avatar)
                     .Include((p) => p.Tickets)
                     .FirstOrDefaultAsync((p) => p.ProjectId == request.Id);
 

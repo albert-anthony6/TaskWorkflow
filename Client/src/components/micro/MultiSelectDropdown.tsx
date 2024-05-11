@@ -3,53 +3,44 @@ import Select from 'react-select';
 import { components, OptionProps, MultiValueProps } from 'react-select';
 
 interface Props {
-  label: string;
-  imageSrc: string;
+  options: any;
+  register: any;
+  setValue: any;
+}
+
+interface SelectProps {
+  id: string;
+  displayName: string;
+  avatar: { id: string; url: string };
 }
 
 // Custom option component
-const CustomOption = (props: OptionProps<Props>) => (
+const CustomOption = (props: OptionProps<SelectProps>) => (
   <components.Option {...props}>
     <img
-      src={props.data.imageSrc}
-      alt={props.data.label}
+      src={props.data.avatar.url}
+      alt={props.data.displayName}
       className="multiselect--avatar"
       style={{ marginRight: '10px', width: '24px', height: '24px' }}
     />
-    {props.data.label}
+    {props.data.displayName}
   </components.Option>
 );
 
 // Custom multi value component
-const CustomMultiValue = (props: MultiValueProps<Props>) => (
+const CustomMultiValue = (props: MultiValueProps<SelectProps>) => (
   <components.MultiValue {...props}>
     <img
-      src={props.data.imageSrc}
-      alt={props.data.label}
+      src={props.data.avatar.url}
+      alt={props.data.displayName}
       className="multiselect--avatar"
       style={{ marginRight: '5px', width: '20px', height: '20px' }}
     />
-    {props.data.label}
+    {props.data.displayName}
   </components.MultiValue>
 );
 
-// Example data
-const options = [
-  {
-    value: 'test1',
-    label: 'Test 1',
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmEqXU_P4ZLA-75L01HAlYVQAGyvyLOYExxw&usqp=CAU'
-  },
-  {
-    value: 'test2',
-    label: 'Test 2',
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmEqXU_P4ZLA-75L01HAlYVQAGyvyLOYExxw&usqp=CAU'
-  }
-];
-
-export default function MutliSelectDropdown() {
+export default function MutliSelectDropdown({ options, register, setValue }: Props) {
   //   const [options, setOptions] = useState([]);
 
   //   useEffect(() => {
@@ -59,7 +50,7 @@ export default function MutliSelectDropdown() {
   //         // Replace 'api/endpoint' with your actual API endpoint
   //         const response = await fetch('api/endpoint');
   //         const data = await response.json();
-  //         // Assuming the data from the server is an array of objects with 'value', 'label', and 'imageSrc' properties
+  //         // Assuming the data from the server is an array of objects with 'value', 'displayName', and 'avatar' properties
   //         setOptions(data);
   //       } catch (error) {
   //         console.error('Error fetching data:', error);
@@ -69,13 +60,18 @@ export default function MutliSelectDropdown() {
   //     fetchData();
   //   }, []);
 
+  const handleChange = (selectedOptions: any) => {
+    const selectedIds = selectedOptions.map((option: any) => option.id);
+    setValue('assignees', selectedIds);
+  };
+
   return (
     <Select
       isMulti
-      name="colors"
       options={options}
       className="basic-multi-select"
       classNamePrefix="select"
+      onChange={handleChange}
       components={{
         Option: CustomOption,
         MultiValue: CustomMultiValue
@@ -88,6 +84,7 @@ export default function MutliSelectDropdown() {
           background: '#56b2c250'
         })
       }}
+      {...(register('assignees'), { name: 'userName' })}
     />
   );
 }

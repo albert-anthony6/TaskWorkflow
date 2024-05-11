@@ -1,4 +1,5 @@
 import { Task } from './task';
+import { User } from './user';
 
 export interface Project {
   projectId: string;
@@ -8,4 +9,5 @@ export interface Project {
   membersCount: number;
   currentUserTickets: number;
   tickets: Task[];
+  members: User[];
 }

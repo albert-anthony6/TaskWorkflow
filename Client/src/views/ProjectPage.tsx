@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Task } from '../utils/interfaces/task';
+import { User } from '../utils/interfaces/user';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import TaskColumn from '../components/TaskColumn';
 import TaskCreationModal from '../components/TaskCreationModal';
@@ -181,7 +182,7 @@ export default function ProjectPage() {
           </div>
         </DragDropContext>
       </div>
-      {taskModal.isOpen && <TaskCreationModal />}
+      {taskModal.isOpen && <TaskCreationModal members={project?.members as User[]} />}
     </main>
   );
 }
