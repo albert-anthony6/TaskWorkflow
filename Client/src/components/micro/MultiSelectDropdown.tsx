@@ -1,9 +1,11 @@
 // import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { components, OptionProps, MultiValueProps } from 'react-select';
+import IconAvatar from '../../assets/icons/icon_avatar.svg?react';
 
 interface Props {
   options: any;
+  defaultValue: any;
   register: any;
   setValue: any;
 }
@@ -17,12 +19,15 @@ interface SelectProps {
 // Custom option component
 const CustomOption = (props: OptionProps<SelectProps>) => (
   <components.Option {...props}>
-    <img
-      src={props.data.avatar.url}
-      alt={props.data.displayName}
-      className="multiselect--avatar"
-      style={{ marginRight: '10px', width: '24px', height: '24px' }}
-    />
+    {props.data.avatar ? (
+      <img
+        src={props.data.avatar.url}
+        alt={props.data.displayName}
+        className="multiselect--avatar"
+      />
+    ) : (
+      <IconAvatar className="multiselect--avatar" />
+    )}
     {props.data.displayName}
   </components.Option>
 );
@@ -30,17 +35,20 @@ const CustomOption = (props: OptionProps<SelectProps>) => (
 // Custom multi value component
 const CustomMultiValue = (props: MultiValueProps<SelectProps>) => (
   <components.MultiValue {...props}>
-    <img
-      src={props.data.avatar.url}
-      alt={props.data.displayName}
-      className="multiselect--avatar"
-      style={{ marginRight: '5px', width: '20px', height: '20px' }}
-    />
+    {props.data.avatar ? (
+      <img
+        src={props.data.avatar.url}
+        alt={props.data.displayName}
+        className="multiselect--avatar"
+      />
+    ) : (
+      <IconAvatar className="multiselect--avatar" />
+    )}
     {props.data.displayName}
   </components.MultiValue>
 );
 
-export default function MutliSelectDropdown({ options, register, setValue }: Props) {
+export default function MutliSelectDropdown({ options, defaultValue, register, setValue }: Props) {
   //   const [options, setOptions] = useState([]);
 
   //   useEffect(() => {
@@ -68,10 +76,14 @@ export default function MutliSelectDropdown({ options, register, setValue }: Pro
   return (
     <Select
       isMulti
-      options={options}
+      defaultValue={defaultValue}
+      options={options ? options : null}
       className="basic-multi-select"
       classNamePrefix="select"
       onChange={handleChange}
+      isSearchable={true}
+      getOptionLabel={(option) => option.displayName}
+      getOptionValue={(option) => option.displayName}
       components={{
         Option: CustomOption,
         MultiValue: CustomMultiValue

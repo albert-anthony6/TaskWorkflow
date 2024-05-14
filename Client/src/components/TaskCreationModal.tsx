@@ -171,7 +171,12 @@ export default function TaskCreationModal(props: Props) {
             <div className="caption">0/100</div>
           </div>
           <label>Assignees</label>
-          <MutliSelectDropdown options={props.members} register={register} setValue={setValue} />
+          <MutliSelectDropdown
+            options={props.members}
+            defaultValue={selectedTask?.assignees}
+            register={register}
+            setValue={setValue}
+          />
           <StyledDropdown
             value={severityValue as ColorOption}
             onChange={(selectedOption) => setValue('severity', selectedOption)}

@@ -143,6 +143,11 @@ button {
     width: 56px;
     height: 56px;
   }
+
+  &__xs {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 input,
@@ -236,7 +241,10 @@ tbody {
 }
 
 .multiselect--avatar {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
+  margin-right: 10px;
   vertical-align: middle;
 }
 

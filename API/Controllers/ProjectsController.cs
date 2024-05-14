@@ -23,5 +23,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Details.Query{ Id = id }));
         }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateProject(Guid id, [FromForm] List<string> appUserIds)
+        {
+            return HandleResult(await Mediator.Send(new Update.Command { Id = id, AppUserIds = appUserIds }));
+        }
     }
 }
