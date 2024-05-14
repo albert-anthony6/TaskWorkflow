@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import './ProjectPage.scss';
 import { Link, useParams } from 'react-router-dom';
 import { Task } from '../utils/interfaces/task';
 import { User } from '../utils/interfaces/user';
@@ -6,16 +7,19 @@ import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import TaskColumn from '../components/TaskColumn';
 import TaskCreationModal from '../components/TaskCreationModal';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
-import './ProjectPage.scss';
 import { getProject } from '../store/slices/projectSlice';
 import { updateStatus } from '../store/slices/taskSlice';
 import { toast } from 'react-toastify';
+import MemberModal from '../components/MemberModal';
+import IconAvatar from '../assets/icons/icon_avatar.svg?react';
+import IconAddUser from '../assets/icons/icon_add_user.svg?react';
 
 export default function ProjectPage() {
   const params = useParams();
   const { project } = useAppSelector((state) => state.project);
   const dispatch = useAppDispatch();
   const { taskModal } = useAppSelector((state) => state.task);
+  const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
 
   interface Column {
     id: string;
@@ -173,6 +177,26 @@ export default function ProjectPage() {
         <h1>{project?.name}</h1>
         <Link to="/projects">Projects/{project?.name}</Link>
       </div>
+      <div className="project-page--actions">
+        <div className="members">
+          {project?.members.map((member) => (
+            <div className="member" key={member.id}>
+              {member.avatar ? (
+                <img
+                  src={member.avatar.url}
+                  alt={member.displayName}
+                  className="avatar avatar__xs"
+                />
+              ) : (
+                <IconAvatar className="avatar avatar__xs" />
+              )}
+            </div>
+          ))}
+          <div onClick={() => setIsMemberModalOpen(true)} className="member">
+            <IconAddUser />
+          </div>
+        </div>
+      </div>
       <div className="main-content">
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="columns-container">
@@ -183,6 +207,12 @@ export default function ProjectPage() {
         </DragDropContext>
       </div>
       {taskModal.isOpen && <TaskCreationModal members={project?.members as User[]} />}
+      {isMemberModalOpen && (
+        <MemberModal
+          members={project?.members as User[]}
+          closeModal={() => setIsMemberModalOpen(false)}
+        />
+      )}
     </main>
   );
 }

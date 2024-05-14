@@ -31,9 +31,9 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateTicket(Guid id, string status)
+        public async Task<IActionResult> UpdateTicket(Guid id, UpdateTicketStatusDto statusDto)
         {
-            return HandleResult(await Mediator.Send(new Update.Command { Id = id, Status = status }));
+            return HandleResult(await Mediator.Send(new Update.Command { Id = id, StatusDto = statusDto }));
         }
 
         [HttpDelete("{id}")]

@@ -1,10 +1,10 @@
 import TaskCard from './TaskCard';
+import './TaskColumn.scss';
 import { Droppable } from '@hello-pangea/dnd';
 import { Task } from '../utils/interfaces/task';
 import { toggleTaskModal } from '../store/slices/taskSlice';
 import { useAppDispatch } from '../store/configureStore';
 import IconAdd from '../assets/icons/icon_add.svg?react';
-import './TaskColumn.scss';
 
 interface Props {
   col: {

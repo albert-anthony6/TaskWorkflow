@@ -4,6 +4,7 @@ import { components, OptionProps, MultiValueProps } from 'react-select';
 import IconAvatar from '../../assets/icons/icon_avatar.svg?react';
 
 interface Props {
+  fieldName: string;
   options: any;
   defaultValue: any;
   register: any;
@@ -48,7 +49,13 @@ const CustomMultiValue = (props: MultiValueProps<SelectProps>) => (
   </components.MultiValue>
 );
 
-export default function MutliSelectDropdown({ options, defaultValue, register, setValue }: Props) {
+export default function MutliSelectDropdown({
+  fieldName,
+  options,
+  defaultValue,
+  register,
+  setValue
+}: Props) {
   //   const [options, setOptions] = useState([]);
 
   //   useEffect(() => {
@@ -70,7 +77,7 @@ export default function MutliSelectDropdown({ options, defaultValue, register, s
 
   const handleChange = (selectedOptions: any) => {
     const selectedIds = selectedOptions.map((option: any) => option.id);
-    setValue('assignees', selectedIds);
+    setValue(fieldName, selectedIds);
   };
 
   return (
@@ -96,7 +103,7 @@ export default function MutliSelectDropdown({ options, defaultValue, register, s
           background: '#56b2c250'
         })
       }}
-      {...(register('assignees'), { name: 'userName' })}
+      {...(register(fieldName), { name: 'userName' })}
     />
   );
 }

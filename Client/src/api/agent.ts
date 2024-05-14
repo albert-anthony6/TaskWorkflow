@@ -75,14 +75,16 @@ const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
   post: <T>(url: string, body: object) => axios.post<T>(url, body).then(responseBody),
   put: <T>(url: string, body: object) => axios.put<T>(url, body).then(responseBody),
-  patch: <T>(url: string) => axios.patch<T>(url).then(responseBody),
+  patch: <T>(url: string, body: object) => axios.patch<T>(url, body).then(responseBody),
   delete: <T>(url: string) => axios.delete<T>(url).then(responseBody)
 };
 
 const Projects = {
   list: (filterUserTasks: boolean) =>
     requests.get<Project[]>(`/projects/?filterUserTickets=${filterUserTasks}`),
-  details: (projectId: string) => requests.get<Project>(`/projects/${projectId}`)
+  details: (projectId: string) => requests.get<Project>(`/projects/${projectId}`),
+  update: (projectId: string, appUserIds: string[]) =>
+    requests.patch<void>(`/projects/${projectId}/`, appUserIds)
 };
 
 const Tasks = {
@@ -90,7 +92,7 @@ const Tasks = {
   details: (id: string) => requests.get<Task>(`/tickets/${id}`),
   create: (task: Task) => requests.post<void>('/tickets', task),
   edit: (task: Task) => requests.put<void>(`/tickets/${task.id}`, task),
-  update: (id: string, status: string) => requests.patch<void>(`/tickets/${id}/?status=${status}`),
+  update: (id: string, status: string) => requests.patch<void>(`/tickets/${id}/`, { status }),
   delete: (id: string) => requests.delete<void>(`/tickets/${id}`)
 };
 

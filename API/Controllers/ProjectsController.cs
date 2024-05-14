@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateProject(Guid id, [FromForm] List<string> appUserIds)
+        public async Task<IActionResult> UpdateProject(Guid id, List<string> appUserIds)
         {
             return HandleResult(await Mediator.Send(new Update.Command { Id = id, AppUserIds = appUserIds }));
         }

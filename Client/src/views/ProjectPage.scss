@@ -1,7 +1,21 @@
 .project-page {
+  position: relative;
   &--header {
     padding: 35px 50px 40px;
     background-color: $light-grey;
+  }
+
+  &--actions {
+    padding: 40px 50px 0;
+
+    .members {
+      display: flex;
+
+      .member {
+        margin-right: 10px;
+        cursor: pointer;
+      }
+    }
   }
 
   .main-content {

@@ -1,13 +1,4 @@
 .task-creation-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 999;
-  background-color: rgba($darkest-neutral, 0.5);
-  backdrop-filter: blur(5px);
-
   .form-container {
     position: absolute;
     padding: 25px 35px 47px;

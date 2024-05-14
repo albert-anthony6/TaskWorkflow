@@ -115,7 +115,7 @@ export default function TaskCreationModal(props: Props) {
   const isEditing = isWriting && selectedTask;
 
   return (
-    <div className="task-creation-modal">
+    <div className="task-creation-modal modal-container">
       <div className="form-container">
         {isEditing && (
           <>
@@ -172,6 +172,7 @@ export default function TaskCreationModal(props: Props) {
           </div>
           <label>Assignees</label>
           <MutliSelectDropdown
+            fieldName="assignees"
             options={props.members}
             defaultValue={selectedTask?.assignees}
             register={register}

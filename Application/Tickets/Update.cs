@@ -9,7 +9,7 @@ namespace Application.Tickets
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public string Status { get; set; }
+            public UpdateTicketStatusDto StatusDto { get; set; }
             public Guid Id { get; set; }
         }
         
@@ -29,7 +29,7 @@ namespace Application.Tickets
                 if (ticket == null) return null;
 
                 // Update the status property of the ticket
-                ticket.Status = request.Status;
+                ticket.Status = request.StatusDto.Status;
 
                 var result = await _context.SaveChangesAsync() > 0;
 
