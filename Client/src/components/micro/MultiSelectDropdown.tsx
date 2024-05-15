@@ -1,4 +1,4 @@
-// import { useState, useEffect } from 'react';
+import './MultiSelectDropdown.scss';
 import Select from 'react-select';
 import { components, OptionProps, MultiValueProps } from 'react-select';
 import IconAvatar from '../../assets/icons/icon_avatar.svg?react';
@@ -9,6 +9,7 @@ interface Props {
   defaultValue: any;
   register: any;
   setValue: any;
+  isReadOnly?: boolean;
 }
 
 interface SelectProps {
@@ -54,27 +55,9 @@ export default function MutliSelectDropdown({
   options,
   defaultValue,
   register,
-  setValue
+  setValue,
+  isReadOnly = false
 }: Props) {
-  //   const [options, setOptions] = useState([]);
-
-  //   useEffect(() => {
-  //     // Fetch options data from server
-  //     const fetchData = async () => {
-  //       try {
-  //         // Replace 'api/endpoint' with your actual API endpoint
-  //         const response = await fetch('api/endpoint');
-  //         const data = await response.json();
-  //         // Assuming the data from the server is an array of objects with 'value', 'displayName', and 'avatar' properties
-  //         setOptions(data);
-  //       } catch (error) {
-  //         console.error('Error fetching data:', error);
-  //       }
-  //     };
-
-  //     fetchData();
-  //   }, []);
-
   const handleChange = (selectedOptions: any) => {
     const selectedIds = selectedOptions.map((option: any) => option.id);
     setValue(fieldName, selectedIds);
@@ -83,9 +66,10 @@ export default function MutliSelectDropdown({
   return (
     <Select
       isMulti
+      placeholder="Users..."
       defaultValue={defaultValue}
+      className={isReadOnly ? 'multiselect__readonly' : ''}
       options={options ? options : null}
-      className="basic-multi-select"
       classNamePrefix="select"
       onChange={handleChange}
       isSearchable={true}

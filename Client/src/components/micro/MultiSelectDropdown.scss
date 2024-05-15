@@ -1,0 +1,17 @@
+.multiselect {
+  &--avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  &__readonly {
+    pointer-events: none;
+
+    .select__indicators {
+      opacity: 0;
+    }
+  }
+}

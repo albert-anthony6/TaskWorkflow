@@ -25,12 +25,13 @@ const colorStyles: StylesConfig<ColorOption> = {
 interface Props {
   value: ColorOption;
   onChange: (value: ColorOption) => void;
+  isReadOnly?: boolean;
 }
 
-export default function StyledDropdown({ value, onChange }: Props) {
+export default function StyledDropdown({ value, onChange, isReadOnly = false }: Props) {
   return (
     <div className="styled-dropdown">
-      <p className="react-select--label">Severity</p>
+      <p className="select--label">Severity</p>
       <Select
         isSearchable={false}
         value={value}
@@ -38,7 +39,8 @@ export default function StyledDropdown({ value, onChange }: Props) {
         defaultValue={colorOptionsData[2]}
         options={colorOptionsData}
         styles={colorStyles}
-        classNamePrefix="react-select"
+        classNamePrefix="select"
+        className={isReadOnly ? 'styled-dropdown__readonly' : ''}
       />
     </div>
   );

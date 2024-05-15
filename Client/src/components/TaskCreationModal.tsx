@@ -179,9 +179,11 @@ export default function TaskCreationModal(props: Props) {
             defaultValue={selectedTask?.assignees}
             register={register}
             setValue={setValue}
+            isReadOnly={isViewing as boolean}
           />
           <StyledDropdown
             value={severityValue as ColorOption}
+            isReadOnly={isViewing as boolean}
             onChange={(selectedOption) => setValue('severity', selectedOption)}
           />
           <div className="dates-container">
@@ -199,7 +201,7 @@ export default function TaskCreationModal(props: Props) {
                 showTimeSelect
                 timeCaption="time"
                 dateFormat="MMMM d, yyyy h:mm aa"
-                className="date-input"
+                className={isViewing ? 'date-input disabled' : 'date-input'}
               />
               <div className="input--helper">
                 <div className="caption text__error">{errors.startDate?.message}</div>
@@ -217,7 +219,7 @@ export default function TaskCreationModal(props: Props) {
                 showTimeSelect
                 timeCaption="time"
                 dateFormat="MMMM d, yyyy h:mm aa"
-                className="date-input"
+                className={isViewing ? 'date-input disabled' : 'date-input'}
               />
             </div>
           </div>
