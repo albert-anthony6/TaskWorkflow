@@ -29,6 +29,7 @@ export default function TaskCreationModal(props: Props) {
   const { taskModal, selectedTask } = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch();
   const [isWriting, setIsWriting] = useState(false);
+  const [isOnDetails, setIsOnDetails] = useState(true);
   const {
     register,
     handleSubmit,
@@ -116,9 +117,51 @@ export default function TaskCreationModal(props: Props) {
   const isCreating = isWriting && !selectedTask;
   const isEditing = isWriting && selectedTask;
 
+  if (!isOnDetails)
+    return (
+      <div className="task-creation-modal modal-container">
+        <div className="form-container">
+          <ul>
+            <li onClick={() => setIsOnDetails(true)} className={isOnDetails ? 'active' : ''}>
+              Details
+            </li>
+            <li onClick={() => setIsOnDetails(false)} className={isOnDetails ? '' : 'active'}>
+              Attachments
+            </li>
+          </ul>
+          <p className="edit-task" onClick={() => setIsWriting(true)}>
+            Upload image <IconEdit />
+          </p>
+          <h2 className="title">Attachments</h2>
+          <div className="attachments-container">
+            <img
+              src="data:image/jpeg;base64,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"
+              alt=""
+            />
+            <img
+              src="data:image/jpeg;base64,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"
+              alt=""
+            />
+          </div>
+          <IconClose
+            onClick={() => dispatch(dispatch(toggleTaskModal({ isOpen: false })))}
+            className="icon-close"
+          />
+        </div>
+      </div>
+    );
+
   return (
     <div className="task-creation-modal modal-container">
       <div className="form-container">
+        <ul>
+          <li onClick={() => setIsOnDetails(true)} className={isOnDetails ? 'active' : ''}>
+            Details
+          </li>
+          <li onClick={() => setIsOnDetails(false)} className={isOnDetails ? '' : 'active'}>
+            Attachments
+          </li>
+        </ul>
         {isEditing && (
           <>
             <h2>Edit task</h2>

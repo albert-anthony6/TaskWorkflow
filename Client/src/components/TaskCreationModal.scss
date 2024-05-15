@@ -8,6 +8,36 @@
     min-height: 100vh;
     background-color: $lightest-neutral;
 
+    ul {
+      display: flex;
+      align-items: center;
+
+      li {
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 8px;
+
+        &:first-child {
+          margin-right: 15px;
+        }
+
+        &.active {
+          background-color: $dark-neutral;
+          color: $lightest-neutral;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .attachments-container {
+      display: flex;
+      padding: 15px;
+      align-items: center;
+      justify-content: space-evenly;
+      border: 2px solid $dark-neutral;
+      border-radius: 8px;
+    }
+
     .edit-task {
       display: inline-block;
       cursor: pointer;
