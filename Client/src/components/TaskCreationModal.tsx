@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './TaskCreationModal.scss';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { User } from '../utils/interfaces/user';
 import { Task } from '../utils/interfaces/task';
 import { ColorOption } from '../utils/interfaces/color-options';
@@ -24,6 +25,7 @@ interface Props extends Partial<ReactDatePickerProps> {
 }
 
 export default function TaskCreationModal(props: Props) {
+  const params = useParams();
   const { taskModal, selectedTask } = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch();
   const [isWriting, setIsWriting] = useState(false);
@@ -50,8 +52,6 @@ export default function TaskCreationModal(props: Props) {
   const endDateValue = watch('endDate');
 
   function onSubmit(data: Task) {
-    console.log(data);
-    return;
     const severityValue: string = (data.severity as ColorOption).value;
 
     // Only using the value property from the severity object
@@ -67,7 +67,9 @@ export default function TaskCreationModal(props: Props) {
     } else {
       // Backend will generate the id on task creation
       delete payload.id;
-      dispatch(createTask(payload)).catch((err) => handleErrors(err.error));
+      dispatch(createTask({ projectId: `${params.projectId}`, body: payload })).catch((err) =>
+        handleErrors(err.error)
+      );
     }
   }
 

@@ -9,5 +9,6 @@ export interface Task {
   status: string;
   startDate: Date | null;
   endDate: Date | null;
-  assignees: User[] | null;
+  assignees?: User[] | string[] | null;
+  appUserIds?: string[];
 }

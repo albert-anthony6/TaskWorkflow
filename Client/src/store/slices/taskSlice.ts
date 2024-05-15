@@ -33,11 +33,15 @@ export const getTask = createAsyncThunk<Task, string>('task/getTask', async (tas
   }
 });
 
-export const createTask = createAsyncThunk<void, Task>(
+export const createTask = createAsyncThunk<void, { projectId: string; body: Task }>(
   'task/createTask',
   async (payload, thunkAPI) => {
     try {
-      return await agent.Tasks.create(payload);
+      if (payload.body.assignees) {
+        payload.body.appUserIds = payload.body.assignees as string[];
+        delete payload.body.assignees;
+      }
+      return await agent.Tasks.create(payload.projectId, payload.body);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error });
     }
