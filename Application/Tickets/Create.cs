@@ -53,6 +53,12 @@ namespace Application.Tickets
                     Attachments = request.ReqTicketDto.Attachments
                 };
 
+                // Ensure AppUserIds is not null
+                if (request.ReqTicketDto.AppUserIds == null)
+                {
+                    request.ReqTicketDto.AppUserIds = new List<string>();
+                }
+
                 // Loop through AppUserIds and find matching users
                 foreach (var userId in request.ReqTicketDto.AppUserIds)
                 {

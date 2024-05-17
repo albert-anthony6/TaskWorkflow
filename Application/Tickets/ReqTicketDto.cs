@@ -13,6 +13,6 @@ namespace Application.Tickets
         public DateTimeOffset EndDate { get; set; }
         [JsonIgnore]
         public ICollection<Photo> Attachments { get; set; }
-        public List<string> AppUserIds { get; set; } = new List<string>();
+        public List<string> AppUserIds { get; set; }
     }
 }

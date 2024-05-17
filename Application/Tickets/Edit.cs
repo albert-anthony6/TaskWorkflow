@@ -46,6 +46,12 @@ namespace Application.Tickets
 
                 ticket.Assignees.Clear();
 
+                // Ensure AppUserIds is not null
+                if (request.ReqTicketDto.AppUserIds == null)
+                {
+                    request.ReqTicketDto.AppUserIds = new List<string>();
+                }
+
                 if (request.ReqTicketDto.AppUserIds.Any())
                 {
                     foreach (var userId in request.ReqTicketDto.AppUserIds)

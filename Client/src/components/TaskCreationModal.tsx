@@ -59,8 +59,11 @@ export default function TaskCreationModal(props: Props) {
     const payload = {
       id: taskModal.taskId,
       ...data,
-      severity: severityValue
+      severity: severityValue,
+      appUserIds: data.assignees as string[]
     };
+
+    delete payload.assignees;
 
     // If we're editing or creating the task
     if (selectedTask && taskModal.taskId) {

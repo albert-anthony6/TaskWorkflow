@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditTicket(Guid id, [FromForm] ReqTicketDto ticket)
+        public async Task<IActionResult> EditTicket(Guid id, ReqTicketDto ticket)
         {
             return HandleResult(await Mediator.Send(new Edit.Command { Id = id, ReqTicketDto = ticket }));
         }
