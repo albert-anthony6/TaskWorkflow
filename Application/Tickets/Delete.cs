@@ -44,7 +44,7 @@ namespace Application.Tickets
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Failed to delete the ticket.");
+                if (!result) return Result<Unit>.Failure("Failed to delete ticket.");
 
                 return Result<Unit>.Success(Unit.Value);
             }

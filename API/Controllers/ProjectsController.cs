@@ -1,5 +1,4 @@
 using Application.Projects;
-using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -28,6 +27,12 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateProject(Guid id, List<string> appUserIds)
         {
             return HandleResult(await Mediator.Send(new Update.Command { Id = id, AppUserIds = appUserIds }));
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProject(Guid id)
+        {
+            return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
         }
     }
 }
