@@ -1,25 +1,36 @@
 import './SettingsPage.scss';
 import { useForm } from 'react-hook-form';
 import ImageDropzone from '../components/micro/ImageDropzone';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ImageCropper from '../components/micro/ImageCropper';
 import { editProfile, getCurrentUser, uploadImage } from '../store/slices/userSlice';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { EditUserFormValues } from '../utils/interfaces/user';
+import useBlobCleanup from '../utils/hooks/useBlobCleanup';
 
 export default function SettingsPage() {
-  const isUnmounting = useRef(false);
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state) => state.user);
 
-  const [avatarBlob, setAvatarBlob] = useState<Blob | null>();
-  const [avatarBlobUrl, setAvatarBlobUrl] = useState<string>('');
-  const [avatarFiles, setAvatarFiles] = useState<any>([]);
-  const [hasAvatarImage, setHasAvatarImage] = useState(false);
+  const {
+    blob: avatarBlob,
+    setBlob: setAvatarBlob,
+    blobUrl: avatarBlobUrl,
+    setBlobUrl: setAvatarBlobUrl,
+    files: avatarFiles,
+    setFiles: setAvatarFiles
+  } = useBlobCleanup();
 
-  const [coverBlob, setCoverBlob] = useState<Blob | null>();
-  const [coverBlobUrl, setCoverBlobUrl] = useState<string>('');
-  const [coverFiles, setCoverFiles] = useState<any>([]);
+  const {
+    blob: coverBlob,
+    setBlob: setCoverBlob,
+    blobUrl: coverBlobUrl,
+    setBlobUrl: setCoverBlobUrl,
+    files: coverFiles,
+    setFiles: setCoverFiles
+  } = useBlobCleanup();
+
+  const [hasAvatarImage, setHasAvatarImage] = useState(false);
   const [hasCoverImage, setHasCoverImage] = useState(false);
 
   const {
@@ -188,48 +199,6 @@ export default function SettingsPage() {
       console.error('Error during submission:', err);
     }
   }
-
-  // Effect to update isUnmounting on component unmount
-  useEffect(() => {
-    // Component is mounted
-    isUnmounting.current = false;
-
-    // Component is unmounting
-    return () => {
-      isUnmounting.current = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (avatarBlob && !avatarBlobUrl) {
-      setAvatarBlobUrl(URL.createObjectURL(avatarBlob));
-    }
-    if (coverBlob && !coverBlobUrl) {
-      setCoverBlobUrl(URL.createObjectURL(coverBlob));
-    }
-
-    // Cleanup function (runs on component unmount)
-    return () => {
-      if (isUnmounting.current) {
-        // Cleanup avatarBlob
-        if (avatarBlob) {
-          URL.revokeObjectURL(avatarBlobUrl);
-          setAvatarBlob(null);
-        }
-
-        // Cleanup coverBlob
-        if (coverBlob) {
-          URL.revokeObjectURL(coverBlobUrl);
-          setCoverBlob(null);
-        }
-
-        // Cleanup previews in avatarFiles
-        avatarFiles.forEach((file: any) => URL.revokeObjectURL(file.preview));
-        // Cleanup previews in coverFiles
-        coverFiles.forEach((file: any) => URL.revokeObjectURL(file.preview));
-      }
-    };
-  }, [avatarBlob, coverBlob, avatarFiles, coverFiles, avatarBlobUrl, coverBlobUrl]);
 
   // Set input values with currentUser data
   useEffect(() => {

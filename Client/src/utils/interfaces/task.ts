@@ -1,4 +1,5 @@
 import { ColorOption } from './color-options';
+import { Photo } from './photo';
 import { User } from './user';
 
 export interface Task {
@@ -10,5 +11,6 @@ export interface Task {
   startDate: Date | null;
   endDate: Date | null;
   assignees?: User[] | string[] | null;
+  attachments?: Photo[] | null;
   appUserIds?: string[];
 }

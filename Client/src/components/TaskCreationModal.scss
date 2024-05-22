@@ -1,4 +1,6 @@
 .task-creation-modal {
+  overflow-y: scroll;
+
   .form-container {
     position: absolute;
     padding: 25px 35px 47px;
@@ -30,12 +32,18 @@
     }
 
     .attachments-container {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
       padding: 15px;
-      align-items: center;
-      justify-content: space-evenly;
+      margin-top: 30px;
       border: 2px solid $dark-neutral;
       border-radius: 8px;
+
+      img {
+        width: 100%;
+        object-fit: cover;
+      }
     }
 
     .edit-task {

@@ -63,6 +63,17 @@ export const updateStatus = createAsyncThunk<void, { id: string; status: string 
   }
 );
 
+export const uploadImage = createAsyncThunk<void, { file: Blob; id: string }>(
+  'task/uploadImage',
+  async (payload, thunkAPI) => {
+    try {
+      await agent.Tasks.uploadImage(payload.file, payload.id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
+
 export const deleteTask = createAsyncThunk<void, string>(
   'task/deleteTask',
   async (taskId, thunkAPI) => {
@@ -99,6 +110,7 @@ export const taskSlice = createSlice({
         createTask.rejected,
         editTask.rejected,
         updateStatus.rejected,
+        uploadImage.rejected,
         deleteTask.rejected
       ),
       (state, action) => {

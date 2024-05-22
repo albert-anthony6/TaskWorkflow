@@ -13,6 +13,8 @@ interface Props {
   setFiles: (files: any) => void;
   setBlob: (param: null) => void;
   setBlobUrl: (param: string) => void;
+  children?: React.ReactNode;
+  handleSave?: () => void;
 }
 
 export default function ImageDropzone({
@@ -24,7 +26,9 @@ export default function ImageDropzone({
   image,
   hasImage,
   customPreview,
-  setHasImage
+  setHasImage,
+  children,
+  handleSave
 }: Props) {
   function handleReset() {
     setHasImage(false);
@@ -63,27 +67,56 @@ export default function ImageDropzone({
   return (
     <div
       {...getRootProps({ onClick: (event) => preventEvent(event) })}
-      className={isDragActive ? 'dropzone dropzone__active' : 'dropzone'}
+      className={`dropzone ${isDragActive ? 'dropzone__active' : ''} ${
+        children ? 'dropzone__full-width' : ''
+      }`}
     >
       <input {...getInputProps()} />
-      {(blobUrl || hasImage) && (
-        <img
-          className={`img-preview ${customPreview}`}
-          src={blobUrl || image}
-          alt="Uploaded Image"
-        />
-      )}
-      {/* {files.length > 0 && !blobUrl && <div className="img-preview" />} */}
-      {files.length > 0 || hasImage ? (
-        <div onClick={handleReset}>
-          <IconUpload />
-          Cancel Image
-        </div>
+      {children ? (
+        <>
+          <div className="dropzone__flex">
+            {blobUrl ? (
+              <div className="img-preview-container">
+                <img
+                  className={`img-preview ${customPreview}`}
+                  src={blobUrl || image}
+                  alt="Uploaded Image"
+                />
+                <div className="img-preview--actions">
+                  <button className="button__secondary" onClick={handleReset}>
+                    Cancel
+                  </button>
+                  <button className="button__primary" onClick={handleSave}>
+                    Save
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>{children}</>
+            )}
+          </div>
+        </>
       ) : (
-        <div>
-          <IconUpload />
-          Upload Image
-        </div>
+        <>
+          {(blobUrl || hasImage) && (
+            <img
+              className={`img-preview ${customPreview}`}
+              src={blobUrl || image}
+              alt="Uploaded Image"
+            />
+          )}
+          {files.length > 0 || hasImage ? (
+            <div onClick={handleReset}>
+              <IconUpload />
+              Cancel Image
+            </div>
+          ) : (
+            <div>
+              <IconUpload />
+              Upload Image
+            </div>
+          )}
+        </>
       )}
     </div>
   );

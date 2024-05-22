@@ -65,7 +65,7 @@ button {
 .button__primary {
   background-color: $primary;
   color: $lightest-neutral;
-  border: none;
+  border: 2px solid $primary;
 }
 
 .button__secondary {

@@ -94,7 +94,19 @@ const Tasks = {
     requests.post<void>(`/tickets/?projectId=${projectId}`, task),
   edit: (task: Task) => requests.put<void>(`/tickets/${task.id}`, task),
   update: (id: string, status: string) => requests.patch<void>(`/tickets/${id}/`, { status }),
-  delete: (id: string) => requests.delete<void>(`/tickets/${id}`)
+  delete: (id: string) => requests.delete<void>(`/tickets/${id}`),
+  uploadImage: (file: Blob, id: string) => {
+    const formData = new FormData();
+    formData.append('File', file);
+    formData.append('Id', id);
+    if (file?.size > 10485760) {
+      toast.error('File size too large. Maximum is 10 MB.');
+      return;
+    }
+    return axios.post<void>('photos', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  }
 };
 
 const Account = {
@@ -118,15 +130,9 @@ const Profile = {
       toast.error('File size too large. Maximum is 10 MB.');
       return;
     }
-    if (type === 'avatar') {
-      return axios.put<void>('photos/avatar', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-    } else if (type === 'coverImage') {
-      return axios.put<void>('photos/cover-image', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-    }
+    return axios.put<void>(type === 'avatar' ? 'photos/avatar' : 'photos/cover-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
   },
   edit: (user: EditUserFormValues) => requests.put<void>('/profiles/user', user)
 };

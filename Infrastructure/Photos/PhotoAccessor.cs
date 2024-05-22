@@ -21,7 +21,7 @@ namespace Infrastructure.Photos
         }
 
         public async Task<PhotoUploadResult> AddPhoto(IFormFile file, Boolean isBanner)
-        {
+        { 
             if (file.Length > 0)
             {
                 await using var stream = file.OpenReadStream();

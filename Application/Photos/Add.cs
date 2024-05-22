@@ -28,7 +28,8 @@ namespace Application.Photos
 
             public async Task<Result<PhotoDto>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var ticket = await _context.Tickets.Include((p) => p.Attachments)
+                var ticket = await _context.Tickets
+                    .Include((p) => p.Attachments)
                     .FirstOrDefaultAsync((x) => x.Id == request.Id);
 
                     if (ticket == null) return null;
@@ -56,7 +57,7 @@ namespace Application.Photos
                         return Result<PhotoDto>.Success(photoDto);
                     }
 
-                    return Result<PhotoDto>.Failure("Problem adding photo");
+                    return Result<PhotoDto>.Failure("Problem adding attachment");
             }
         }
     }

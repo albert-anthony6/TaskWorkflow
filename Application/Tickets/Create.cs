@@ -49,8 +49,7 @@ namespace Application.Tickets
                     Status = "todo",
                     StartDate = request.ReqTicketDto.StartDate,
                     EndDate = request.ReqTicketDto.EndDate,
-                    Author = currentUser,
-                    Attachments = request.ReqTicketDto.Attachments
+                    Author = currentUser
                 };
 
                 // Ensure AppUserIds is not null

@@ -2,15 +2,55 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: dashed 3px #eee;
-  border-color: #eee;
+  border: dashed 2px $grey;
   border-radius: 5px;
   text-align: center;
   width: fit-content;
-  background-color: red;
 
   &__active {
-    border-color: 'green';
+    border-color: #ff0000;
+  }
+
+  &__full-width {
+    width: 100%;
+    min-height: 250px;
+    cursor: pointer;
+
+    .dropzone__flex {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      svg {
+        width: 50px;
+        height: 50px;
+      }
+
+      .img-preview-container {
+        position: relative;
+        width: fit-content;
+
+        .img-preview {
+          margin-right: unset;
+
+          &--actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            button {
+              width: 49%;
+            }
+
+            .button__secondary {
+              color: $dark-neutral;
+              border-color: $dark-neutral;
+            }
+          }
+        }
+      }
+    }
   }
 
   .img-preview {
@@ -19,6 +59,12 @@
     margin-right: 25px;
     overflow: hidden;
     border-radius: 50%;
+
+    &__attachment {
+      border-radius: 0;
+      width: 300px;
+      height: 300px;
+    }
 
     &__cover {
       border-radius: 0;
