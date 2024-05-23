@@ -165,7 +165,7 @@ export default function LandingPage() {
           itemClass="carousel-item-padding-40-px"
         >
           {slides.map((slide) => (
-            <div className="carousel-slide">
+            <div className="carousel-slide" key={slide.caption}>
               <div className="review-section__left">
                 <IconLogo className="logo__white" />
                 <p>{slide.review}</p>

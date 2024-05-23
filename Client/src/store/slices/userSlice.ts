@@ -22,7 +22,7 @@ export const signInUser = createAsyncThunk<CurrentUser, AuthUserFormValues>(
     try {
       const response = await agent.Account.login(user);
       thunkAPI.dispatch(setToken(response.token));
-      router.navigate('/projects/123');
+      router.navigate(`/user/${response.id}`);
       return response;
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error });

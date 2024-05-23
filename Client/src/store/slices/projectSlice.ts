@@ -43,6 +43,17 @@ export const getProject = createAsyncThunk<Project, string>(
   }
 );
 
+export const createProject = createAsyncThunk<void, string>(
+  'project/createProject',
+  async (name, thunkAPI) => {
+    try {
+      return await agent.Projects.create(name);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
+
 export const updateMembers = createAsyncThunk<void, { projectId: string; appUserIds: string[] }>(
   'project/updateMembers',
   async (payload, thunkAPI) => {
@@ -61,7 +72,6 @@ export const projectSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getProjects.fulfilled, (state, action) => {
-      console.log(action.payload);
       if (action.payload !== undefined) {
         state.projects = action.payload;
       }
@@ -72,8 +82,16 @@ export const projectSlice = createSlice({
     builder.addCase(getProject.fulfilled, (state, action) => {
       state.project = action.payload;
     });
-    builder.addMatcher(isAnyOf(getProjects.rejected, updateMembers.rejected), (state, action) => {
-      throw action.payload;
-    });
+    builder.addMatcher(
+      isAnyOf(
+        getProjects.rejected,
+        getProject.rejected,
+        createProject.rejected,
+        updateMembers.rejected
+      ),
+      (state, action) => {
+        throw action.payload;
+      }
+    );
   }
 });

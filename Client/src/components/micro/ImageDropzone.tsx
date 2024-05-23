@@ -83,7 +83,7 @@ export default function ImageDropzone({
                   alt="Uploaded Image"
                 />
                 <div className="img-preview--actions">
-                  <button className="button__secondary" onClick={handleReset}>
+                  <button className="button__secondary__button" onClick={handleReset}>
                     Cancel
                   </button>
                   <button className="button__primary" onClick={handleSave}>

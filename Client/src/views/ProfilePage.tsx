@@ -8,6 +8,7 @@ import IconFacebook from '../assets/icons/icon_facebook.svg?react';
 import IconTwitter from '../assets/icons/icon_twitter.svg?react';
 import IconInstagram from '../assets/icons/icon_instagram.svg?react';
 import IconLinkedin from '../assets/icons/icon_linkedin.svg?react';
+import ProjectTable from '../components/ProjectTable';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -73,64 +74,20 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <h3>Your Projects</h3>
-      <table className="data-table">
-        <thead>
-          <th scope="col">Name</th>
-          <th scope="col">Your Tasks</th>
-          <th scope="col">Members</th>
-          <th scope="col">Active Tasks</th>
-          <th scope="col">Owner</th>
-        </thead>
-        <tbody>
-          {!myProjects.length ? (
-            <tr>
-              <td colSpan={5} className="empty-row">
-                You have no current projects
-              </td>
-            </tr>
-          ) : (
-            myProjects.map((project, index) => (
-              <tr key={index} onClick={() => handleRowClick(project.projectId)}>
-                <td>{project.name}</td>
-                <td>{project.currentUserTickets}</td>
-                <td>{project.membersCount}</td>
-                <td>{project.activeTicketsCount}</td>
-                <td>{project.owner}</td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-      <h3>All Projects</h3>
-      <table className="data-table">
-        <thead>
-          <th scope="col">Name</th>
-          <th scope="col">Your Tasks</th>
-          <th scope="col">Members</th>
-          <th scope="col">Active Tasks</th>
-          <th scope="col">Owner</th>
-        </thead>
-        <tbody>
-          {!projects.length ? (
-            <tr>
-              <td colSpan={5} className="empty-row">
-                No projects found
-              </td>
-            </tr>
-          ) : (
-            projects.map((project, index) => (
-              <tr key={index} onClick={() => handleRowClick(project.projectId)}>
-                <td>{project.name}</td>
-                <td>{project.currentUserTickets}</td>
-                <td>{project.membersCount}</td>
-                <td>{project.activeTicketsCount}</td>
-                <td>{project.owner}</td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+      <div className="profile-content">
+        <h3>Your Projects</h3>
+        <ProjectTable
+          projects={myProjects}
+          handleRowClick={handleRowClick}
+          emptyMessage="You have no current projects"
+        />
+        <h3>All Projects</h3>
+        <ProjectTable
+          projects={projects}
+          handleRowClick={handleRowClick}
+          emptyMessage="No projects found"
+        />
+      </div>
     </main>
   );
 }

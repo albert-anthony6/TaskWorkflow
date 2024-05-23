@@ -1,0 +1,24 @@
+.project-table {
+  width: 100%;
+  max-width: 1473px;
+  border-collapse: collapse;
+  margin: 25px auto;
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  color: $dark-neutral;
+
+  thead th {
+    background-color: $dark-neutral;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  th,
+  td {
+    padding: 12px 15px;
+  }
+}

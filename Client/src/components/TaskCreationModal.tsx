@@ -150,11 +150,8 @@ export default function TaskCreationModal(props: Props) {
               Attachments
             </li>
           </ul>
-          {/* <p className="edit-task" onClick={() => setIsWriting(true)}>
-            Upload image <IconEdit />
-          </p> */}
           <h2 className="title">Attachments</h2>
-          {/* Cover Image Upload */}
+          {/* Attachment Image Upload */}
           {attachmentFiles.length > 0 && !attachmentBlob && (
             <ImageCropper
               files={attachmentFiles}
@@ -179,7 +176,7 @@ export default function TaskCreationModal(props: Props) {
           </ImageDropzone>
           <div className="attachments-container">
             {selectedTask?.attachments?.map((photo) => (
-              <img src={photo.url} />
+              <img src={photo.url} key={photo.id} />
             ))}
           </div>
           <IconClose

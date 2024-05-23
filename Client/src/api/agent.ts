@@ -83,6 +83,7 @@ const Projects = {
   list: (filterUserTasks: boolean) =>
     requests.get<Project[]>(`/projects/?filterUserTickets=${filterUserTasks}`),
   details: (projectId: string) => requests.get<Project>(`/projects/${projectId}`),
+  create: (name: string) => requests.post<void>('/projects/', { name }),
   update: (projectId: string, appUserIds: string[]) =>
     requests.patch<void>(`/projects/${projectId}/`, appUserIds)
 };

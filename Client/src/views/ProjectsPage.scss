@@ -1,0 +1,32 @@
+.projects-page {
+  padding: 80px 50px 50px;
+
+  h3 {
+    @include font-size(24, bold, none, 0, 0);
+    margin-top: 30px;
+  }
+
+  .button__secondary__dark {
+    position: relative;
+    padding: 10px 30px 10px 10px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    svg {
+      position: absolute;
+      top: 47%;
+      right: 1px;
+      transform: translateY(-50%);
+
+      rect {
+        fill: $dark-neutral;
+
+        &:last-child {
+          opacity: 0;
+        }
+      }
+    }
+  }
+}

@@ -72,6 +72,11 @@ button {
   background-color: transparent;
   color: $lightest-neutral;
   border: 2px solid $lightest-neutral;
+
+  &__dark {
+    color: $dark-neutral;
+    border-color: $dark-neutral;
+  }
 }
 
 .button__cancel {
@@ -104,6 +109,29 @@ button {
   z-index: 999;
   background-color: rgba($darkest-neutral, 0.5);
   backdrop-filter: blur(5px);
+}
+
+.simple-modal {
+  &--content {
+    position: absolute;
+    max-width: 850px;
+    top: 50%;
+    left: 50%;
+    padding: 30px;
+    transform: translate(-50%, -50%);
+    background-color: $lightest-neutral;
+
+    h2 {
+      @include font-size(32, bold, none, 0, 32);
+    }
+
+    .icon-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+  }
 }
 
 .search-container {
@@ -178,31 +206,6 @@ textarea {
 textarea {
   min-height: 150px;
   resize: none;
-}
-
-.data-table {
-  width: 90%;
-  max-width: 1415px;
-  border-collapse: collapse;
-  margin: 25px auto;
-  font-size: 0.9em;
-  min-width: 400px;
-  border-radius: 5px 5px 0 0;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  color: $dark-neutral;
-
-  thead th {
-    background-color: $dark-neutral;
-    color: #ffffff;
-    text-align: left;
-    font-weight: bold;
-  }
-
-  th,
-  td {
-    padding: 12px 15px;
-  }
 }
 
 tbody {

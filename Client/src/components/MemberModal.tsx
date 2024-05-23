@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import './MemberModal.scss';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { getUsers } from '../store/slices/usersSlice';
@@ -33,12 +32,11 @@ export default function MemberModal({ members, closeModal }: Props) {
   }, [dispatch]);
 
   return (
-    <div className="member-modal modal-container">
-      <div className="member-modal--content">
+    <div className="simple-modal modal-container">
+      <div className="simple-modal--content">
         <IconClose onClick={closeModal} className="icon-close" />
         <h2>Update project members</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <label>Assignees</label>
           <MutliSelectDropdown
             options={users}
             defaultValue={members}
