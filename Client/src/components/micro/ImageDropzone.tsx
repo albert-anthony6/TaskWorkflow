@@ -39,6 +39,7 @@ export default function ImageDropzone({
       setBlobUrl('');
     }
   }
+
   function preventEvent(event: React.MouseEvent<HTMLDivElement>) {
     if (blobUrl || hasImage) {
       event.stopPropagation();

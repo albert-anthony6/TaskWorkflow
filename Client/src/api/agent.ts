@@ -85,7 +85,8 @@ const Projects = {
   details: (projectId: string) => requests.get<Project>(`/projects/${projectId}`),
   create: (name: string) => requests.post<void>('/projects/', { name }),
   update: (projectId: string, appUserIds: string[]) =>
-    requests.patch<void>(`/projects/${projectId}/`, appUserIds)
+    requests.patch<void>(`/projects/${projectId}/`, appUserIds),
+  delete: (projectId: string) => requests.delete<void>(`/projects/${projectId}`)
 };
 
 const Tasks = {

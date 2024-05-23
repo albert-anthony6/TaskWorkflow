@@ -43,6 +43,7 @@ export default function ProjectsPage() {
         projects={myProjects}
         handleRowClick={handleRowClick}
         emptyMessage="You have no current projects"
+        isDeletable={true}
       />
       <h3>All Projects</h3>
       <ProjectTable

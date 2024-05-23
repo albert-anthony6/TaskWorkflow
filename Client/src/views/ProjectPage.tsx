@@ -98,6 +98,12 @@ export default function ProjectPage() {
     const draggedItem = columns[source.droppableId].list[source.index];
     console.log('Dragged Item:', draggedItem, destination.droppableId);
 
+    // If the source and destination columns are the same
+    // AND if the index is the same, the item isn't moving
+    if (source.droppableId === destination.droppableId && destination.index === source.index) {
+      return null;
+    }
+
     dispatch(updateStatus({ id: `${draggedItem.id}`, status: destination.droppableId })).catch(
       () => {
         toast.error('Task transition failed.');

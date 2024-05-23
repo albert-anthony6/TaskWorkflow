@@ -17,8 +17,26 @@
     font-weight: bold;
   }
 
+  tr {
+    cursor: pointer;
+  }
+
   th,
   td {
     padding: 12px 15px;
+  }
+
+  .deletable {
+    text-align: center;
+    border-left: 1px solid $light-grey;
+
+    &:hover svg {
+      opacity: 1;
+    }
+
+    svg {
+      opacity: 0.5;
+      transition: all 0.3s ease;
+    }
   }
 }

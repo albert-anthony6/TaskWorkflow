@@ -56,9 +56,10 @@ ul {
 
 button {
   @include font-size(16, 500, none, 1, 24);
-  padding: 16px 38px;
+  padding: 15px 20px;
   border-radius: 4px;
   outline: none;
+  border: none;
   cursor: pointer;
 }
 
@@ -66,6 +67,13 @@ button {
   background-color: $primary;
   color: $lightest-neutral;
   border: 2px solid $primary;
+
+  &__delete {
+    padding: 16px 38px;
+    color: $lightest-neutral;
+    background-color: $delete;
+    border-color: $delete;
+  }
 }
 
 .button__secondary {
@@ -76,6 +84,7 @@ button {
   &__dark {
     color: $dark-neutral;
     border-color: $dark-neutral;
+    border: 2px solid $dark-neutral;
   }
 }
 
@@ -112,6 +121,8 @@ button {
 }
 
 .simple-modal {
+  text-align: center;
+
   &--content {
     position: absolute;
     max-width: 850px;
@@ -120,9 +131,11 @@ button {
     padding: 30px;
     transform: translate(-50%, -50%);
     background-color: $lightest-neutral;
+    max-width: 500px;
 
     h2 {
-      @include font-size(32, bold, none, 0, 32);
+      @include font-size(32, bold, none, 0, 37);
+      margin: 25px 0 15px;
     }
 
     .icon-close {
@@ -130,6 +143,20 @@ button {
       top: 10px;
       right: 10px;
       cursor: pointer;
+    }
+
+    .buttons-container {
+      margin-top: 15px;
+
+      button {
+        &:first-child {
+          margin-right: 7.5px;
+        }
+
+        &:last-child {
+          margin-left: 7.5px;
+        }
+      }
     }
   }
 }
@@ -226,7 +253,7 @@ tbody {
     }
 
     &:hover {
-      font-weight: bold;
+      text-shadow: 0 0 1px $dark-neutral;
     }
   }
 }

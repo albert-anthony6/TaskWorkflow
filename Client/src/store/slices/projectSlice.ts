@@ -66,6 +66,17 @@ export const updateMembers = createAsyncThunk<void, { projectId: string; appUser
   }
 );
 
+export const deleteProject = createAsyncThunk<void, string>(
+  'project/deleteProject',
+  async (id, thunkAPI) => {
+    try {
+      return await agent.Projects.delete(id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
+
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
@@ -87,7 +98,8 @@ export const projectSlice = createSlice({
         getProjects.rejected,
         getProject.rejected,
         createProject.rejected,
-        updateMembers.rejected
+        updateMembers.rejected,
+        deleteProject.rejected
       ),
       (state, action) => {
         throw action.payload;
