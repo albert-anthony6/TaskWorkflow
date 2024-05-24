@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { Project } from '../utils/interfaces/project';
 import './ProjectTable.scss';
+import { Project } from '../utils/interfaces/project';
+import { useAppDispatch } from '../store/configureStore';
+import { deleteProject } from '../store/slices/projectSlice';
 import DeleteModal from '../components/DeleteModal';
 import IconDelete from '../assets/icons/icon_delete.svg?react';
 
@@ -17,6 +19,7 @@ export default function ProjectTable({
   emptyMessage,
   isDeletable = false
 }: Props) {
+  const dispatch = useAppDispatch();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [projectId, setProjectId] = useState<string | null>(null);
 
@@ -67,7 +70,11 @@ export default function ProjectTable({
         </tbody>
       </table>
       {isDeleteModalOpen && (
-        <DeleteModal id={`${projectId}`} closeModal={() => setIsDeleteModalOpen(false)} />
+        <DeleteModal
+          title="Are you sure you want to delete this project?"
+          closeModal={() => setIsDeleteModalOpen(false)}
+          dispatchAction={() => dispatch(deleteProject(`${projectId}`))}
+        />
       )}
     </>
   );

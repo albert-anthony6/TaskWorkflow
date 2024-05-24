@@ -46,13 +46,36 @@
       }
     }
 
-    .edit-task {
+    .edit-task,
+    .delete-task {
       display: inline-block;
       cursor: pointer;
       margin-top: 20px;
 
       &:hover {
         text-decoration: underline;
+      }
+    }
+
+    .delete-task {
+      margin-left: 15px;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $delete;
+
+        svg {
+          path {
+            fill: $delete;
+          }
+        }
+      }
+
+      svg {
+        path {
+          transition: fill 0.3s ease;
+          fill: $dark-neutral;
+        }
       }
     }
 
@@ -139,6 +162,12 @@
       margin-left: 30px;
       padding: 16px 37px;
       white-space: nowrap;
+    }
+  }
+
+  .simple-modal {
+    .buttons-container {
+      justify-content: center;
     }
   }
 }

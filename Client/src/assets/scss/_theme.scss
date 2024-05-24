@@ -135,7 +135,7 @@ button {
 
     h2 {
       @include font-size(32, bold, none, 0, 37);
-      margin: 25px 0 15px;
+      margin: 25px 0;
     }
 
     .icon-close {
@@ -147,6 +147,7 @@ button {
 
     .buttons-container {
       margin-top: 15px;
+      justify-content: center;
 
       button {
         &:first-child {

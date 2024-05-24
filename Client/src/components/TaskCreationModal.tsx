@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import {
   createTask,
+  deleteTask,
   editTask,
   getTask,
   resetSelectedTask,
@@ -20,9 +21,11 @@ import ImageDropzone from './micro/ImageDropzone';
 import ImageCropper from './micro/ImageCropper';
 import StyledDropdown from './micro/StyledDropdown';
 import MutliSelectDropdown from './micro/MultiSelectDropdown';
+import DeleteModal from '../components/DeleteModal';
 import IconClose from '../assets/icons/icon_close.svg?react';
 import IconEdit from '../assets/icons/icon_edit.svg?react';
 import IconUpload from '../assets/icons/icon_upload.svg?react';
+import IconDelete from '../assets/icons/icon_delete.svg?react';
 import useBlobCleanup from '../utils/hooks/useBlobCleanup';
 
 interface Props extends Partial<ReactDatePickerProps> {
@@ -35,6 +38,7 @@ export default function TaskCreationModal(props: Props) {
   const dispatch = useAppDispatch();
   const [isWriting, setIsWriting] = useState(false);
   const [isOnDetails, setIsOnDetails] = useState(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const {
     blob: attachmentBlob,
     setBlob: setAttachmentBlob,
@@ -215,6 +219,9 @@ export default function TaskCreationModal(props: Props) {
             <p className="edit-task" onClick={() => setIsWriting(true)}>
               Edit task <IconEdit />
             </p>
+            <p className="delete-task" onClick={() => setIsDeleteModalOpen(true)}>
+              Delete task <IconDelete />
+            </p>
             <h2 className="title">{selectedTask.title}</h2>
           </>
         )}
@@ -320,6 +327,13 @@ export default function TaskCreationModal(props: Props) {
           )}
         </form>
       </div>
+      {isDeleteModalOpen && (
+        <DeleteModal
+          title="Are you sure you want to delete this task?"
+          closeModal={() => setIsDeleteModalOpen(false)}
+          dispatchAction={() => dispatch(deleteTask(`${selectedTask?.id}`))}
+        />
+      )}
     </div>
   );
 }
