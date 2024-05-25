@@ -88,9 +88,9 @@ const requests = {
 };
 
 const Projects = {
-  list: (filterUserTasks: boolean, searchTerm?: string) =>
+  list: (userId: string, filterProjects?: boolean, searchTerm?: string) =>
     requests.get<Project[]>(
-      `/projects/?filterUserTickets=${filterUserTasks}&searchTerm=${searchTerm}`
+      `/projects/?userId=${userId}&filterProjects=${filterProjects}&searchTerm=${searchTerm}`
     ),
   details: (projectId: string) => requests.get<Project>(`/projects/${projectId}`),
   create: (name: string) => requests.post<void>('/projects/', { name }),

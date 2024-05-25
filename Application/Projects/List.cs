@@ -9,7 +9,8 @@ namespace Application.Projects
     public class List
     {
         public class Query : IRequest<Result<List<RespProjectDto>>> {
-            public Boolean FilterUserTickets { get; set; } = false;
+            public string UserId { get; set; }
+            public Boolean FilterProjects { get; set; }
             public string SearchTerm { get; set; }
         }
 
@@ -25,8 +26,8 @@ namespace Application.Projects
 
             public async Task<Result<List<RespProjectDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var currentUser = await _context.Users.FirstOrDefaultAsync((u) =>
-                    u.UserName == _userAccessor.GetUsername());
+                var user = await _context.Users.FirstOrDefaultAsync((u) =>
+                    u.Id == request.UserId);
 
                 var query = _context.Projects
                     .OrderBy((p) => p.Name)
@@ -34,9 +35,9 @@ namespace Application.Projects
                     .AsQueryable();
 
                 // Apply filtering based on the query parameter
-                if (request.FilterUserTickets)
+                if (request.FilterProjects)
                 {
-                    query = query.Where(project => project.Members.Any((m) => m.UserName == _userAccessor.GetUsername()));
+                    query = query.Where(project => project.Members.Any((m) => m.Id == user.Id));
                 }
 
                 var projectDtos = await query
@@ -47,9 +48,9 @@ namespace Application.Projects
                         Owner = project.Owner,
                         ActiveTicketsCount = project.ActiveTicketsCount,
                         MembersCount = project.Members.Count,
-                        CurrentUserTickets = project.Tickets
+                        UserTicketsCount = project.Tickets
                             .SelectMany((t) => t.Assignees)
-                            .Count((a) => a.AppUserId == currentUser.Id)
+                            .Count((a) => a.AppUserId == user.Id)
                     })
                     .ToListAsync();
 

@@ -65,7 +65,7 @@ namespace Persistence.Migrations
                     Owner = table.Column<string>(type: "TEXT", nullable: true),
                     ActiveTicketsCount = table.Column<int>(type: "INTEGER", nullable: false),
                     MembersCount = table.Column<int>(type: "INTEGER", nullable: false),
-                    CurrentUserTickets = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserTicketsCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

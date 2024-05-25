@@ -36,7 +36,7 @@ namespace Application.Projects
                     Owner = currentUser.DisplayName,
                     ActiveTicketsCount = 0,
                     MembersCount = 1,
-                    CurrentUserTickets = 0
+                    UserTicketsCount = 0
                 };
 
                 // Add the creator as a member of the project

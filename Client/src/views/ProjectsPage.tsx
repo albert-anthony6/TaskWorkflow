@@ -10,6 +10,7 @@ import IconClose from '../assets/icons/icon_close.svg?react';
 import StyledSearch from '../components/micro/StyledSearch';
 
 export default function ProjectsPage() {
+  const { currentUser } = useAppSelector((state) => state.user);
   const { projects, myProjects } = useAppSelector((state) => state.project);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -36,33 +37,41 @@ export default function ProjectsPage() {
     const delayDebounceFn = setTimeout(
       () => {
         setIsMyProjectsLoading(true);
-        dispatch(getProjects({ filterUserTasks: true, searchTerm: myProjectsSearchTerm })).finally(
-          () => {
-            setIsMyProjectsLoading(false);
-          }
-        );
+        dispatch(
+          getProjects({
+            userId: `${currentUser?.id}`,
+            filterProjects: true,
+            searchTerm: myProjectsSearchTerm
+          })
+        ).finally(() => {
+          setIsMyProjectsLoading(false);
+        });
       },
       myProjectsSearchTerm ? 500 : 0
     );
 
     return () => clearTimeout(delayDebounceFn);
-  }, [myProjectsSearchTerm, dispatch]);
+  }, [myProjectsSearchTerm, dispatch, currentUser?.id]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(
       () => {
         setIsProjectsLoading(true);
-        dispatch(getProjects({ filterUserTasks: false, searchTerm: projectsSearchTerm })).finally(
-          () => {
-            setIsProjectsLoading(false);
-          }
-        );
+        dispatch(
+          getProjects({
+            userId: `${currentUser?.id}`,
+            filterProjects: false,
+            searchTerm: projectsSearchTerm
+          })
+        ).finally(() => {
+          setIsProjectsLoading(false);
+        });
       },
       projectsSearchTerm ? 500 : 0
     );
 
     return () => clearTimeout(delayDebounceFn);
-  }, [projectsSearchTerm, dispatch]);
+  }, [projectsSearchTerm, dispatch, currentUser?.id]);
 
   return (
     <main className="projects-page">

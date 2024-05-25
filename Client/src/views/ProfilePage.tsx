@@ -40,33 +40,41 @@ export default function ProfilePage() {
     const delayDebounceFn = setTimeout(
       () => {
         setIsMyProjectsLoading(true);
-        dispatch(getProjects({ filterUserTasks: true, searchTerm: myProjectsSearchTerm })).finally(
-          () => {
-            setIsMyProjectsLoading(false);
-          }
-        );
+        dispatch(
+          getProjects({
+            userId: `${userId}`,
+            filterProjects: true,
+            searchTerm: myProjectsSearchTerm
+          })
+        ).finally(() => {
+          setIsMyProjectsLoading(false);
+        });
       },
       myProjectsSearchTerm ? 500 : 0
     );
 
     return () => clearTimeout(delayDebounceFn);
-  }, [myProjectsSearchTerm, dispatch]);
+  }, [myProjectsSearchTerm, dispatch, userId]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(
       () => {
         setIsProjectsLoading(true);
-        dispatch(getProjects({ filterUserTasks: false, searchTerm: projectsSearchTerm })).finally(
-          () => {
-            setIsProjectsLoading(false);
-          }
-        );
+        dispatch(
+          getProjects({
+            userId: `${userId}`,
+            filterProjects: false,
+            searchTerm: projectsSearchTerm
+          })
+        ).finally(() => {
+          setIsProjectsLoading(false);
+        });
       },
       projectsSearchTerm ? 500 : 0
     );
 
     return () => clearTimeout(delayDebounceFn);
-  }, [projectsSearchTerm, dispatch]);
+  }, [projectsSearchTerm, dispatch, userId]);
 
   return (
     <main className="profile-page">

@@ -7,7 +7,7 @@ namespace Domain
         public string Owner { get; set; }
         public int ActiveTicketsCount { get; set; }
         public int MembersCount { get; set; }
-        public int CurrentUserTickets { get; set; }
+        public int UserTicketsCount { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
         public ICollection <AppUser> Members { get; set; } = new List<AppUser>();
     }

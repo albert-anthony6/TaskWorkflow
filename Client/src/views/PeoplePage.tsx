@@ -74,7 +74,6 @@ export default function PeoplePage() {
       </section>
       {(pagination?.totalPages as number) > 1 && (
         <ReactPaginate
-          className="pagination"
           nextLabel="Next >"
           onPageChange={handlePageClick}
           pageRangeDisplayed={3}
@@ -82,17 +81,12 @@ export default function PeoplePage() {
           pageCount={pagination?.totalPages as number}
           previousLabel="< Previous"
           pageClassName="page-item"
-          pageLinkClassName="page-link"
           previousClassName="page-item--prev"
-          previousLinkClassName="page-link"
           nextClassName="page-item--next"
-          nextLinkClassName="page-link"
           breakLabel="..."
           breakClassName="page-item"
-          breakLinkClassName="page-link"
           containerClassName="pagination"
           activeClassName="pagination__active"
-          renderOnZeroPageCount={null}
         />
       )}
     </main>

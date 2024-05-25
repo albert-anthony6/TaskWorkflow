@@ -119,7 +119,7 @@ namespace Persistence
                         Owner = users[0].DisplayName,
                         ActiveTicketsCount = 5,
                         MembersCount = 3,
-                        CurrentUserTickets = 0
+                        UserTicketsCount = 0
                     },
                     new Project
                     {
@@ -128,7 +128,7 @@ namespace Persistence
                         Owner = users[2].DisplayName,
                         ActiveTicketsCount = 5,
                         MembersCount = 3,
-                        CurrentUserTickets = 0
+                        UserTicketsCount = 0
                     }
                 };
 

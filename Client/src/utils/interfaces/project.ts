@@ -7,7 +7,7 @@ export interface Project {
   owner: string;
   activeTicketsCount: number;
   membersCount: number;
-  currentUserTickets: number;
+  userTicketsCount: number;
   tickets: Task[];
   members: User[];
 }

@@ -11,7 +11,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240508081719_InitialCreate")]
+    [Migration("20240525165327_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -156,9 +156,6 @@ namespace Persistence.Migrations
                     b.Property<int>("ActiveTicketsCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CurrentUserTickets")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("MembersCount")
                         .HasColumnType("INTEGER");
 
@@ -167,6 +164,9 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Owner")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("UserTicketsCount")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ProjectId");
 

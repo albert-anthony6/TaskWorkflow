@@ -58,7 +58,7 @@ export default function ProjectTable({
               projects.map((project, index) => (
                 <tr key={index} onClick={() => handleRowClick(project.projectId)}>
                   <td>{project.name}</td>
-                  <td>{project.currentUserTickets}</td>
+                  <td>{project.userTicketsCount}</td>
                   <td>{project.membersCount}</td>
                   <td>{project.activeTicketsCount}</td>
                   <td>{project.owner}</td>

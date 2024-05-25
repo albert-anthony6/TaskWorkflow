@@ -6,9 +6,9 @@ namespace API.Controllers
     public class ProjectsController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetProfiles(Boolean filterUserTickets, string searchTerm)
+        public async Task<IActionResult> GetProfiles(string userId, Boolean filterProjects, string searchTerm)
         {
-            return HandleResult(await Mediator.Send(new List.Query{ FilterUserTickets = filterUserTickets, SearchTerm = searchTerm}));
+            return HandleResult(await Mediator.Send(new List.Query{ UserId = userId, FilterProjects = filterProjects, SearchTerm = searchTerm}));
         }
 
         [HttpPost]
