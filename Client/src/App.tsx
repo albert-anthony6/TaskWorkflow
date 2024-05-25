@@ -6,6 +6,7 @@ import { getCurrentUser } from './store/slices/userSlice.ts';
 import AppFooter from './components/AppFooter.tsx';
 import SideNav from './components/SideNav.tsx';
 import './assets/scss/_theme.scss';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function App() {
   const { token } = useAppSelector((state) => state.user);

@@ -5,7 +5,6 @@ import { getProfile } from '../store/slices/userSlice';
 import { getProjects } from '../store/slices/projectSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import ProjectTable from '../components/ProjectTable';
 import IconFacebook from '../assets/icons/icon_facebook.svg?react';
 import IconTwitter from '../assets/icons/icon_twitter.svg?react';
@@ -28,23 +27,15 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
-    (async () => {
-      try {
-        await dispatch(getProfile(`${userId}`));
-      } finally {
-        setIsUserLoading(false);
-      }
-      try {
-        await dispatch(getProjects(true));
-      } finally {
-        setIsMyProjectsLoading(false);
-      }
-      try {
-        await dispatch(getProjects(false));
-      } finally {
-        setIsProjectsLoading(false);
-      }
-    })();
+    dispatch(getProfile(`${userId}`)).finally(() => {
+      setIsUserLoading(false);
+    });
+    dispatch(getProjects(true)).finally(() => {
+      setIsMyProjectsLoading(false);
+    });
+    dispatch(getProjects(false)).finally(() => {
+      setIsProjectsLoading(false);
+    });
   }, [dispatch, userId]);
 
   return (

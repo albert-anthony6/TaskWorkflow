@@ -126,10 +126,10 @@ const Account = {
 };
 
 const Profile = {
-  list: (pageNumber?: number, pageSize?: number) =>
+  list: (pageNumber?: number, pageSize?: number, searchTerm?: string) =>
     axios
       .get<PaginatedResult<User[]>>(
-        `/profiles/users/?pageNumber=${pageNumber}&pageSize=${pageSize}`
+        `/profiles/users/?pageNumber=${pageNumber}&pageSize=${pageSize}&searchTerm=${searchTerm}`
       )
       .then(responseBody),
   details: (id: string) => requests.get<UserProfile>(`/profiles/users/${id}`),

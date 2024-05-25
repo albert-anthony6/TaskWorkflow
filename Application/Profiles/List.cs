@@ -12,6 +12,7 @@ namespace Application.Profiles
         public class Query : IRequest<Result<PagedList<UserDto>>> 
         {
             public PagingParams Params { get; set; }
+            public string SearchTerm { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<PagedList<UserDto>>>
@@ -28,6 +29,8 @@ namespace Application.Profiles
             {
                 var query = _context.Users
                     .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                    .OrderBy((u) => u.DisplayName)
+                    .Search(request.SearchTerm)
                     .AsQueryable();
                 
                     return Result<PagedList<UserDto>>.Success(

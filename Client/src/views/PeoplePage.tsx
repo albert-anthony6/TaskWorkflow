@@ -1,67 +1,107 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './PeoplePage.scss';
-import ReactPaginate from 'react-paginate';
-import IconSearch from '../assets/icons/icon_search.svg?react';
-import IconAvatar from '../assets/icons/icon_avatar.svg?react';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { getUsers } from '../store/slices/usersSlice';
 import { NavLink } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import Skeleton from 'react-loading-skeleton';
+import IconSearch from '../assets/icons/icon_search.svg?react';
+import IconAvatar from '../assets/icons/icon_avatar.svg?react';
 
 export default function PeoplePage() {
   const dispatch = useAppDispatch();
   const { users, pagination } = useAppSelector((state) => state.users);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   function handlePageClick(data: { selected: number }) {
-    dispatch(getUsers({ pageNumber: data.selected + 1, pageSize: 12 }));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsLoading(true);
+    dispatch(
+      getUsers({ pagingParams: { pageNumber: data.selected + 1, pageSize: 12 }, searchTerm })
+    ).finally(() => {
+      setIsLoading(false);
+    });
   }
 
   useEffect(() => {
-    dispatch(getUsers({ pageNumber: 1, pageSize: 12 }));
-  }, [dispatch]);
+    setIsLoading(true);
+    const delayDebounceFn = setTimeout(
+      () => {
+        dispatch(getUsers({ pagingParams: { pageNumber: 1, pageSize: 12 }, searchTerm })).finally(
+          () => {
+            setIsLoading(false);
+          }
+        );
+      },
+      searchTerm ? 500 : 0
+    );
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, dispatch]);
 
   return (
     <main className="people-page">
       <div className="search-container">
         <IconSearch />
-        <input type="text" placeholder="Search" />
+        <input
+          type="text"
+          onChange={(event) => setSearchTerm(event.target.value)}
+          placeholder="Search"
+        />
       </div>
       <section className="people-grid">
-        {users?.length &&
+        {isLoading ? (
+          Array.from({ length: 12 }).map((_, index) => (
+            <div key={index} className="people-card">
+              <Skeleton baseColor="#ccc" duration={0.9} width="100%" height="100%" />
+            </div>
+          ))
+        ) : users && users.length > 0 ? (
           users.map((user) => (
-            <NavLink to={`/user/${user.id}`} className="people-card">
+            <NavLink to={`/user/${user.id}`} key={user.id} className="people-card">
               {user.avatar ? (
-                <img src={user.avatar.url} alt={user.displayName} />
+                <img
+                  src={user.avatar.url}
+                  alt={user.displayName}
+                  className="avatar avatar__medium"
+                />
               ) : (
                 <IconAvatar className="avatar avatar__medium" />
               )}
               <div className="username">
                 <p>{user.displayName}</p>
-                <div className="caption">Developer at HighRise</div>
+                <div className="caption">{user.bio}</div>
               </div>
             </NavLink>
-          ))}
+          ))
+        ) : (
+          <div className="empty-state">No users found</div>
+        )}
       </section>
-      <ReactPaginate
-        className="pagination"
-        nextLabel="Next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        marginPagesDisplayed={2}
-        pageCount={pagination?.totalPages as number}
-        previousLabel="< Previous"
-        pageClassName="page-item"
-        pageLinkClassName="page-link"
-        previousClassName="page-item--prev"
-        previousLinkClassName="page-link"
-        nextClassName="page-item--next"
-        nextLinkClassName="page-link"
-        breakLabel="..."
-        breakClassName="page-item"
-        breakLinkClassName="page-link"
-        containerClassName="pagination"
-        activeClassName="pagination__active"
-        renderOnZeroPageCount={null}
-      />
+      {(pagination?.totalPages as number) > 1 && (
+        <ReactPaginate
+          className="pagination"
+          nextLabel="Next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={pagination?.totalPages as number}
+          previousLabel="< Previous"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item--prev"
+          previousLinkClassName="page-link"
+          nextClassName="page-item--next"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="pagination__active"
+          renderOnZeroPageCount={null}
+        />
+      )}
     </main>
   );
 }

@@ -9,17 +9,26 @@ interface UserState {
   pagination: Pagination | null;
 }
 
+interface UserSearchParams {
+  pagingParams?: PagingParams | undefined;
+  searchTerm?: string;
+}
+
 const initialState: UserState = {
   users: null,
   profile: null,
   pagination: null
 };
 
-export const getUsers = createAsyncThunk<User[], PagingParams | undefined>(
+export const getUsers = createAsyncThunk<User[], UserSearchParams>(
   'users/getUsers',
-  async (params = { pageNumber: 1, pageSize: 12 }, thunkAPI) => {
+  async ({ pagingParams = { pageNumber: 1, pageSize: 12 }, searchTerm }, thunkAPI) => {
     try {
-      const results = await agent.Profile.list(params.pageNumber, params.pageSize);
+      const results = await agent.Profile.list(
+        pagingParams.pageNumber,
+        pagingParams.pageSize,
+        searchTerm
+      );
       thunkAPI.dispatch(setPagination(results.pagination));
       return results.data;
     } catch (error: any) {

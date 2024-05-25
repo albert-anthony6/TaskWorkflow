@@ -1,5 +1,6 @@
 .people-page {
   padding: 80px 50px 52px;
+  min-height: 50vh;
 
   .search-container {
     margin-left: auto;
@@ -16,12 +17,23 @@
       width: calc((100% - 30px * (4 - 1)) / 4);
       max-width: 331px;
       min-height: 233px;
-      padding-top: 25px;
       margin: 30px 15px 0px;
       color: inherit;
       text-align: center;
       border-radius: 4px;
       background-color: $lightest-neutral;
+
+      .avatar {
+        margin-top: 25px;
+      }
+
+      .react-loading-skeleton {
+        line-height: normal;
+      }
+    }
+
+    .empty-state {
+      @include font-size(45, normal, none, normal, 65);
     }
   }
 }

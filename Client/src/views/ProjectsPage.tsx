@@ -30,19 +30,12 @@ export default function ProjectsPage() {
   }
 
   useEffect(() => {
-    (async () => {
-      try {
-        await dispatch(getProjects(true));
-      } finally {
-        setIsMyProjectsLoading(false);
-      }
-
-      try {
-        await dispatch(getProjects(false));
-      } finally {
-        setIsProjectsLoading(false);
-      }
-    })();
+    dispatch(getProjects(true)).finally(() => {
+      setIsMyProjectsLoading(false);
+    });
+    dispatch(getProjects(false)).finally(() => {
+      setIsProjectsLoading(false);
+    });
   }, [dispatch]);
 
   return (
