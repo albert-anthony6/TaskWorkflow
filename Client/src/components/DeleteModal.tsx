@@ -12,8 +12,8 @@ export default function MemberModal({ closeModal, dispatchAction, title }: Props
   }
 
   return (
-    <div className="simple-modal modal-container">
-      <div className="simple-modal--content">
+    <div onClick={closeModal} className="simple-modal modal-container">
+      <div onClick={(event) => event.stopPropagation()} className="simple-modal--content">
         <IconClose onClick={closeModal} className="icon-close" />
         <h2>{title}</h2>
         <div className="buttons-container">

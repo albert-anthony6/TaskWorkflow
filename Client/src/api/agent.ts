@@ -12,6 +12,12 @@ import { UserProfile } from '../utils/interfaces/user';
 import { PaginatedResult } from '../utils/interfaces/pagination';
 import { Project } from '../utils/interfaces/project';
 
+const sleep = (delay: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
+};
+
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
@@ -24,12 +30,14 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   async (response) => {
-    const pagination = response.headers['pagination'];
-    if (pagination) {
-      response.data = new PaginatedResult(response.data, JSON.parse(pagination));
-      return response as AxiosResponse<PaginatedResult<unknown>>;
-    }
-    return response;
+    return sleep(500).then(() => {
+      const pagination = response.headers['pagination'];
+      if (pagination) {
+        response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+        return response as AxiosResponse<PaginatedResult<unknown>>;
+      }
+      return response;
+    });
   },
   (error: AxiosError) => {
     console.log(error);

@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 1473px;
   border-collapse: collapse;
-  margin: 25px auto;
+  margin: 0 auto;
   font-size: 0.9em;
   min-width: 400px;
   border-radius: 5px 5px 0 0;
@@ -15,6 +15,7 @@
     color: #ffffff;
     text-align: left;
     font-weight: bold;
+    cursor: default;
   }
 
   tr {

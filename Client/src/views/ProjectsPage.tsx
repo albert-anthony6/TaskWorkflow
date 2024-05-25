@@ -13,6 +13,8 @@ export default function ProjectsPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isCreateProject, setIsCreatingProject] = useState(false);
+  const [isMyProjectsLoading, setIsMyProjectsLoading] = useState(true);
+  const [isProjectsLoading, setIsProjectsLoading] = useState(true);
   const { register, handleSubmit } = useForm({
     defaultValues: {
       projectName: ''
@@ -29,7 +31,17 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     (async () => {
-      await Promise.all([dispatch(getProjects(true)), dispatch(getProjects(false))]);
+      try {
+        await dispatch(getProjects(true));
+      } finally {
+        setIsMyProjectsLoading(false);
+      }
+
+      try {
+        await dispatch(getProjects(false));
+      } finally {
+        setIsProjectsLoading(false);
+      }
     })();
   }, [dispatch]);
 
@@ -44,12 +56,14 @@ export default function ProjectsPage() {
         handleRowClick={handleRowClick}
         emptyMessage="You have no current projects"
         isDeletable={true}
+        isLoading={isMyProjectsLoading}
       />
       <h3>All Projects</h3>
       <ProjectTable
         projects={projects}
         handleRowClick={handleRowClick}
         emptyMessage="No projects found"
+        isLoading={isProjectsLoading}
       />
       {isCreateProject && (
         <div className="simple-modal modal-container">
