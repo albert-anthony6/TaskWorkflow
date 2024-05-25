@@ -6,6 +6,7 @@ import { getProjects } from '../store/slices/projectSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import ProjectTable from '../components/ProjectTable';
+import StyledSearch from '../components/micro/StyledSearch';
 import IconFacebook from '../assets/icons/icon_facebook.svg?react';
 import IconTwitter from '../assets/icons/icon_twitter.svg?react';
 import IconInstagram from '../assets/icons/icon_instagram.svg?react';
@@ -22,6 +23,9 @@ export default function ProfilePage() {
   const [isMyProjectsLoading, setIsMyProjectsLoading] = useState(true);
   const [isProjectsLoading, setIsProjectsLoading] = useState(true);
 
+  const [myProjectsSearchTerm, setMyProjectsSearchTerm] = useState('');
+  const [projectsSearchTerm, setProjectsSearchTerm] = useState('');
+
   function handleRowClick(projectId: string) {
     navigate(`/projects/${projectId}`);
   }
@@ -30,13 +34,39 @@ export default function ProfilePage() {
     dispatch(getProfile(`${userId}`)).finally(() => {
       setIsUserLoading(false);
     });
-    dispatch(getProjects(true)).finally(() => {
-      setIsMyProjectsLoading(false);
-    });
-    dispatch(getProjects(false)).finally(() => {
-      setIsProjectsLoading(false);
-    });
   }, [dispatch, userId]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(
+      () => {
+        setIsMyProjectsLoading(true);
+        dispatch(getProjects({ filterUserTasks: true, searchTerm: myProjectsSearchTerm })).finally(
+          () => {
+            setIsMyProjectsLoading(false);
+          }
+        );
+      },
+      myProjectsSearchTerm ? 500 : 0
+    );
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [myProjectsSearchTerm, dispatch]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(
+      () => {
+        setIsProjectsLoading(true);
+        dispatch(getProjects({ filterUserTasks: false, searchTerm: projectsSearchTerm })).finally(
+          () => {
+            setIsProjectsLoading(false);
+          }
+        );
+      },
+      projectsSearchTerm ? 500 : 0
+    );
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [projectsSearchTerm, dispatch]);
 
   return (
     <main className="profile-page">
@@ -102,7 +132,10 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="profile-content">
-        <h3>Your Projects</h3>
+        <div className="table-header">
+          <h3>Your Projects</h3>
+          <StyledSearch handleChange={(event) => setMyProjectsSearchTerm(event.target.value)} />
+        </div>
         <ProjectTable
           projects={myProjects}
           handleRowClick={handleRowClick}
@@ -110,7 +143,10 @@ export default function ProfilePage() {
           isDeletable={true}
           isLoading={isMyProjectsLoading}
         />
-        <h3>All Projects</h3>
+        <div className="table-header">
+          <h3>All Projects</h3>
+          <StyledSearch handleChange={(event) => setProjectsSearchTerm(event.target.value)} />
+        </div>
         <ProjectTable
           projects={projects}
           handleRowClick={handleRowClick}

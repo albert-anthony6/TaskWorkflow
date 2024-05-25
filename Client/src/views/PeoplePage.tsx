@@ -5,7 +5,7 @@ import { getUsers } from '../store/slices/usersSlice';
 import { NavLink } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import Skeleton from 'react-loading-skeleton';
-import IconSearch from '../assets/icons/icon_search.svg?react';
+import StyledSearch from '../components/micro/StyledSearch';
 import IconAvatar from '../assets/icons/icon_avatar.svg?react';
 
 export default function PeoplePage() {
@@ -25,9 +25,9 @@ export default function PeoplePage() {
   }
 
   useEffect(() => {
-    setIsLoading(true);
     const delayDebounceFn = setTimeout(
       () => {
+        setIsLoading(true);
         dispatch(getUsers({ pagingParams: { pageNumber: 1, pageSize: 12 }, searchTerm })).finally(
           () => {
             setIsLoading(false);
@@ -42,14 +42,7 @@ export default function PeoplePage() {
 
   return (
     <main className="people-page">
-      <div className="search-container">
-        <IconSearch />
-        <input
-          type="text"
-          onChange={(event) => setSearchTerm(event.target.value)}
-          placeholder="Search"
-        />
-      </div>
+      <StyledSearch handleChange={(event) => setSearchTerm(event.target.value)} />
       <section className="people-grid">
         {isLoading ? (
           Array.from({ length: 12 }).map((_, index) => (

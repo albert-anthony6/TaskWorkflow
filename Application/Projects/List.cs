@@ -10,6 +10,7 @@ namespace Application.Projects
     {
         public class Query : IRequest<Result<List<RespProjectDto>>> {
             public Boolean FilterUserTickets { get; set; } = false;
+            public string SearchTerm { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<RespProjectDto>>>
@@ -27,7 +28,10 @@ namespace Application.Projects
                 var currentUser = await _context.Users.FirstOrDefaultAsync((u) =>
                     u.UserName == _userAccessor.GetUsername());
 
-                var query = _context.Projects.AsQueryable();
+                var query = _context.Projects
+                    .OrderBy((p) => p.Name)
+                    .Search(request.SearchTerm)
+                    .AsQueryable();
 
                 // Apply filtering based on the query parameter
                 if (request.FilterUserTickets)

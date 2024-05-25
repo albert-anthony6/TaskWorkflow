@@ -8,7 +8,7 @@ namespace Application.Profiles
 
             var lowerCaseSearchTerm = searchTerm.Trim().ToLower();
 
-            return query.Where((p) => p.DisplayName.ToLower().Contains(lowerCaseSearchTerm));
+            return query.Where(p => p.DisplayName.ToLower().Contains(lowerCaseSearchTerm));
         }
     }
 }

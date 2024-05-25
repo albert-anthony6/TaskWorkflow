@@ -8,6 +8,11 @@ interface ProjectState {
   project: Project | null;
 }
 
+interface GetProjectsParams {
+  filterUserTasks?: boolean;
+  searchTerm?: string;
+}
+
 const initialState: ProjectState = {
   projects: [],
   myProjects: [],
@@ -16,11 +21,11 @@ const initialState: ProjectState = {
 
 export const setMyProjects = createAction<Project[]>('project/setMyProjects');
 
-export const getProjects = createAsyncThunk<Project[] | void, boolean>(
+export const getProjects = createAsyncThunk<Project[] | void, GetProjectsParams>(
   'project/getProjects',
-  async (filterUserTasks = false, thunkAPI) => {
+  async ({ filterUserTasks = false, searchTerm }, thunkAPI) => {
     try {
-      const projects = await agent.Projects.list(filterUserTasks);
+      const projects = await agent.Projects.list(filterUserTasks, searchTerm);
       if (filterUserTasks) {
         thunkAPI.dispatch(setMyProjects(projects));
       } else {

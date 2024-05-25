@@ -9,7 +9,7 @@ interface UserState {
   pagination: Pagination | null;
 }
 
-interface UserSearchParams {
+interface GetUsersParams {
   pagingParams?: PagingParams | undefined;
   searchTerm?: string;
 }
@@ -20,7 +20,7 @@ const initialState: UserState = {
   pagination: null
 };
 
-export const getUsers = createAsyncThunk<User[], UserSearchParams>(
+export const getUsers = createAsyncThunk<User[], GetUsersParams>(
   'users/getUsers',
   async ({ pagingParams = { pageNumber: 1, pageSize: 12 }, searchTerm }, thunkAPI) => {
     try {
