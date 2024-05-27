@@ -5,6 +5,7 @@ import { getProfile } from '../store/slices/userSlice';
 import { getProjects } from '../store/slices/projectSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
+import ReactPaginate from 'react-paginate';
 import ProjectTable from '../components/ProjectTable';
 import StyledSearch from '../components/micro/StyledSearch';
 import IconFacebook from '../assets/icons/icon_facebook.svg?react';
@@ -16,7 +17,9 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const { userId } = useParams();
   const dispatch = useAppDispatch();
-  const { projects, myProjects } = useAppSelector((state) => state.project);
+  const { projects, myProjects, myProjectsPagination, projectsPagination } = useAppSelector(
+    (state) => state.project
+  );
   const { profile } = useAppSelector((state) => state.user);
 
   const [isUserLoading, setIsUserLoading] = useState(true);
@@ -28,6 +31,29 @@ export default function ProfilePage() {
 
   function handleRowClick(projectId: string) {
     navigate(`/projects/${projectId}`);
+  }
+
+  function handlePageClick(data: { selected: number }, isMyProjects: boolean) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (isMyProjects) {
+      setIsMyProjectsLoading(true);
+    } else {
+      setIsProjectsLoading(true);
+    }
+    dispatch(
+      getProjects({
+        pagingParams: { pageNumber: data.selected + 1, pageSize: 10 },
+        userId: `${userId}`,
+        filterProjects: isMyProjects ? true : false,
+        searchTerm: isMyProjects ? myProjectsSearchTerm : projectsSearchTerm
+      })
+    ).finally(() => {
+      if (isMyProjects) {
+        setIsMyProjectsLoading(false);
+      } else {
+        setIsProjectsLoading(false);
+      }
+    });
   }
 
   useEffect(() => {
@@ -42,6 +68,7 @@ export default function ProfilePage() {
         setIsMyProjectsLoading(true);
         dispatch(
           getProjects({
+            pagingParams: { pageNumber: 1, pageSize: 10 },
             userId: `${userId}`,
             filterProjects: true,
             searchTerm: myProjectsSearchTerm
@@ -62,6 +89,7 @@ export default function ProfilePage() {
         setIsProjectsLoading(true);
         dispatch(
           getProjects({
+            pagingParams: { pageNumber: 1, pageSize: 10 },
             userId: `${userId}`,
             filterProjects: false,
             searchTerm: projectsSearchTerm
@@ -151,6 +179,21 @@ export default function ProfilePage() {
           isDeletable={true}
           isLoading={isMyProjectsLoading}
         />
+        <ReactPaginate
+          nextLabel="Next >"
+          onPageChange={(event) => handlePageClick(event, true)}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={myProjectsPagination?.totalPages as number}
+          previousLabel="< Previous"
+          pageClassName="page-item"
+          previousClassName="page-item--prev"
+          nextClassName="page-item--next"
+          breakLabel="..."
+          breakClassName="page-item"
+          containerClassName="pagination"
+          activeClassName="pagination__active"
+        />
         <div className="table-header">
           <h3>All Projects</h3>
           <StyledSearch handleChange={(event) => setProjectsSearchTerm(event.target.value)} />
@@ -160,6 +203,21 @@ export default function ProfilePage() {
           handleRowClick={handleRowClick}
           emptyMessage="No projects found"
           isLoading={isProjectsLoading}
+        />
+        <ReactPaginate
+          nextLabel="Next >"
+          onPageChange={(event) => handlePageClick(event, false)}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={projectsPagination?.totalPages as number}
+          previousLabel="< Previous"
+          pageClassName="page-item"
+          previousClassName="page-item--prev"
+          nextClassName="page-item--next"
+          breakLabel="..."
+          breakClassName="page-item"
+          containerClassName="pagination"
+          activeClassName="pagination__active"
         />
       </div>
     </main>

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { createProject, getProjects } from '../store/slices/projectSlice';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
+import ReactPaginate from 'react-paginate';
 import ProjectTable from '../components/ProjectTable';
 import IconAdd from '../assets/icons/icon_add.svg?react';
 import IconClose from '../assets/icons/icon_close.svg?react';
@@ -11,7 +12,9 @@ import StyledSearch from '../components/micro/StyledSearch';
 
 export default function ProjectsPage() {
   const { currentUser } = useAppSelector((state) => state.user);
-  const { projects, myProjects } = useAppSelector((state) => state.project);
+  const { projects, myProjects, myProjectsPagination, projectsPagination } = useAppSelector(
+    (state) => state.project
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isCreateProject, setIsCreatingProject] = useState(false);
@@ -29,6 +32,29 @@ export default function ProjectsPage() {
     navigate(`/projects/${projectId}`);
   }
 
+  function handlePageClick(data: { selected: number }, isMyProjects: boolean) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (isMyProjects) {
+      setIsMyProjectsLoading(true);
+    } else {
+      setIsProjectsLoading(true);
+    }
+    dispatch(
+      getProjects({
+        pagingParams: { pageNumber: data.selected + 1, pageSize: 10 },
+        userId: `${currentUser?.id}`,
+        filterProjects: isMyProjects ? true : false,
+        searchTerm: isMyProjects ? myProjectsSearchTerm : projectsSearchTerm
+      })
+    ).finally(() => {
+      if (isMyProjects) {
+        setIsMyProjectsLoading(false);
+      } else {
+        setIsProjectsLoading(false);
+      }
+    });
+  }
+
   function onSubmit(data: { projectName: string }) {
     dispatch(createProject(data.projectName));
   }
@@ -39,6 +65,7 @@ export default function ProjectsPage() {
         setIsMyProjectsLoading(true);
         dispatch(
           getProjects({
+            pagingParams: { pageNumber: 1, pageSize: 10 },
             userId: `${currentUser?.id}`,
             filterProjects: true,
             searchTerm: myProjectsSearchTerm
@@ -59,6 +86,7 @@ export default function ProjectsPage() {
         setIsProjectsLoading(true);
         dispatch(
           getProjects({
+            pagingParams: { pageNumber: 1, pageSize: 10 },
             userId: `${currentUser?.id}`,
             filterProjects: false,
             searchTerm: projectsSearchTerm
@@ -89,6 +117,21 @@ export default function ProjectsPage() {
         isDeletable={true}
         isLoading={isMyProjectsLoading}
       />
+      <ReactPaginate
+        nextLabel="Next >"
+        onPageChange={(event) => handlePageClick(event, true)}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={2}
+        pageCount={myProjectsPagination?.totalPages as number}
+        previousLabel="< Previous"
+        pageClassName="page-item"
+        previousClassName="page-item--prev"
+        nextClassName="page-item--next"
+        breakLabel="..."
+        breakClassName="page-item"
+        containerClassName="pagination"
+        activeClassName="pagination__active"
+      />
       <div className="table-header">
         <h3>All Projects</h3>
         <StyledSearch handleChange={(event) => setProjectsSearchTerm(event.target.value)} />
@@ -98,6 +141,21 @@ export default function ProjectsPage() {
         handleRowClick={handleRowClick}
         emptyMessage="No projects found"
         isLoading={isProjectsLoading}
+      />
+      <ReactPaginate
+        nextLabel="Next >"
+        onPageChange={(event) => handlePageClick(event, false)}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={2}
+        pageCount={projectsPagination?.totalPages as number}
+        previousLabel="< Previous"
+        pageClassName="page-item"
+        previousClassName="page-item--prev"
+        nextClassName="page-item--next"
+        breakLabel="..."
+        breakClassName="page-item"
+        containerClassName="pagination"
+        activeClassName="pagination__active"
       />
       {isCreateProject && (
         <div className="simple-modal modal-container">

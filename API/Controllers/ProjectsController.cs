@@ -1,3 +1,4 @@
+using Application.Core;
 using Application.Projects;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,9 +7,9 @@ namespace API.Controllers
     public class ProjectsController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetProfiles(string userId, Boolean filterProjects, string searchTerm)
+        public async Task<IActionResult> GetProfiles([FromQuery]PagingParams param, string userId, Boolean filterProjects, string searchTerm)
         {
-            return HandleResult(await Mediator.Send(new List.Query{ UserId = userId, FilterProjects = filterProjects, SearchTerm = searchTerm}));
+            return HandlePagedResult(await Mediator.Send(new List.Query{Params = param, UserId = userId, FilterProjects = filterProjects, SearchTerm = searchTerm}));
         }
 
         [HttpPost]

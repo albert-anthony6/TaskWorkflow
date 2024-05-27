@@ -10,7 +10,7 @@ interface UserState {
 }
 
 interface GetUsersParams {
-  pagingParams?: PagingParams | undefined;
+  pagingParams: PagingParams | undefined;
   searchTerm?: string;
 }
 
@@ -25,8 +25,8 @@ export const getUsers = createAsyncThunk<User[], GetUsersParams>(
   async ({ pagingParams = { pageNumber: 1, pageSize: 12 }, searchTerm }, thunkAPI) => {
     try {
       const results = await agent.Profile.list(
-        pagingParams.pageNumber,
-        pagingParams.pageSize,
+        pagingParams.pageNumber as number,
+        pagingParams.pageSize as number,
         searchTerm
       );
       thunkAPI.dispatch(setPagination(results.pagination));

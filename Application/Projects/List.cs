@@ -8,23 +8,22 @@ namespace Application.Projects
 {
     public class List
     {
-        public class Query : IRequest<Result<List<RespProjectDto>>> {
+        public class Query : IRequest<Result<PagedList<RespProjectDto>>> {
+            public PagingParams Params { get; set; }
             public string UserId { get; set; }
             public Boolean FilterProjects { get; set; }
             public string SearchTerm { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<List<RespProjectDto>>>
+        public class Handler : IRequestHandler<Query, Result<PagedList<RespProjectDto>>>
         {
             private readonly DataContext _context;
-            private readonly IUserAccessor _userAccessor;
-            public Handler (DataContext context, IUserAccessor userAccessor)
+            public Handler (DataContext context)
             {
-                _userAccessor = userAccessor;
                 _context = context;
             }
 
-            public async Task<Result<List<RespProjectDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PagedList<RespProjectDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users.FirstOrDefaultAsync((u) =>
                     u.Id == request.UserId);
@@ -40,7 +39,7 @@ namespace Application.Projects
                     query = query.Where(project => project.Members.Any((m) => m.Id == user.Id));
                 }
 
-                var projectDtos = await query
+                var projectDtosQuery = query
                     .Select(project => new RespProjectDto
                     {
                         ProjectId = project.ProjectId,
@@ -51,10 +50,12 @@ namespace Application.Projects
                         UserTicketsCount = project.Tickets
                             .SelectMany((t) => t.Assignees)
                             .Count((a) => a.AppUserId == user.Id)
-                    })
-                    .ToListAsync();
+                    });
 
-                return Result<List<RespProjectDto>>.Success(projectDtos);
+                return Result<PagedList<RespProjectDto>>.Success(
+                    await PagedList<RespProjectDto>.CreateAsync(projectDtosQuery, request.Params.PageNumber,
+                        request.Params.PageSize)
+                );
             }
         }
     }

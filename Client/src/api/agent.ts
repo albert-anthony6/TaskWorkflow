@@ -88,10 +88,18 @@ const requests = {
 };
 
 const Projects = {
-  list: (userId: string, filterProjects?: boolean, searchTerm?: string) =>
-    requests.get<Project[]>(
-      `/projects/?userId=${userId}&filterProjects=${filterProjects}&searchTerm=${searchTerm}`
-    ),
+  list: (
+    pageNumber: number,
+    pageSize: number,
+    userId: string,
+    filterProjects?: boolean,
+    searchTerm?: string
+  ) =>
+    axios
+      .get<PaginatedResult<Project[]>>(
+        `/projects/?pageNumber=${pageNumber}&pageSize=${pageSize}&userId=${userId}&filterProjects=${filterProjects}&searchTerm=${searchTerm}`
+      )
+      .then(responseBody),
   details: (projectId: string) => requests.get<Project>(`/projects/${projectId}`),
   create: (name: string) => requests.post<void>('/projects/', { name }),
   update: (projectId: string, appUserIds: string[]) =>
@@ -128,7 +136,7 @@ const Account = {
 };
 
 const Profile = {
-  list: (pageNumber?: number, pageSize?: number, searchTerm?: string) =>
+  list: (pageNumber: number, pageSize: number, searchTerm?: string) =>
     axios
       .get<PaginatedResult<User[]>>(
         `/profiles/users/?pageNumber=${pageNumber}&pageSize=${pageSize}&searchTerm=${searchTerm}`
