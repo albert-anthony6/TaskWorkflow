@@ -3,7 +3,10 @@ import './PeoplePage.scss';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { getUsers } from '../store/slices/usersSlice';
 import { NavLink } from 'react-router-dom';
-import ReactPaginate from 'react-paginate';
+import { useDebouncedSearch } from '../utils/hooks/useDebouncedSearch';
+import { usePagination } from '../utils/hooks/usePagination';
+import Pagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
 import Skeleton from 'react-loading-skeleton';
 import StyledSearch from '../components/micro/StyledSearch';
 import IconAvatar from '../assets/icons/icon_avatar.svg?react';
@@ -11,34 +14,21 @@ import IconAvatar from '../assets/icons/icon_avatar.svg?react';
 export default function PeoplePage() {
   const dispatch = useAppDispatch();
   const { users, pagination } = useAppSelector((state) => state.users);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  function handlePageClick(data: { selected: number }) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setIsLoading(true);
-    dispatch(
-      getUsers({ pagingParams: { pageNumber: data.selected + 1, pageSize: 12 }, searchTerm })
-    ).finally(() => {
-      setIsLoading(false);
-    });
-  }
+  const isLoadingSearch = useDebouncedSearch(searchTerm, dispatch, getUsers);
+  const { handlePageClick, isLoadingPagination } = usePagination(
+    dispatch,
+    getUsers,
+    null,
+    searchTerm
+  );
 
+  // Update the combined loading state whenever either loading state changes
   useEffect(() => {
-    const delayDebounceFn = setTimeout(
-      () => {
-        setIsLoading(true);
-        dispatch(getUsers({ pagingParams: { pageNumber: 1, pageSize: 12 }, searchTerm })).finally(
-          () => {
-            setIsLoading(false);
-          }
-        );
-      },
-      searchTerm ? 500 : 0
-    );
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, dispatch]);
+    setIsLoading(isLoadingSearch || isLoadingPagination);
+  }, [isLoadingSearch, isLoadingPagination]);
 
   return (
     <main className="people-page">
@@ -72,23 +62,13 @@ export default function PeoplePage() {
           <div className="empty-state">No users found</div>
         )}
       </section>
-      {(pagination?.totalPages as number) > 1 && (
-        <ReactPaginate
-          nextLabel="Next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
-          pageCount={pagination?.totalPages as number}
-          previousLabel="< Previous"
-          pageClassName="page-item"
-          previousClassName="page-item--prev"
-          nextClassName="page-item--next"
-          breakLabel="..."
-          breakClassName="page-item"
-          containerClassName="pagination"
-          activeClassName="pagination__active"
-        />
-      )}
+      <Pagination
+        current={pagination?.currentPage as number}
+        total={pagination?.totalPages as number}
+        onPageChange={handlePageClick}
+        previousLabel="Previous"
+        nextLabel="Next"
+      />
     </main>
   );
 }

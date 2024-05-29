@@ -257,37 +257,29 @@ tbody {
 }
 
 .pagination {
-  display: flex;
-  width: 400px;
-  margin: 0 auto;
-  align-items: center;
-  justify-content: space-between;
-
-  &__active {
-    background-color: $dark-neutral;
-    color: $light-grey;
-  }
-
-  .page-item,
-  .page-item a {
-    display: block;
-    width: 35px;
-    text-align: center;
-    border-radius: 4px;
-    cursor: pointer;
-    user-select: none;
-
-    &--next,
-    &--prev {
-      width: fit-content;
-      cursor: pointer;
-      user-select: none;
-      white-space: nowrap;
-
-      &.disabled {
-        cursor: default;
-        opacity: 0.5;
+  .page-item {
+    &.active {
+      a {
+        background-color: $primary;
+        color: $light-grey;
       }
+    }
+
+    .page-link {
+      color: $dark-neutral;
+      background-color: transparent;
+      border: none;
+      margin: 0;
+
+      &:hover {
+        background-color: $primary;
+        color: $lightest-neutral;
+      }
+    }
+
+    &.disabled .page-link {
+      background-color: transparent;
+      margin-top: 3px;
     }
   }
 }

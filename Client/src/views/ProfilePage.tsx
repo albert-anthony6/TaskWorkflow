@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import './ProfilePage.scss';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { getProfile } from '../store/slices/userSlice';
 import { getProjects } from '../store/slices/projectSlice';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useDebouncedSearch } from '../utils/hooks/useDebouncedSearch';
+import { usePagination } from '../utils/hooks/usePagination';
 import Skeleton from 'react-loading-skeleton';
-import ReactPaginate from 'react-paginate';
+import Pagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
 import ProjectTable from '../components/ProjectTable';
 import StyledSearch from '../components/micro/StyledSearch';
 import IconFacebook from '../assets/icons/icon_facebook.svg?react';
@@ -23,37 +26,39 @@ export default function ProfilePage() {
   const { profile } = useAppSelector((state) => state.user);
 
   const [isUserLoading, setIsUserLoading] = useState(true);
-  const [isMyProjectsLoading, setIsMyProjectsLoading] = useState(true);
-  const [isProjectsLoading, setIsProjectsLoading] = useState(true);
 
   const [myProjectsSearchTerm, setMyProjectsSearchTerm] = useState('');
   const [projectsSearchTerm, setProjectsSearchTerm] = useState('');
+  const [isMyProjectsLoading, setIsMyProjectsLoading] = useState(true);
+  const [isProjectsLoading, setIsProjectsLoading] = useState(true);
+
+  const isMyProjectsLoadingSearch = useDebouncedSearch(
+    myProjectsSearchTerm,
+    dispatch,
+    getProjects,
+    userId,
+    true
+  );
+  const isProjectsLoadingSearch = useDebouncedSearch(
+    projectsSearchTerm,
+    dispatch,
+    getProjects,
+    userId,
+    false
+  );
+
+  const {
+    handlePageClick: handleMyProjectsPageClick,
+    isLoadingPagination: isMyProjectsLoadingPagination
+  } = usePagination(dispatch, getProjects, userId, myProjectsSearchTerm);
+
+  const {
+    handlePageClick: handleProjectsPageClick,
+    isLoadingPagination: isProjectsLoadingPagination
+  } = usePagination(dispatch, getProjects, userId, projectsSearchTerm);
 
   function handleRowClick(projectId: string) {
     navigate(`/projects/${projectId}`);
-  }
-
-  function handlePageClick(data: { selected: number }, isMyProjects: boolean) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (isMyProjects) {
-      setIsMyProjectsLoading(true);
-    } else {
-      setIsProjectsLoading(true);
-    }
-    dispatch(
-      getProjects({
-        pagingParams: { pageNumber: data.selected + 1, pageSize: 10 },
-        userId: `${userId}`,
-        filterProjects: isMyProjects ? true : false,
-        searchTerm: isMyProjects ? myProjectsSearchTerm : projectsSearchTerm
-      })
-    ).finally(() => {
-      if (isMyProjects) {
-        setIsMyProjectsLoading(false);
-      } else {
-        setIsProjectsLoading(false);
-      }
-    });
   }
 
   useEffect(() => {
@@ -62,47 +67,15 @@ export default function ProfilePage() {
     });
   }, [dispatch, userId]);
 
+  // Update the combined loading state whenever either loading state changes
   useEffect(() => {
-    const delayDebounceFn = setTimeout(
-      () => {
-        setIsMyProjectsLoading(true);
-        dispatch(
-          getProjects({
-            pagingParams: { pageNumber: 1, pageSize: 10 },
-            userId: `${userId}`,
-            filterProjects: true,
-            searchTerm: myProjectsSearchTerm
-          })
-        ).finally(() => {
-          setIsMyProjectsLoading(false);
-        });
-      },
-      myProjectsSearchTerm ? 500 : 0
-    );
+    setIsProjectsLoading(isProjectsLoadingSearch || isProjectsLoadingPagination);
+  }, [isProjectsLoadingSearch, isProjectsLoadingPagination]);
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [myProjectsSearchTerm, dispatch, userId]);
-
+  // Update the combined loading state whenever either loading state changes
   useEffect(() => {
-    const delayDebounceFn = setTimeout(
-      () => {
-        setIsProjectsLoading(true);
-        dispatch(
-          getProjects({
-            pagingParams: { pageNumber: 1, pageSize: 10 },
-            userId: `${userId}`,
-            filterProjects: false,
-            searchTerm: projectsSearchTerm
-          })
-        ).finally(() => {
-          setIsProjectsLoading(false);
-        });
-      },
-      projectsSearchTerm ? 500 : 0
-    );
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [projectsSearchTerm, dispatch, userId]);
+    setIsMyProjectsLoading(isMyProjectsLoadingSearch || isMyProjectsLoadingPagination);
+  }, [isMyProjectsLoadingSearch, isMyProjectsLoadingPagination]);
 
   return (
     <main className="profile-page">
@@ -179,20 +152,12 @@ export default function ProfilePage() {
           isDeletable={true}
           isLoading={isMyProjectsLoading}
         />
-        <ReactPaginate
-          nextLabel="Next >"
-          onPageChange={(event) => handlePageClick(event, true)}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
-          pageCount={myProjectsPagination?.totalPages as number}
-          previousLabel="< Previous"
-          pageClassName="page-item"
-          previousClassName="page-item--prev"
-          nextClassName="page-item--next"
-          breakLabel="..."
-          breakClassName="page-item"
-          containerClassName="pagination"
-          activeClassName="pagination__active"
+        <Pagination
+          current={myProjectsPagination?.currentPage as number}
+          total={myProjectsPagination?.totalPages as number}
+          onPageChange={(event) => handleMyProjectsPageClick(event, true)}
+          previousLabel="Previous"
+          nextLabel="Next"
         />
         <div className="table-header">
           <h3>All Projects</h3>
@@ -204,20 +169,12 @@ export default function ProfilePage() {
           emptyMessage="No projects found"
           isLoading={isProjectsLoading}
         />
-        <ReactPaginate
-          nextLabel="Next >"
-          onPageChange={(event) => handlePageClick(event, false)}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
-          pageCount={projectsPagination?.totalPages as number}
-          previousLabel="< Previous"
-          pageClassName="page-item"
-          previousClassName="page-item--prev"
-          nextClassName="page-item--next"
-          breakLabel="..."
-          breakClassName="page-item"
-          containerClassName="pagination"
-          activeClassName="pagination__active"
+        <Pagination
+          current={projectsPagination?.currentPage as number}
+          total={projectsPagination?.totalPages as number}
+          onPageChange={handleProjectsPageClick}
+          previousLabel="Previous"
+          nextLabel="Next"
         />
       </div>
     </main>
