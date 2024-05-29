@@ -178,11 +178,13 @@ export default function TaskCreationModal(props: Props) {
             <IconUpload />
             <p className="drop-container">Choose a file or drag it here</p>
           </ImageDropzone>
-          <div className="attachments-container">
-            {selectedTask?.attachments?.map((photo) => (
-              <img src={photo.url} key={photo.id} />
-            ))}
-          </div>
+          {selectedTask?.attachments && (
+            <div className="attachments-container">
+              {selectedTask.attachments.map((photo) => (
+                <img src={photo.url} key={photo.id} />
+              ))}
+            </div>
+          )}
           <IconClose
             onClick={() => dispatch(dispatch(toggleTaskModal({ isOpen: false })))}
             className="icon-close"

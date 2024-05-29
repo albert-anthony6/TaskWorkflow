@@ -2,35 +2,81 @@
   .banner {
     &--image {
       width: 100%;
-      padding-top: 20%;
+      padding-top: 40%;
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
+
+      @include bp-xs-phone {
+        padding-top: 30%;
+      }
+
+      @include bp-md-tablet {
+        padding-top: 20%;
+      }
     }
 
     &--content {
       display: flex;
-      height: 112px;
       padding: 30px 50px;
       align-items: center;
+      flex-direction: column;
       color: $lightest-neutral;
       background-color: $dark-grey;
 
+      @include bp-md-tablet {
+        height: 112px;
+        flex-direction: row;
+      }
+
       .avatar {
+        margin-top: -130px;
         display: inline-block;
-        margin: -155px 20px 35px 60px;
+
+        @include bp-md-tablet {
+          margin: -155px 20px 35px 0;
+        }
+
+        @include bp-lg-laptop {
+          margin-right: 60px;
+        }
       }
 
       .user-info {
+        text-align: center;
+
+        @include bp-md-tablet {
+          text-align: left;
+        }
+
         .user-name {
           display: flex;
           align-items: center;
+          flex-direction: column;
 
-          .user-socials {
+          @include bp-md-tablet {
+            flex-direction: row;
+          }
+        }
+
+        .user-socials {
+          margin-top: 10px;
+
+          @include bp-md-tablet {
             margin-left: 15px;
             margin-bottom: -15px;
+          }
 
-            svg {
+          & :not(:first-child) {
+            margin-left: 15px;
+
+            @include bp-md-tablet {
+              margin-left: unset;
+            }
+          }
+
+          svg {
+            @include bp-md-tablet {
               margin-left: 15px;
             }
           }

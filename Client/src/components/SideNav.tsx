@@ -17,13 +17,13 @@ export default function SideNav() {
 
   return (
     <aside className="side-nav">
-      <div className="top-nav">
+      <div className="side-nav--top">
         <IconLogo className="logo__white" />
         <Link to={`/user/${currentUser?.id}`} className="profile-link">
           {currentUser?.avatar ? (
-            <img src={currentUser?.avatar.url} className="avatar avatar__small" />
+            <img src={currentUser?.avatar.url} className="avatar avatar__sm" />
           ) : (
-            <IconAvatar className="avatar avatar__small" />
+            <IconAvatar className="avatar avatar__sm" />
           )}
           <div className="username">
             <p>{currentUser?.displayName}</p>
@@ -71,7 +71,7 @@ export default function SideNav() {
           </ul>
         </nav>
       </div>
-      <div className="bottom-nav">
+      <div className="side-nav--bottom">
         <nav className="secondary-links">
           <ul>
             <li>

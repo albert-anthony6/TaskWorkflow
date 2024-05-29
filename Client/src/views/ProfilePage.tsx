@@ -11,6 +11,7 @@ import Pagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
 import ProjectTable from '../components/ProjectTable';
 import StyledSearch from '../components/micro/StyledSearch';
+import useScreenWidth from '../utils/hooks/useScreenWidth';
 import IconFacebook from '../assets/icons/icon_facebook.svg?react';
 import IconTwitter from '../assets/icons/icon_twitter.svg?react';
 import IconInstagram from '../assets/icons/icon_instagram.svg?react';
@@ -18,8 +19,9 @@ import IconLinkedin from '../assets/icons/icon_linkedin.svg?react';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { userId } = useParams();
   const dispatch = useAppDispatch();
+  const { userId } = useParams();
+  const screenWidth = useScreenWidth();
   const { projects, myProjects, myProjectsPagination, projectsPagination } = useAppSelector(
     (state) => state.project
   );
@@ -97,18 +99,22 @@ export default function ProfilePage() {
             <Skeleton
               baseColor="#ccc"
               duration={0.9}
-              width="230px"
+              width={screenWidth >= 1200 ? '230px' : '175px'}
               circle={true}
-              className="avatar avatar__big"
+              className={screenWidth >= 1200 ? 'avatar avatar__xl' : 'avatar avatar__large'}
             />
           ) : (
             <>
               {profile?.avatar ? (
-                <img src={profile.avatar.url} className="avatar avatar__big" alt="User Avatar." />
+                <img
+                  src={profile.avatar.url}
+                  className={screenWidth >= 1200 ? 'avatar avatar__xl' : 'avatar avatar__large'}
+                  alt="User Avatar."
+                />
               ) : (
                 <img
                   src="/src/assets/icons/icon_avatar.svg?react"
-                  className="avatar avatar__big"
+                  className={screenWidth >= 1200 ? 'avatar avatar__xl' : 'avatar avatar__large'}
                   alt="User Avatar."
                 />
               )}
@@ -117,24 +123,49 @@ export default function ProfilePage() {
           <div className="user-info">
             {!isUserLoading && (
               <>
-                <div className="user-name">
-                  <h1>{profile?.displayName}</h1>
-                  <div className="user-socials">
-                    <a href={profile?.facebookLink} target="_blank">
-                      <IconFacebook />
-                    </a>
-                    <a href={profile?.linkedinLink} target="_blank">
-                      <IconLinkedin />
-                    </a>
-                    <a href={profile?.instagramLink} target="_blank">
-                      <IconInstagram />
-                    </a>
-                    <a href={profile?.twitterLink} target="_blank">
-                      <IconTwitter />
-                    </a>
-                  </div>
-                </div>
-                <p className="user-bio">{profile?.bio}</p>
+                {screenWidth >= 768 ? (
+                  <>
+                    <div className="user-name">
+                      <h1>{profile?.displayName}</h1>
+                      <div className="user-socials">
+                        <a href={profile?.facebookLink} target="_blank">
+                          <IconFacebook />
+                        </a>
+                        <a href={profile?.linkedinLink} target="_blank">
+                          <IconLinkedin />
+                        </a>
+                        <a href={profile?.instagramLink} target="_blank">
+                          <IconInstagram />
+                        </a>
+                        <a href={profile?.twitterLink} target="_blank">
+                          <IconTwitter />
+                        </a>
+                      </div>
+                    </div>
+                    <p className="user-bio">{profile?.bio}</p>
+                  </>
+                ) : (
+                  <>
+                    <div className="user-name">
+                      <h1>{profile?.displayName}</h1>
+                      <p className="user-bio">{profile?.bio}</p>
+                    </div>
+                    <div className="user-socials">
+                      <a href={profile?.facebookLink} target="_blank">
+                        <IconFacebook />
+                      </a>
+                      <a href={profile?.linkedinLink} target="_blank">
+                        <IconLinkedin />
+                      </a>
+                      <a href={profile?.instagramLink} target="_blank">
+                        <IconInstagram />
+                      </a>
+                      <a href={profile?.twitterLink} target="_blank">
+                        <IconTwitter />
+                      </a>
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>

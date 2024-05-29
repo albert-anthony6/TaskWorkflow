@@ -1,6 +1,6 @@
 .side-nav {
   position: fixed;
-  width: 330px;
+  width: 250px;
   height: 100vh;
   top: 0;
   left: 0;
@@ -35,7 +35,7 @@
     }
   }
 
-  .top-nav {
+  &--top {
     padding: 47px 45px 76px;
     color: $lightest-neutral;
     background-color: $dark-neutral;
@@ -58,7 +58,7 @@
     }
   }
 
-  .bottom-nav {
+  &--bottom {
     padding: 47px 45px 0;
     color: $dark-neutral;
 

@@ -1,0 +1,11 @@
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px 50px;
+  background-color: $dark-neutral;
+
+  .icon-menu {
+    cursor: pointer;
+  }
+}
