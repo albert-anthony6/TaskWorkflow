@@ -30,13 +30,15 @@ export default function ProjectsPage() {
     myProjectsSearchTerm,
     dispatch,
     getProjects,
-    currentUser?.id
+    currentUser?.id,
+    true
   );
   const isProjectsLoadingSearch = useDebouncedSearch(
     projectsSearchTerm,
     dispatch,
     getProjects,
-    currentUser?.id
+    currentUser?.id,
+    false
   );
 
   const {

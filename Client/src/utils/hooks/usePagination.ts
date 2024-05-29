@@ -14,7 +14,7 @@ export function usePagination(
     setIsLoadingPagination(true);
     dispatch(
       action({
-        pagingParams: { pageNumber: selectedPage, pageSize: 1 },
+        pagingParams: { pageNumber: selectedPage, pageSize: 12 },
         userId,
         searchTerm,
         filterProjects: isMyProjects

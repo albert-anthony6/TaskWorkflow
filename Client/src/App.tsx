@@ -9,16 +9,16 @@ import './assets/scss/_theme.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 function App() {
-  const { token } = useAppSelector((state) => state.user);
+  const { token, currentUser } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const location = useLocation();
   const currentPath = location.pathname;
 
   useEffect(() => {
-    if (token) {
+    if (token && !currentUser) {
       dispatch(getCurrentUser());
     }
-  }, [dispatch, token]);
+  }, [dispatch, token, currentUser]);
 
   return (
     <>

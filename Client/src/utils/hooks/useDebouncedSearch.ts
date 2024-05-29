@@ -18,7 +18,7 @@ export function useDebouncedSearch(
           action({
             searchTerm,
             userId,
-            pagingParams: { pageNumber: 1, pageSize: 1 },
+            pagingParams: { pageNumber: 1, pageSize: 12 },
             filterProjects
           })
         ).finally(() => {

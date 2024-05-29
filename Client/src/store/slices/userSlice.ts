@@ -11,7 +11,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  currentUser: null,
+  currentUser: JSON.parse(localStorage.getItem('currentUser') as string) || null,
   token: localStorage.getItem('jwt') || null,
   profile: null
 };
@@ -36,7 +36,7 @@ export const registerUser = createAsyncThunk<CurrentUser, AuthUserFormValues>(
     try {
       const response = await agent.Account.register(user);
       thunkAPI.dispatch(setToken(response.token));
-      router.navigate('/projects/123');
+      router.navigate('/projects/');
       return response;
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error });
@@ -48,7 +48,8 @@ export const getCurrentUser = createAsyncThunk<CurrentUser>(
   'user/getCurrentUser',
   async (_, thunkAPI) => {
     try {
-      return await agent.Account.current();
+      const currentUser = await agent.Account.current();
+      return currentUser;
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error });
     }
@@ -98,8 +99,9 @@ export const userSlice = createSlice({
     },
     logoutUser: (state) => {
       state.token = null;
-      localStorage.removeItem('jwt');
       state.currentUser = null;
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('currentUser');
     }
   },
   extraReducers: (builder) => {
@@ -109,6 +111,7 @@ export const userSlice = createSlice({
     builder.addMatcher(
       isAnyOf(signInUser.fulfilled, registerUser.fulfilled, getCurrentUser.fulfilled),
       (state, action) => {
+        localStorage.setItem('currentUser', JSON.stringify(action.payload));
         state.currentUser = action.payload;
       }
     );
