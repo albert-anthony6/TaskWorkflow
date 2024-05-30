@@ -27,14 +27,10 @@ function App() {
     <>
       <ToastContainer position="bottom-right" theme="colored" />
       {currentPath !== '/' &&
-      currentPath !== '/login' &&
-      currentPath !== '/register' &&
-      currentPath !== '/not-found' &&
-      screenWidth >= 992 ? (
-        <SideNav />
-      ) : (
-        <TopNav />
-      )}
+        currentPath !== '/login' &&
+        currentPath !== '/register' &&
+        currentPath !== '/not-found' &&
+        (screenWidth >= 992 ? <SideNav /> : <TopNav />)}
       <div
         className={
           currentPath !== '/' && currentPath !== '/login' && currentPath !== '/register'

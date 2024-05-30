@@ -18,11 +18,11 @@ body {
 }
 
 p {
-  @include font-size(18, 400, none, 0, 29);
+  @include font-size(18, 400, none, 0, normal);
 }
 
 a {
-  @include font-size(16, 500, none, normal, 29);
+  @include font-size(16, 500, none, normal, normal);
   text-decoration: none;
 }
 

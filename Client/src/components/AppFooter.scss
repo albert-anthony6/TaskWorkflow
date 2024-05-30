@@ -1,13 +1,22 @@
 .app-footer {
   max-width: 1440px;
-  padding: 75px 140px 22px;
-  margin: 0 auto;
+  padding: 75px 50px 22px;
   color: $dark-neutral;
+
+  @include bp-lg-laptop {
+    padding: 75px 140px 22px;
+    margin-left: 160px;
+  }
 
   &--content {
     display: flex;
     align-items: flex-start;
+    flex-direction: column;
     margin-bottom: 82px;
+
+    @include bp-custom-min(1435) {
+      flex-direction: row;
+    }
 
     h4 {
       white-space: nowrap;
@@ -15,15 +24,46 @@
     }
 
     &__left {
-      margin-right: 115px;
+      margin-bottom: 30px;
+      text-align: center;
+
+      @include bp-xs-phone {
+        text-align: left;
+      }
+
+      @include bp-custom-min(1435) {
+        margin-right: 115px;
+        margin-bottom: 0;
+      }
     }
 
     &__right {
+      width: 100%;
       display: flex;
+      flex-wrap: wrap;
       align-items: flex-start;
       justify-content: space-between;
+      text-align: center;
+
+      @include bp-xs-phone {
+        text-align: left;
+      }
+
+      @include bp-md-tablet {
+        flex-wrap: nowrap;
+      }
 
       .app-footer--column {
+        width: 100%;
+
+        @include bp-xs-phone {
+          width: 40%;
+        }
+
+        @include bp-md-tablet {
+          width: auto;
+        }
+
         &:first-of-type a {
           display: inline-block;
           margin-top: 22px;
@@ -32,10 +72,54 @@
         }
 
         &:not(:first-of-type) {
-          margin-left: 95px;
+          @include bp-md-tablet {
+            margin-left: 7%;
+          }
+
+          @include bp-xl-desktop {
+            margin-left: 95px;
+          }
+        }
+
+        &:not(:last-of-type) {
+          border-bottom: 1px solid $dark-neutral;
+          padding-bottom: 30px;
+          margin-bottom: 30px;
+
+          @include bp-xs-phone {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+          }
+        }
+
+        &:nth-of-type(3) {
+          @include bp-xs-phone {
+            padding-top: 30px;
+            margin-top: -120px;
+            border-top: 1px solid $dark-neutral;
+          }
+
+          @include bp-md-tablet {
+            padding-top: 0;
+            margin-top: 0;
+            border-top: none;
+          }
         }
 
         &:last-of-type {
+          @include bp-xs-phone {
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid $dark-neutral;
+          }
+
+          @include bp-md-tablet {
+            padding-top: 0;
+            margin-top: 0;
+            border-top: none;
+          }
+
           .caption {
             margin-top: 22px;
 
