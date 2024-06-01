@@ -90,16 +90,25 @@
 
     .table-header {
       display: flex;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
 
-      &:last-of-type {
-        margin-top: 30px;
+      .search-container {
+        margin-top: 5px;
+
+        @include bp-custom-min(459) {
+          margin-top: 0;
+        }
       }
 
       h3 {
-        @include font-size(24, bold, none, 0, 0);
+        margin-right: 15px;
+      }
+
+      &:last-of-type {
+        margin-top: 30px;
       }
     }
   }

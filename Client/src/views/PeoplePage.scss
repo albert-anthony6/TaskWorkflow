@@ -10,12 +10,13 @@
   .people-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     margin-bottom: 30px;
+    justify-content: center;
 
     .people-card {
-      width: calc((100% - 30px * (4 - 1)) / 4);
+      width: calc((100% - 0px * (5 - 1)) / 5);
       max-width: 331px;
+      min-width: 230px;
       min-height: 233px;
       margin: 30px 15px 0px;
       color: inherit;

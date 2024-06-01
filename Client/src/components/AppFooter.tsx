@@ -48,7 +48,7 @@ export default function AppFooter() {
           </div>
         </div>
       </div>
-      <div className="caption">© Copyright Task Workflow LLC</div>
+      <div className="caption copyright">© Copyright Task Workflow LLC</div>
     </footer>
   );
 }

@@ -8,6 +8,14 @@
     margin-left: 160px;
   }
 
+  .copyright {
+    text-align: center;
+
+    @include bp-xs-phone {
+      text-align: left;
+    }
+  }
+
   &--content {
     display: flex;
     align-items: flex-start;

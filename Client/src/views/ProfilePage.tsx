@@ -176,13 +176,15 @@ export default function ProfilePage() {
           <h3>Your Projects</h3>
           <StyledSearch handleChange={(event) => setMyProjectsSearchTerm(event.target.value)} />
         </div>
-        <ProjectTable
-          projects={myProjects}
-          handleRowClick={handleRowClick}
-          emptyMessage="You have no current projects"
-          isDeletable={true}
-          isLoading={isMyProjectsLoading}
-        />
+        <div className="table-container">
+          <ProjectTable
+            projects={myProjects}
+            handleRowClick={handleRowClick}
+            emptyMessage="You have no current projects"
+            isDeletable={true}
+            isLoading={isMyProjectsLoading}
+          />
+        </div>
         <Pagination
           current={myProjectsPagination?.currentPage as number}
           total={myProjectsPagination?.totalPages as number}
@@ -194,12 +196,14 @@ export default function ProfilePage() {
           <h3>All Projects</h3>
           <StyledSearch handleChange={(event) => setProjectsSearchTerm(event.target.value)} />
         </div>
-        <ProjectTable
-          projects={projects}
-          handleRowClick={handleRowClick}
-          emptyMessage="No projects found"
-          isLoading={isProjectsLoading}
-        />
+        <div className="table-container">
+          <ProjectTable
+            projects={projects}
+            handleRowClick={handleRowClick}
+            emptyMessage="No projects found"
+            isLoading={isProjectsLoading}
+          />
+        </div>
         <Pagination
           current={projectsPagination?.currentPage as number}
           total={projectsPagination?.totalPages as number}
