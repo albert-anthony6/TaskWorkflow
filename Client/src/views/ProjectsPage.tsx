@@ -50,7 +50,11 @@ export default function ProjectsPage() {
     isLoadingPagination: isProjectsLoadingPagination
   } = usePagination(dispatch, getProjects, currentUser?.id, projectsSearchTerm);
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     defaultValues: {
       projectName: ''
     }
@@ -127,11 +131,15 @@ export default function ProjectsPage() {
               <input
                 {...register('projectName', {
                   required: 'Project must have a title.',
-                  minLength: { value: 4, message: 'Title must be at least 4 characters long.' }
+                  minLength: { value: 4, message: 'Title must be at least 4 characters long.' },
+                  maxLength: { value: 100, message: 'Title must not exceed 100 characters.' }
                 })}
                 type="text"
                 placeholder="Enter project name"
               />
+              <div className="input--helper">
+                <div className="caption text__error">{errors.projectName?.message}</div>
+              </div>
               <div className="buttons-container">
                 <button
                   type="button"

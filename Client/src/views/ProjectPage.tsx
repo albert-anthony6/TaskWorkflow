@@ -181,7 +181,9 @@ export default function ProjectPage() {
     <main className="project-page">
       <div className="project-page--header">
         <h1>{project?.name}</h1>
-        <Link to="/projects">Projects/{project?.name}</Link>
+        <Link to="/projects" className="breadcrumbs">
+          Projects/{project?.name}
+        </Link>
       </div>
       <div className="project-page--actions">
         <div className="members">

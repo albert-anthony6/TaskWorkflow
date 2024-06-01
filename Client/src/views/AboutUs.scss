@@ -1,0 +1,38 @@
+.about-us {
+  &--cover {
+    position: relative;
+    height: 400px;
+    margin-bottom: 50px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-us--title {
+      position: absolute;
+      font-size: 22px;
+      padding: 15px 25px;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: $lightest-neutral;
+      background-color: rgba($dark-neutral, 0.5);
+    }
+  }
+
+  &--content {
+    padding: 0 50px;
+
+    p {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+
+      &:not(:last-of-type) {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}

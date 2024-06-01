@@ -9,6 +9,7 @@ import LogoutPage from '../views/LogoutPage';
 import ProfilePage from '../views/ProfilePage';
 import SettingsPage from '../views/SettingsPage';
 import NotFound from '../views/NotFound';
+import AboutUs from '../views/AboutUs';
 
 export const routes: RouteObject[] = [
   {
@@ -24,6 +25,7 @@ export const routes: RouteObject[] = [
       { path: '/people', element: <PeoplePage /> },
       { path: '/logout', element: <LogoutPage /> },
       { path: '/settings', element: <SettingsPage /> },
+      { path: '/about-us', element: <AboutUs /> },
       { path: '/not-found', element: <NotFound /> },
       { path: '*', element: <Navigate to="/not-found" replace /> }
     ]

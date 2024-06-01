@@ -1,8 +1,18 @@
 .settings-page {
   padding: 80px 50px 50px;
 
+  h1 {
+    margin-bottom: 15px;
+  }
+
   label {
     display: block;
     width: fit-content;
+  }
+
+  .input-container,
+  .dropzone {
+    margin-bottom: 15px;
+    border: none;
   }
 }

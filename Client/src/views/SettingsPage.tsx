@@ -220,7 +220,11 @@ export default function SettingsPage() {
           <label htmlFor="displayName">Display Name*</label>
           <input
             {...register('displayName', {
-              required: 'Please provide a display name.'
+              required: 'Please provide a display name.',
+              maxLength: {
+                value: 25,
+                message: 'Bio cannot exceed 25 characters.'
+              }
             })}
             id="displayName"
             type="text"
@@ -230,12 +234,28 @@ export default function SettingsPage() {
             <div className="caption text__error">{errors.displayName?.message}</div>
           </div>
         </div>
-        <label htmlFor="bio">Bio</label>
-        <input {...register('bio')} id="bio" type="text" placeholder="Display Name" />
+        <div className="input-container">
+          <label htmlFor="bio">Bio</label>
+          <input
+            {...register('bio', {
+              maxLength: {
+                value: 25,
+                message: 'Bio cannot exceed 25 characters.'
+              }
+            })}
+            id="bio"
+            type="text"
+            placeholder="Display Name"
+          />
+          <div className="input--helper">
+            <div className="caption text__error">{errors.bio?.message}</div>
+          </div>
+        </div>
         {/* Avatar Upload */}
         {avatarFiles.length > 0 && !avatarBlob && (
           <ImageCropper files={avatarFiles} setFiles={setAvatarFiles} setBlob={setAvatarBlob} />
         )}
+        <label>Avatar</label>
         <ImageDropzone
           files={avatarFiles}
           blobUrl={avatarBlobUrl}
@@ -255,6 +275,7 @@ export default function SettingsPage() {
             setBlob={setCoverBlob}
           />
         )}
+        <label>Cover Image</label>
         <ImageDropzone
           files={coverFiles}
           blobUrl={coverBlobUrl}
@@ -267,30 +288,48 @@ export default function SettingsPage() {
           customPreview="img-preview__cover"
         />
         {/* Social Links */}
-        <label htmlFor="facebookLink">Facebook</label>
-        <input {...register('facebookLink')} id="facebookLink" type="text" placeholder="Facebook" />
-        <div className="input--helper">
-          <div className="caption text__error">{errors.facebookLink?.message}</div>
+        <div className="input-container">
+          <label htmlFor="facebookLink">Facebook</label>
+          <input
+            {...register('facebookLink')}
+            id="facebookLink"
+            type="text"
+            placeholder="Facebook"
+          />
+          <div className="input--helper">
+            <div className="caption text__error">{errors.facebookLink?.message}</div>
+          </div>
         </div>
-        <label htmlFor="twitterLink">Twitter</label>
-        <input {...register('twitterLink')} id="twitterLink" type="text" placeholder="Twitter" />
-        <div className="input--helper">
-          <div className="caption text__error">{errors.twitterLink?.message}</div>
+        <div className="input-container">
+          <label htmlFor="twitterLink">Twitter</label>
+          <input {...register('twitterLink')} id="twitterLink" type="text" placeholder="Twitter" />
+          <div className="input--helper">
+            <div className="caption text__error">{errors.twitterLink?.message}</div>
+          </div>
         </div>
-        <label htmlFor="instagramLink">Instagram</label>
-        <input
-          {...register('instagramLink')}
-          id="instagramLink"
-          type="text"
-          placeholder="Instagram"
-        />
-        <div className="input--helper">
-          <div className="caption text__error">{errors.instagramLink?.message}</div>
+        <div className="input-container">
+          <label htmlFor="instagramLink">Instagram</label>
+          <input
+            {...register('instagramLink')}
+            id="instagramLink"
+            type="text"
+            placeholder="Instagram"
+          />
+          <div className="input--helper">
+            <div className="caption text__error">{errors.instagramLink?.message}</div>
+          </div>
         </div>
-        <label htmlFor="linkedinLink">LinkedIn</label>
-        <input {...register('linkedinLink')} id="linkedinLink" type="text" placeholder="LinkedIn" />
-        <div className="input--helper">
-          <div className="caption text__error">{errors.linkedinLink?.message}</div>
+        <div className="input-container">
+          <label htmlFor="linkedinLink">LinkedIn</label>
+          <input
+            {...register('linkedinLink')}
+            id="linkedinLink"
+            type="text"
+            placeholder="LinkedIn"
+          />
+          <div className="input--helper">
+            <div className="caption text__error">{errors.linkedinLink?.message}</div>
+          </div>
         </div>
         <button type="submit" className="button__primary">
           Save Profile

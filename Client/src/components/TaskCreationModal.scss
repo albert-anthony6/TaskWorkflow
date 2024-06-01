@@ -2,13 +2,17 @@
   overflow-y: scroll;
 
   .form-container {
+    width: 100%;
     position: absolute;
     padding: 25px 35px 47px;
     top: 0;
     right: 0;
-    width: 800px;
     min-height: 100vh;
     background-color: $lightest-neutral;
+
+    @include bp-custom-min(850) {
+      width: 800px;
+    }
 
     ul {
       display: flex;

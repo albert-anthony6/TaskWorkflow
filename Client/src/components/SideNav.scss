@@ -43,16 +43,21 @@
     .profile-link {
       display: flex;
       margin: 35px 5px 66px 0;
-      align-items: center;
+      align-items: flex-start;
       text-decoration: none;
 
       .username {
-        margin-left: 15px;
+        margin-top: 5px;
+        margin-left: 10px;
 
         p,
         .caption {
-          line-height: normal;
+          width: 130px;
           color: $lightest-neutral;
+        }
+
+        p {
+          line-height: 20px;
         }
       }
     }

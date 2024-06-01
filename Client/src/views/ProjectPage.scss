@@ -1,8 +1,17 @@
 .project-page {
   position: relative;
+
   &--header {
     padding: 35px 50px 40px;
     background-color: $light-grey;
+
+    .breadcrumbs {
+      color: $dark-neutral;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   &--actions {
