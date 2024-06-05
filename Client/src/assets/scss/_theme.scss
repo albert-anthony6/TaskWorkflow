@@ -36,11 +36,19 @@ h6 {
 }
 
 h1 {
-  @include font-size(45, 900, none, normal, 65);
+  @include font-size(45, 900, none, normal, 50);
+
+  @include bp-sm-phone-landscape {
+    line-height: 60px;
+  }
 }
 
 h2 {
-  @include font-size(48, 700, none, normal, 65);
+  @include font-size(48, 700, none, normal, 50);
+
+  @include bp-sm-phone-landscape {
+    line-height: 60px;
+  }
 }
 
 h2 {

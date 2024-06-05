@@ -58,7 +58,7 @@ export default function LandingPage() {
   return (
     <main className="landing-page">
       <nav className="header">
-        <IconLogo />
+        <IconLogo className="header--logo" />
         <ul className="header--links">
           <li>
             <Link to="/register">Sign Up</Link>
@@ -161,8 +161,7 @@ export default function LandingPage() {
           transitionDuration={500}
           containerClass="carousel-container"
           removeArrowOnDeviceType={['tablet', 'mobile']}
-          dotListClass="custom-dot-list-style"
-          itemClass="carousel-item-padding-40-px"
+          dotListClass="carousel-dots"
         >
           {slides.map((slide) => (
             <div className="carousel-slide" key={slide.caption}>

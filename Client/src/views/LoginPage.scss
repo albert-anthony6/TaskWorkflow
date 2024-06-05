@@ -9,7 +9,11 @@
   .page-header {
     width: fit-content;
     margin: 0 auto;
-    text-align: left;
+    text-align: center;
+
+    @include bp-sm-phone-landscape {
+      text-align: left;
+    }
 
     h2 {
       margin-bottom: 55px;
@@ -22,14 +26,21 @@
   }
 
   form {
-    width: fit-content;
+    width: 80%;
     margin: 0 auto;
     text-align: left;
 
+    @include bp-sm-phone-landscape {
+      width: fit-content;
+    }
+
     .input-container {
       display: flex;
-      width: 400px;
       flex-direction: column;
+
+      @include bp-sm-phone-landscape {
+        width: 400px;
+      }
 
       label {
         margin-bottom: 5px;
