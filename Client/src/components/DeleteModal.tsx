@@ -1,14 +1,23 @@
+import { toast } from 'react-toastify';
 import IconClose from '../assets/icons/icon_close.svg?react';
 
 interface Props {
   title: string;
   closeModal: () => void;
   dispatchAction: () => void;
+  handleDeletion: () => void;
 }
 
-export default function MemberModal({ closeModal, dispatchAction, title }: Props) {
-  function handleDelete() {
-    dispatchAction();
+export default function MemberModal({ title, closeModal, dispatchAction, handleDeletion }: Props) {
+  async function handleDelete() {
+    try {
+      await dispatchAction();
+      handleDeletion();
+      toast.success('Item deleted successfully!');
+    } catch {
+      toast.error('Failed to delete item');
+    }
+    closeModal();
   }
 
   return (

@@ -13,11 +13,13 @@ interface Props {
   emptyMessage: string;
   isLoading: boolean;
   isDeletable?: boolean;
+  handleDeletion?: () => void;
 }
 
 export default function ProjectTable({
   projects,
   handleRowClick,
+  handleDeletion,
   emptyMessage,
   isLoading,
   isDeletable = false
@@ -80,6 +82,7 @@ export default function ProjectTable({
         <DeleteModal
           title="Are you sure you want to delete this project?"
           closeModal={() => setIsDeleteModalOpen(false)}
+          handleDeletion={handleDeletion as () => void}
           dispatchAction={() => dispatch(deleteProject(`${projectId}`))}
         />
       )}

@@ -6,6 +6,7 @@ import { createProject, getProjects } from '../store/slices/projectSlice';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { useDebouncedSearch } from '../utils/hooks/useDebouncedSearch';
 import { usePagination } from '../utils/hooks/usePagination';
+import { toast } from 'react-toastify';
 import Pagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
 import ProjectTable from '../components/ProjectTable';
@@ -64,8 +65,36 @@ export default function ProjectsPage() {
     navigate(`/projects/${projectId}`);
   }
 
+  function getUpdatedProjects() {
+    setIsMyProjectsLoading(true);
+    dispatch(
+      getProjects({
+        pagingParams: { pageNumber: 1, pageSize: 10 },
+        userId: `${currentUser?.id}`,
+        filterProjects: true,
+        searchTerm: ''
+      })
+    )
+      .then(() => {
+        setIsMyProjectsLoading(false);
+      })
+      .catch(() => {
+        toast.error('Failed to get list of projects');
+      });
+  }
+
   function onSubmit(data: { projectName: string }) {
-    dispatch(createProject(data.projectName));
+    dispatch(createProject(data.projectName))
+      .then(() => {
+        toast.success('Project create successfully!');
+      })
+      .catch(() => {
+        toast.success('Failed to create new project');
+      })
+      .finally(() => {
+        setIsCreatingProject(false);
+        getUpdatedProjects();
+      });
   }
 
   // Update the combined loading state whenever either loading state changes
@@ -91,6 +120,7 @@ export default function ProjectsPage() {
         <ProjectTable
           projects={myProjects}
           handleRowClick={handleRowClick}
+          handleDeletion={getUpdatedProjects}
           emptyMessage="You have no current projects"
           isDeletable={true}
           isLoading={isMyProjectsLoading}

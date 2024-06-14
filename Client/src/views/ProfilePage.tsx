@@ -6,6 +6,7 @@ import { getProfile } from '../store/slices/userSlice';
 import { getProjects } from '../store/slices/projectSlice';
 import { useDebouncedSearch } from '../utils/hooks/useDebouncedSearch';
 import { usePagination } from '../utils/hooks/usePagination';
+import { toast } from 'react-toastify';
 import Skeleton from 'react-loading-skeleton';
 import Pagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
@@ -61,6 +62,24 @@ export default function ProfilePage() {
 
   function handleRowClick(projectId: string) {
     navigate(`/projects/${projectId}`);
+  }
+
+  function getUpdatedProjects() {
+    setIsMyProjectsLoading(true);
+    dispatch(
+      getProjects({
+        pagingParams: { pageNumber: 1, pageSize: 10 },
+        userId: `${userId}`,
+        filterProjects: true,
+        searchTerm: ''
+      })
+    )
+      .then(() => {
+        setIsMyProjectsLoading(false);
+      })
+      .catch(() => {
+        toast.error('Failed to get list of projects');
+      });
   }
 
   useEffect(() => {
@@ -180,6 +199,7 @@ export default function ProfilePage() {
           <ProjectTable
             projects={myProjects}
             handleRowClick={handleRowClick}
+            handleDeletion={getUpdatedProjects}
             emptyMessage="You have no current projects"
             isDeletable={true}
             isLoading={isMyProjectsLoading}
