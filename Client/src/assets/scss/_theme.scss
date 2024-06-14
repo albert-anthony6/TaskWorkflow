@@ -147,14 +147,18 @@ button {
   text-align: center;
 
   &--content {
+    width: 100%;
     position: absolute;
-    max-width: 850px;
     top: 50%;
     left: 50%;
     padding: 30px;
     transform: translate(-50%, -50%);
     background-color: $lightest-neutral;
-    max-width: 500px;
+
+    @include bp-sm-phone-landscape {
+      max-width: 500px;
+      min-width: 440px;
+    }
 
     h2 {
       @include font-size(32, bold, none, 0, 37);
@@ -164,8 +168,12 @@ button {
     .icon-close {
       position: absolute;
       top: 10px;
-      right: 10px;
+      right: 30px;
       cursor: pointer;
+
+      @include bp-sm-phone-landscape {
+        right: 10px;
+      }
     }
 
     .buttons-container {
@@ -284,9 +292,11 @@ tbody {
   opacity: 0;
 }
 
-.pagination {
-  margin: 15px 0 15px auto !important;
+ul.pagination {
+  margin: 15px 0 15px auto;
+}
 
+.pagination {
   .page-item {
     &.active {
       a {
@@ -309,7 +319,6 @@ tbody {
 
     &.disabled .page-link {
       background-color: transparent;
-      margin-top: 3px;
     }
   }
 }

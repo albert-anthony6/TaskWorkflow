@@ -47,7 +47,7 @@ export default function SideNav() {
             <li>
               <NavLink to="/tasks">
                 <IconWrench />
-                <p>Tasks</p>
+                <p>Mentions</p>
               </NavLink>
             </li>
             <li>

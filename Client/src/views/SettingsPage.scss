@@ -5,14 +5,25 @@
     margin-bottom: 15px;
   }
 
-  label {
-    display: block;
-    width: fit-content;
-  }
+  form {
+    input {
+      width: 100%;
 
-  .input-container,
-  .dropzone {
-    margin-bottom: 15px;
-    border: none;
+      @include bp-sm-phone-landscape {
+        width: auto;
+      }
+    }
+
+    label {
+      display: block;
+      width: fit-content;
+      margin-bottom: 5px;
+    }
+
+    .input-container,
+    .dropzone {
+      margin-bottom: 15px;
+      border: none;
+    }
   }
 }
