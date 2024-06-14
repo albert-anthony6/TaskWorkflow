@@ -223,7 +223,7 @@ export default function SettingsPage() {
               required: 'Please provide a display name.',
               maxLength: {
                 value: 25,
-                message: 'Bio cannot exceed 25 characters.'
+                message: 'Name cannot exceed 25 characters.'
               }
             })}
             id="displayName"

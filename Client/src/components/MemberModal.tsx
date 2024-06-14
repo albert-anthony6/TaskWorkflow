@@ -28,7 +28,7 @@ export default function MemberModal({ members, closeModal }: Props) {
   }
 
   useEffect(() => {
-    dispatch(getUsers({ pagingParams: { pageNumber: 1, pageSize: 50 } }));
+    dispatch(getUsers({ pagingParams: { pageNumber: 1, pageSize: 50 }, searchTerm: '' }));
   }, [dispatch]);
 
   return (

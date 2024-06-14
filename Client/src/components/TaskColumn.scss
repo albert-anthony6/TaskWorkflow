@@ -1,16 +1,17 @@
-.task-column {
-  width: 23%;
-  min-width: 230px;
-  height: 100%;
-  background-color: $lightest-neutral;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.task-column-container {
+  width: 100%;
 
-  .column-header {
+  .task-column--header {
     position: relative;
     display: flex;
+    padding: 10.5px 10px 10.5px 10px;
     align-items: center;
     justify-content: space-between;
-    padding: 10.5px 10px 10.5px 10px;
+    background-color: $lightest-neutral;
+
+    @include bp-xl-desktop {
+      width: 93%;
+    }
 
     .status-color {
       position: absolute;
@@ -46,19 +47,35 @@
     }
   }
 
-  .column {
-    height: 100%;
-    display: flex;
-    padding: 15px 10px 50px;
-    flex-direction: column;
-    align-items: stretch;
-    border-top: 1px solid rgba($darkest-neutral, 0.2);
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .task-column {
+    margin-bottom: 30px;
+    background-color: $lightest-neutral;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-    &::-webkit-scrollbar {
-      display: none;
+    @include bp-xl-desktop {
+      width: 93%;
+      margin-bottom: 0;
+    }
+
+    @include bp-xl-desktop {
+      height: 75vh;
+      min-height: 700px;
+    }
+
+    &--content {
+      height: 100%;
+      display: flex;
+      padding: 15px 10px 50px;
+      flex-direction: column;
+      align-items: stretch;
+      border-top: 1px solid rgba($darkest-neutral, 0.2);
+      overflow-y: scroll;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
   }
 }

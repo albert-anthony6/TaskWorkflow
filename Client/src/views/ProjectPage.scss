@@ -32,11 +32,16 @@
 
     .columns-container {
       display: flex;
-      height: 75vh;
-      min-height: 700px;
-      align-items: flex-start;
-      justify-content: space-between;
+      flex-direction: column;
       overflow: hidden;
+
+      @include bp-xl-desktop {
+        height: 75vh;
+        min-height: 700px;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-direction: row;
+      }
     }
   }
 }

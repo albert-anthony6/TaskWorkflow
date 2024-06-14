@@ -4,6 +4,7 @@ import { Droppable } from '@hello-pangea/dnd';
 import { Task } from '../utils/interfaces/task';
 import { toggleTaskModal } from '../store/slices/taskSlice';
 import { useAppDispatch } from '../store/configureStore';
+import Collapsible from 'react-collapsible';
 import IconAdd from '../assets/icons/icon_add.svg?react';
 
 interface Props {
@@ -18,30 +19,38 @@ interface Props {
 export default function TaskColumn({ col: { list, id, columnName, statusColor } }: Props) {
   const dispatch = useAppDispatch();
   return (
-    <>
+    <div className="task-column-container">
       <Droppable droppableId={id}>
         {(provided) => (
-          <div className="task-column">
-            <div className="column-header">
-              <div className={`status-color status-color__${statusColor}`} />
-              <p>{columnName}</p>
-              {id === 'todo' && (
-                <IconAdd
-                  onClick={() => dispatch(toggleTaskModal({ isOpen: true }))}
-                  className="add-task"
-                />
-              )}
-            </div>
-
-            <div className="column" {...provided.droppableProps} ref={provided.innerRef}>
+          <Collapsible
+            trigger={
+              <div className="task-column--header">
+                <div className={`status-color status-color__${statusColor}`} />
+                <p>{columnName}</p>
+                {id === 'todo' && (
+                  <IconAdd
+                    onClick={() => dispatch(toggleTaskModal({ isOpen: true }))}
+                    className="add-task"
+                  />
+                )}
+              </div>
+            }
+            contentInnerClassName="task-column"
+            open={true}
+          >
+            <div
+              className="task-column--content"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
               {list.map((task, index) => (
                 <TaskCard key={task.id} task={task} index={index} />
               ))}
               {provided.placeholder}
             </div>
-          </div>
+          </Collapsible>
         )}
       </Droppable>
-    </>
+    </div>
   );
 }
