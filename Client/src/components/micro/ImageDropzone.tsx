@@ -63,7 +63,13 @@ export default function ImageDropzone({
     if (image) setHasImage(true);
   }, [image, setHasImage]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'image/png': [],
+      'image/jpeg': []
+    }
+  });
 
   return (
     <div

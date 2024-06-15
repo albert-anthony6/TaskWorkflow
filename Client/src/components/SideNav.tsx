@@ -2,7 +2,7 @@ import IconLogo from '../assets/icons/icon_logo.svg?react';
 import IconAvatar from '../assets/icons/icon_avatar.svg?react';
 import IconHome from '../assets/icons/icon_home.svg?react';
 import IconFolder from '../assets/icons/icon_folder.svg?react';
-import IconWrench from '../assets/icons/icon_wrench.svg?react';
+import IconMessage from '../assets/icons/icon_message.svg?react';
 import IconPeople from '../assets/icons/icon_people.svg?react';
 import IconPerson from '../assets/icons/icon_person.svg?react';
 import IconSettings from '../assets/icons/icon_settings.svg?react';
@@ -45,15 +45,17 @@ export default function SideNav() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/tasks">
-                <IconWrench />
+              <NavLink to="/projects">
+                <IconMessage />
                 <p>Mentions</p>
+                <div className="coming-soon-tag">Coming soon</div>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/teams">
+              <NavLink to="/people">
                 <IconPeople />
                 <p>Teams</p>
+                <div className="coming-soon-tag">Coming soon</div>
               </NavLink>
             </li>
             <li>

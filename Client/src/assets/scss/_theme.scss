@@ -124,6 +124,17 @@ button {
   }
 }
 
+.coming-soon-tag {
+  font-size: 10px;
+  padding: 1px 3px;
+  margin: 3px 0 0 3px;
+  white-space: nowrap;
+  color: $dark-neutral;
+  background-color: $highlight;
+  border: 1px solid green;
+  border-radius: 3px;
+}
+
 .modal-container {
   position: fixed;
   top: 0;
