@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './ProfilePage.scss';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
@@ -82,6 +82,32 @@ export default function ProfilePage() {
       });
   }
 
+  const fullInstagramLink = useMemo(() => {
+    if (profile?.instagramLink) {
+      if (profile?.instagramLink.startsWith('http')) {
+        return profile?.instagramLink;
+      }
+      return `https://instagram.com/${
+        profile?.instagramLink.startsWith('@')
+          ? profile?.instagramLink.slice(1)
+          : profile?.instagramLink
+      }`;
+    }
+    return '';
+  }, [profile?.instagramLink]);
+
+  const fullTwitterLink = useMemo(() => {
+    if (profile?.twitterLink) {
+      if (profile?.twitterLink.startsWith('http')) {
+        return profile?.twitterLink;
+      }
+      return `https://twitter.com/${
+        profile?.twitterLink.startsWith('@') ? profile?.twitterLink.slice(1) : profile?.twitterLink
+      }`;
+    }
+    return '';
+  }, [profile?.twitterLink]);
+
   useEffect(() => {
     dispatch(getProfile(`${userId}`)).finally(() => {
       setIsUserLoading(false);
@@ -147,18 +173,26 @@ export default function ProfilePage() {
                     <div className="user-name">
                       <h1>{profile?.displayName}</h1>
                       <div className="user-socials">
-                        <a href={profile?.facebookLink} target="_blank">
-                          <IconFacebook />
-                        </a>
-                        <a href={profile?.linkedinLink} target="_blank">
-                          <IconLinkedin />
-                        </a>
-                        <a href={profile?.instagramLink} target="_blank">
-                          <IconInstagram />
-                        </a>
-                        <a href={profile?.twitterLink} target="_blank">
-                          <IconTwitter />
-                        </a>
+                        {profile?.facebookLink && (
+                          <a href={profile.facebookLink} target="_blank">
+                            <IconFacebook />
+                          </a>
+                        )}
+                        {profile?.linkedinLink && (
+                          <a href={profile.linkedinLink} target="_blank">
+                            <IconLinkedin />
+                          </a>
+                        )}
+                        {profile?.instagramLink && (
+                          <a href={fullInstagramLink} target="_blank">
+                            <IconInstagram />
+                          </a>
+                        )}
+                        {profile?.twitterLink && (
+                          <a href={fullTwitterLink} target="_blank">
+                            <IconTwitter />
+                          </a>
+                        )}
                       </div>
                     </div>
                     <p className="user-bio">{profile?.bio}</p>

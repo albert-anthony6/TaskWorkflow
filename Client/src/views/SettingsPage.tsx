@@ -73,7 +73,7 @@ export default function SettingsPage() {
   function validateTwitter(data: EditUserFormValues) {
     if (data.twitterLink) {
       const twitterRegex =
-        /(^(http|https):\/\/|)(www\.|)(twitter\.com)\/([a-z0-9_.]{1,30})\/?|^(@?(\w{1,30}))$/i;
+        /(^(http|https):\/\/|)(www\.|)(twitter\.com|x\.com)\/([a-z0-9_.]{1,30})\/?|^(@?(\w{1,30}))$/i;
       const match = data.twitterLink.match(twitterRegex);
       if (match) {
         twitterRegex.lastIndex = 0;
