@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react';
 import './SettingsPage.scss';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import ImageDropzone from '../components/micro/ImageDropzone';
-import { useEffect, useState } from 'react';
 import ImageCropper from '../components/micro/ImageCropper';
 import { editProfile, getCurrentUser, uploadImage } from '../store/slices/userSlice';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
@@ -192,11 +193,14 @@ export default function SettingsPage() {
       const editUserProfile = dispatch(editProfile(data));
       promises.push(editUserProfile);
 
-      await Promise.all(promises);
+      await Promise.all(promises).then(() => {
+        toast.success('User profile info saved!');
+      });
 
       await dispatch(getCurrentUser());
     } catch (err) {
       console.error('Error during submission:', err);
+      toast.error('Failed to update user info');
     }
   }
 
