@@ -132,6 +132,10 @@
       .caption {
         margin-top: 5px;
         text-align: right;
+
+        &__error {
+          color: $error;
+        }
       }
     }
   }

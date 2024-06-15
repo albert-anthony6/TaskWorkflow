@@ -18,6 +18,11 @@ interface Props {
 
 export default function TaskColumn({ col: { list, id, columnName, statusColor } }: Props) {
   const dispatch = useAppDispatch();
+
+  function handleAddTaskClick(event: React.MouseEvent) {
+    dispatch(toggleTaskModal({ isOpen: true }));
+    event.stopPropagation();
+  }
   return (
     <div className="task-column-container">
       <Droppable droppableId={id}>
@@ -28,10 +33,7 @@ export default function TaskColumn({ col: { list, id, columnName, statusColor } 
                 <div className={`status-color status-color__${statusColor}`} />
                 <p>{columnName}</p>
                 {id === 'todo' && (
-                  <IconAdd
-                    onClick={() => dispatch(toggleTaskModal({ isOpen: true }))}
-                    className="add-task"
-                  />
+                  <IconAdd onClick={(event) => handleAddTaskClick(event)} className="add-task" />
                 )}
               </div>
             }

@@ -67,6 +67,8 @@ export default function TaskCreationModal(props: Props) {
   });
 
   const severityValue = watch('severity');
+  const titleCharCount = watch('title').length;
+  const descriptionCharCount = watch('description').length;
   const startDateValue = watch('startDate');
   const endDateValue = watch('endDate');
 
@@ -238,15 +240,19 @@ export default function TaskCreationModal(props: Props) {
               <input
                 {...register('title', {
                   required: 'Task must have a title.',
-                  minLength: { value: 4, message: 'Title must be at least 4 characters long.' }
+                  minLength: { value: 4, message: 'Title must be at least 4 characters long.' },
+                  maxLength: { value: 100, message: 'Title must not be over 100 characters long.' }
                 })}
                 id="title"
                 type="text"
                 placeholder="Enter title"
+                onChange={(e) => setValue('title', e.target.value)}
               />
               <div className="input--helper">
                 <div className="caption text__error">{errors.title?.message}</div>
-                <div className="caption">0/100</div>
+                <div className={titleCharCount > 100 ? 'caption caption__error' : 'caption'}>
+                  {titleCharCount}/100
+                </div>
               </div>
             </div>
           )}
@@ -254,11 +260,20 @@ export default function TaskCreationModal(props: Props) {
             <label htmlFor="description">Description</label>
             <textarea
               className={isViewing ? 'disabled' : ''}
-              {...register('description')}
+              {...register('description', {
+                maxLength: { value: 100, message: 'Bio must not be over 100 characters long.' }
+              })}
               id="description"
               placeholder="Enter description"
+              onChange={(e) => setValue('description', e.target.value)}
             />
-            <div className="caption">0/100</div>
+            <div className="input--helper">
+              <div className="caption text__error">{errors.description?.message}</div>
+
+              <div className={descriptionCharCount > 100 ? 'caption caption__error' : 'caption'}>
+                {descriptionCharCount}/100
+              </div>
+            </div>
           </div>
           <label>Assignees</label>
           <MutliSelectDropdown
