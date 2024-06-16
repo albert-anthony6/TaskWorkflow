@@ -33,6 +33,7 @@ export default function SettingsPage() {
 
   const [hasAvatarImage, setHasAvatarImage] = useState(false);
   const [hasCoverImage, setHasCoverImage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -175,6 +176,7 @@ export default function SettingsPage() {
       return;
     }
     try {
+      setIsLoading(true);
       const promises = [];
       if (avatarBlob || (currentUser?.avatar && !avatarBlob && !hasAvatarImage)) {
         const uploadAvatarPromise = dispatch(
@@ -198,9 +200,10 @@ export default function SettingsPage() {
       });
 
       await dispatch(getCurrentUser());
+      setIsLoading(false);
     } catch (err) {
+      setIsLoading(false);
       console.error('Error during submission:', err);
-      toast.error('Failed to update user info');
     }
   }
 
@@ -336,7 +339,10 @@ export default function SettingsPage() {
           </div>
         </div>
         <button type="submit" className="button__primary">
-          Save Profile
+          {isLoading ? <div className="loading-spinner" /> : <span>Save Profile</span>}
+        </button>
+        <button type="submit" className="button__primary">
+          <div className="loading-spinner" />
         </button>
       </form>
     </main>

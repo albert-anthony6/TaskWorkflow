@@ -41,6 +41,7 @@ export default function TaskCreationModal(props: Props) {
   const [isWriting, setIsWriting] = useState(false);
   const [isOnDetails, setIsOnDetails] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     blob: attachmentBlob,
     setBlob: setAttachmentBlob,
@@ -79,6 +80,7 @@ export default function TaskCreationModal(props: Props) {
   }
 
   function onSubmit(data: Task) {
+    setIsLoading(true);
     const severityValue: string = (data.severity as ColorOption).value;
 
     // Only using the value property from the severity object
@@ -99,7 +101,8 @@ export default function TaskCreationModal(props: Props) {
           dispatch(toggleTaskModal({ isOpen: false }));
           props.getProject();
         })
-        .catch((err) => handleErrors(err.error));
+        .catch((err) => handleErrors(err.error))
+        .finally(() => setIsLoading(false));
     } else {
       // Backend will generate the id on task creation
       delete payload.id;
@@ -109,7 +112,8 @@ export default function TaskCreationModal(props: Props) {
           dispatch(toggleTaskModal({ isOpen: false }));
           props.getProject();
         })
-        .catch((err) => handleErrors(err.error));
+        .catch((err) => handleErrors(err.error))
+        .finally(() => setIsLoading(false));
     }
   }
 
@@ -353,9 +357,13 @@ export default function TaskCreationModal(props: Props) {
                 Cancel
               </button>
               {isCreating ? (
-                <button className="button__primary">Create Task</button>
+                <button className="button__primary">
+                  {isLoading ? <div className="loading-spinner" /> : <span>Create Task</span>}
+                </button>
               ) : (
-                <button className="button__primary">Edit Task</button>
+                <button className="button__primary">
+                  {isLoading ? <div className="loading-spinner" /> : <span>Edit Task</span>}
+                </button>
               )}
             </div>
           )}

@@ -122,6 +122,12 @@
   }
 }
 
+@keyframes loading {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 // loading animation
 @-webkit-keyframes spin {
   to {

@@ -54,6 +54,7 @@ export default function ProjectsPage() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -98,6 +99,7 @@ export default function ProjectsPage() {
   }
 
   function onSubmit(data: { projectName: string }) {
+    setIsMyProjectsLoading(true);
     dispatch(createProject(data.projectName))
       .then(() => {
         toast.success('Project create successfully!');
@@ -106,6 +108,7 @@ export default function ProjectsPage() {
         toast.success('Failed to create new project');
       })
       .finally(() => {
+        setValue('projectName', '');
         setIsCreatingProject(false);
         getUpdatedProjects();
       });
@@ -192,7 +195,13 @@ export default function ProjectsPage() {
                 >
                   Cancel
                 </button>
-                <button className="button__primary">Create project</button>
+                <button className="button__primary">
+                  {isMyProjectsLoading ? (
+                    <div className="loading-spinner" />
+                  ) : (
+                    <span>Create project</span>
+                  )}
+                </button>
               </div>
             </form>
           </div>
