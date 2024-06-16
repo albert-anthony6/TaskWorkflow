@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import './ProjectPage.scss';
 import { Link, useParams } from 'react-router-dom';
 import { Task } from '../utils/interfaces/task';
@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import MemberModal from '../components/MemberModal';
 import IconAvatar from '../assets/icons/icon_avatar.svg?react';
 import IconAddUser from '../assets/icons/icon_add_user.svg?react';
+import { Project } from '../utils/interfaces/project';
 
 export default function ProjectPage() {
   const params = useParams();
@@ -66,30 +67,34 @@ export default function ProjectPage() {
   const [columns, setColumns] = useState(initialColumns);
   const initialColumnsRef = useRef(initialColumns);
 
+  const updateColumns = useCallback((action: { payload: Project }) => {
+    const { tickets } = action.payload as { tickets: Task[] };
+    const newColumns: Columns = {
+      todo: { ...initialColumnsRef.current.todo, list: [] },
+      inProgress: { ...initialColumnsRef.current.inProgress, list: [] },
+      readyForReview: { ...initialColumnsRef.current.readyForReview, list: [] },
+      done: { ...initialColumnsRef.current.done, list: [] }
+    };
+
+    tickets.forEach((ticket: Task) => {
+      const columnName = ticket.status || 'todo';
+      if (columnName in newColumns) {
+        // Add the ticket to the appropriate column
+        newColumns[columnName].list.push(ticket);
+      } else {
+        console.warn(`Invalid column name '${columnName}' for ticket ${ticket.id}`);
+      }
+    });
+
+    // Update the state with the new columns
+    setColumns(newColumns);
+  }, []);
+
   useEffect(() => {
     dispatch(getProject(`${params.projectId}`)).then((action) => {
-      const { tickets } = action.payload as { tickets: Task[] };
-      const newColumns: Columns = {
-        todo: { ...initialColumnsRef.current.todo, list: [] },
-        inProgress: { ...initialColumnsRef.current.inProgress, list: [] },
-        readyForReview: { ...initialColumnsRef.current.readyForReview, list: [] },
-        done: { ...initialColumnsRef.current.done, list: [] }
-      };
-
-      tickets.forEach((ticket: Task) => {
-        const columnName = ticket.status || 'todo';
-        if (columnName in newColumns) {
-          // Add the ticket to the appropriate column
-          newColumns[columnName].list.push(ticket);
-        } else {
-          console.warn(`Invalid column name '${columnName}' for ticket ${ticket.id}`);
-        }
-      });
-
-      // Update the state with the new columns
-      setColumns(newColumns);
+      updateColumns(action as { payload: Project });
     });
-  }, [dispatch, params.projectId]);
+  }, [dispatch, params.projectId, updateColumns]);
 
   function onDragEnd({ source, destination }: DropResult) {
     // Make sure we have a valid destination
@@ -214,7 +219,16 @@ export default function ProjectPage() {
           </div>
         </DragDropContext>
       </div>
-      {taskModal.isOpen && <TaskCreationModal members={project?.members as User[]} />}
+      {taskModal.isOpen && (
+        <TaskCreationModal
+          members={project?.members as User[]}
+          getProject={() =>
+            dispatch(getProject(`${params.projectId}`)).then((action) =>
+              updateColumns(action as { payload: Project })
+            )
+          }
+        />
+      )}
       {isMemberModalOpen && (
         <MemberModal
           members={project?.members as User[]}

@@ -8,6 +8,7 @@ import { ColorOption } from '../utils/interfaces/color-options';
 import { colorOptionsData } from '../utils/data/colorOptions';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
+import { toast } from 'react-toastify';
 import {
   createTask,
   deleteTask,
@@ -30,6 +31,7 @@ import useBlobCleanup from '../utils/hooks/useBlobCleanup';
 
 interface Props extends Partial<ReactDatePickerProps> {
   members: User[];
+  getProject: () => void;
 }
 
 export default function TaskCreationModal(props: Props) {
@@ -91,14 +93,29 @@ export default function TaskCreationModal(props: Props) {
 
     // If we're editing or creating the task
     if (selectedTask && taskModal.taskId) {
-      dispatch(editTask(payload)).catch((err) => handleErrors(err.error));
+      dispatch(editTask(payload))
+        .then(() => {
+          toast.success('Task successfully edited');
+          dispatch(toggleTaskModal({ isOpen: false }));
+          props.getProject();
+        })
+        .catch((err) => handleErrors(err.error));
     } else {
       // Backend will generate the id on task creation
       delete payload.id;
-      dispatch(createTask({ projectId: `${params.projectId}`, body: payload })).catch((err) =>
-        handleErrors(err.error)
-      );
+      dispatch(createTask({ projectId: `${params.projectId}`, body: payload }))
+        .then(() => {
+          toast.success('Task successfully created');
+          dispatch(toggleTaskModal({ isOpen: false }));
+          props.getProject();
+        })
+        .catch((err) => handleErrors(err.error));
     }
+  }
+
+  function handleDeletion() {
+    props.getProject();
+    dispatch(toggleTaskModal({ isOpen: false }));
   }
 
   function handleErrors(errors: any) {
@@ -188,7 +205,7 @@ export default function TaskCreationModal(props: Props) {
             </div>
           )}
           <IconClose
-            onClick={() => dispatch(dispatch(toggleTaskModal({ isOpen: false })))}
+            onClick={() => dispatch(toggleTaskModal({ isOpen: false }))}
             className="icon-close"
           />
         </div>
@@ -349,6 +366,7 @@ export default function TaskCreationModal(props: Props) {
           title="Are you sure you want to delete this task?"
           closeModal={() => setIsDeleteModalOpen(false)}
           dispatchAction={() => dispatch(deleteTask(`${selectedTask?.id}`))}
+          handleDeletion={handleDeletion}
         />
       )}
     </div>

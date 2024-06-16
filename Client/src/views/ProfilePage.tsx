@@ -64,22 +64,36 @@ export default function ProfilePage() {
     navigate(`/projects/${projectId}`);
   }
 
-  function getUpdatedProjects() {
-    setIsMyProjectsLoading(true);
-    dispatch(
-      getProjects({
-        pagingParams: { pageNumber: 1, pageSize: 10 },
-        userId: `${userId}`,
-        filterProjects: true,
-        searchTerm: ''
-      })
-    )
-      .then(() => {
-        setIsMyProjectsLoading(false);
-      })
-      .catch(() => {
-        toast.error('Failed to get list of projects');
-      });
+  async function getUpdatedProjects() {
+    try {
+      setIsMyProjectsLoading(true);
+      await dispatch(
+        getProjects({
+          pagingParams: { pageNumber: 1, pageSize: 10 },
+          userId: `${userId}`,
+          filterProjects: true,
+          searchTerm: ''
+        })
+      );
+      setIsMyProjectsLoading(false);
+    } catch (error) {
+      toast.error('Failed to get list of projects');
+    }
+
+    try {
+      setIsProjectsLoading(true);
+      await dispatch(
+        getProjects({
+          pagingParams: { pageNumber: 1, pageSize: 10 },
+          userId: `${userId}`,
+          filterProjects: false,
+          searchTerm: ''
+        })
+      );
+      setIsProjectsLoading(false);
+    } catch (error) {
+      toast.error('Failed to get list of projects');
+    }
   }
 
   const fullInstagramLink = useMemo(() => {

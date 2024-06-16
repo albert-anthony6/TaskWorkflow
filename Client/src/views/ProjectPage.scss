@@ -1,6 +1,10 @@
 .project-page {
   position: relative;
 
+  h1 {
+    text-transform: capitalize;
+  }
+
   &--header {
     padding: 35px 50px 40px;
     background-color: $light-grey;
