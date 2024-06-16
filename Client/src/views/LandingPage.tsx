@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { router } from '../routes/router';
+import { useAppSelector } from '../store/configureStore';
 import Carousel from 'react-multi-carousel';
 import './LandingPage.scss';
 import 'react-multi-carousel/lib/styles.css';
@@ -8,6 +11,14 @@ import IconArrowRight from '../assets/icons/icon_arrow_right.svg?react';
 import IconStars from '../assets/icons/icon_stars.svg?react';
 
 export default function LandingPage() {
+  const { currentUser } = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    if (currentUser?.token) {
+      router.navigate(`/user/${currentUser?.id}`);
+    }
+  }, [currentUser]);
+
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.

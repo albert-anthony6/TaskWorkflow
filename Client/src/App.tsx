@@ -7,6 +7,7 @@ import AppFooter from './components/AppFooter.tsx';
 import TopNav from './components/TopNav.tsx';
 import SideNav from './components/SideNav.tsx';
 import useScreenWidth from './utils/hooks/useScreenWidth.ts';
+import ScrollToTop from './utils/hooks/useScrollToTop.ts';
 import './assets/scss/_theme.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 
@@ -25,6 +26,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       <ToastContainer position="bottom-right" theme="colored" />
       {currentPath !== '/' &&
         currentPath !== '/login' &&
