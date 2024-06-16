@@ -26,7 +26,7 @@ export default function ProfilePage() {
   const { projects, myProjects, myProjectsPagination, projectsPagination } = useAppSelector(
     (state) => state.project
   );
-  const { profile } = useAppSelector((state) => state.user);
+  const { profile, currentUser } = useAppSelector((state) => state.user);
 
   const [isUserLoading, setIsUserLoading] = useState(true);
 
@@ -240,7 +240,7 @@ export default function ProfilePage() {
       </div>
       <div className="profile-content">
         <div className="table-header">
-          <h3>Your Projects</h3>
+          <h3>{userId === currentUser?.id ? 'Your Projects' : 'Their Projects'}</h3>
           <StyledSearch handleChange={(event) => setMyProjectsSearchTerm(event.target.value)} />
         </div>
         <div className="table-container">
@@ -248,18 +248,18 @@ export default function ProfilePage() {
             projects={myProjects}
             handleRowClick={handleRowClick}
             handleDeletion={getUpdatedProjects}
-            emptyMessage="You have no current projects"
+            emptyMessage="No current projects found"
             isDeletable={true}
             isLoading={isMyProjectsLoading}
           />
+          <Pagination
+            current={myProjectsPagination?.currentPage as number}
+            total={myProjectsPagination?.totalPages as number}
+            onPageChange={(event) => handleMyProjectsPageClick(event, true)}
+            previousLabel="Previous"
+            nextLabel="Next"
+          />
         </div>
-        <Pagination
-          current={myProjectsPagination?.currentPage as number}
-          total={myProjectsPagination?.totalPages as number}
-          onPageChange={(event) => handleMyProjectsPageClick(event, true)}
-          previousLabel="Previous"
-          nextLabel="Next"
-        />
         <div className="table-header">
           <h3>All Projects</h3>
           <StyledSearch handleChange={(event) => setProjectsSearchTerm(event.target.value)} />
@@ -271,14 +271,14 @@ export default function ProfilePage() {
             emptyMessage="No projects found"
             isLoading={isProjectsLoading}
           />
+          <Pagination
+            current={projectsPagination?.currentPage as number}
+            total={projectsPagination?.totalPages as number}
+            onPageChange={handleProjectsPageClick}
+            previousLabel="Previous"
+            nextLabel="Next"
+          />
         </div>
-        <Pagination
-          current={projectsPagination?.currentPage as number}
-          total={projectsPagination?.totalPages as number}
-          onPageChange={handleProjectsPageClick}
-          previousLabel="Previous"
-          nextLabel="Next"
-        />
       </div>
     </main>
   );
