@@ -1,11 +1,73 @@
 .top-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 25px 50px;
   background-color: $dark-neutral;
 
-  .icon-menu {
-    cursor: pointer;
+  .app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .icon-menu {
+      cursor: pointer;
+    }
+  }
+
+  .modal-container {
+    padding: 25px 0;
+    background-color: $dark-neutral;
+
+    .logo__white {
+      margin-left: 25px;
+    }
+
+    .icon-close {
+      position: absolute;
+      right: 40px;
+      cursor: pointer;
+
+      path {
+        fill: $lightest-neutral;
+      }
+
+      rect {
+        stroke: $lightest-neutral;
+      }
+    }
+
+    .page-links {
+      ul {
+        margin-top: 25px;
+
+        li {
+          padding: 15px 25px;
+          transition: all 0.3s ease;
+
+          &:hover {
+            background-color: $primary;
+          }
+
+          a {
+            display: flex;
+            align-items: center;
+            color: $lightest-neutral;
+
+            p {
+              font-size: 25px;
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+    }
+
+    .page-links :nth-child(3),
+    .page-links :nth-child(4) {
+      pointer-events: none;
+
+      p,
+      svg {
+        opacity: 0.5;
+      }
+    }
   }
 }
