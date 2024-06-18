@@ -33,13 +33,16 @@ export default function SideNav() {
         <nav className="page-links">
           <ul>
             <li>
-              <NavLink to={`/user/${currentUser?.id}`}>
+              <NavLink
+                to={`/user/${currentUser?.id}`}
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
+              >
                 <IconHome />
                 <p>Home</p>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/projects">
+              <NavLink to="/projects" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                 <IconFolder />
                 <p>Projects</p>
               </NavLink>
@@ -59,13 +62,13 @@ export default function SideNav() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/people">
+              <NavLink to="/people" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                 <IconPerson />
                 <p>People</p>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/settings">
+              <NavLink to="/settings" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                 <IconSettings />
                 <p>Settings</p>
               </NavLink>
