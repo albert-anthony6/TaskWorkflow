@@ -223,9 +223,13 @@ export default function TaskCreationModal(props: Props) {
           <li onClick={() => setIsOnDetails(true)} className={isOnDetails ? 'active' : ''}>
             Details
           </li>
-          <li onClick={() => setIsOnDetails(false)} className={isOnDetails ? '' : 'active'}>
-            Attachments
-          </li>
+          {isCreating ? (
+            <li className="disabled">Attachments</li>
+          ) : (
+            <li onClick={() => setIsOnDetails(false)} className={isOnDetails ? '' : 'active'}>
+              Attachments
+            </li>
+          )}
         </ul>
         {isEditing && (
           <>

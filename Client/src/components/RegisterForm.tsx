@@ -15,12 +15,18 @@ export default function RegisterForm() {
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
       displayName: '',
       username: ''
     }
   });
 
   function onSubmit(data: AuthUserFormValues) {
+    if (data.confirmPassword !== data.password) {
+      setError('confirmPassword', { message: 'Passwords do not match' });
+      return;
+    }
+
     dispatch(registerUser(data)).catch((err) => {
       if (err.error) {
         err.error.forEach((err: string) => {
@@ -94,7 +100,8 @@ export default function RegisterForm() {
             pattern: {
               value:
                 /(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/,
-              message: 'Password does not meet complexity requirements'
+              message:
+                'Password must be 6-10 characters long and include at least one digit, one lowercase letter, one uppercase letter, and one special character.'
             }
           })}
           id="password"
@@ -103,6 +110,20 @@ export default function RegisterForm() {
         />
         <div className={errors.password ? 'caption error__show' : 'caption error__hide'}>
           * {errors.password?.message}
+        </div>
+      </div>
+      <div className="input-container">
+        <label htmlFor="confirm-password">Confirm your password</label>
+        <input
+          {...register('confirmPassword', {
+            required: 'Password confirmation is required.'
+          })}
+          id="confirm-password"
+          type="password"
+          placeholder="Confirm Password"
+        />
+        <div className={errors.confirmPassword ? 'caption error__show' : 'caption error__hide'}>
+          * {errors.confirmPassword?.message}
         </div>
       </div>
       <button type="submit" className="button__primary">

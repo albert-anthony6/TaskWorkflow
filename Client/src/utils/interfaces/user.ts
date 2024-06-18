@@ -24,6 +24,7 @@ export interface CurrentUser {
 export interface AuthUserFormValues {
   email: string;
   password: string;
+  confirmPassword: string;
   displayName?: string;
   username?: string;
 }
