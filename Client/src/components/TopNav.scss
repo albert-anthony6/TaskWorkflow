@@ -4,11 +4,13 @@
 
   .app-header {
     display: flex;
+    min-width: 205px;
     align-items: center;
     justify-content: space-between;
 
     .icon-menu {
       cursor: pointer;
+      margin-right: 15px;
     }
   }
 

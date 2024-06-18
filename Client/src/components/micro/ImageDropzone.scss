@@ -49,11 +49,16 @@
   }
 
   .img-preview {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     margin-right: 25px;
     overflow: hidden;
     border-radius: 50%;
+
+    @include bp-sm-phone-landscape {
+      width: 100px;
+      height: 100px;
+    }
 
     &__attachment {
       border-radius: 0;
