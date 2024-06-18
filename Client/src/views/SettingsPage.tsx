@@ -341,9 +341,6 @@ export default function SettingsPage() {
         <button type="submit" className="button__primary">
           {isLoading ? <div className="loading-spinner" /> : <span>Save Profile</span>}
         </button>
-        <button type="submit" className="button__primary">
-          <div className="loading-spinner" />
-        </button>
       </form>
     </main>
   );

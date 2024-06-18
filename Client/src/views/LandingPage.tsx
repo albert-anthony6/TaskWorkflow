@@ -42,27 +42,27 @@ export default function LandingPage() {
   const slides = [
     {
       review:
-        'Lorem ipsum dolor sit amet consectetur. Platea morbi egestas id nunc mauris gravida quis lobortis. Risus pretium arcu congue nibh magna.',
+        "I've tried several task management apps, but TaskWorkflow stands out with its simplicity and powerful features. It helps me stay focused and productive every day.",
+      caption: 'William Parker | Account Manager at Hooli',
+      image: 'william_parker.png'
+    },
+    {
+      review:
+        'As a team leader, TaskWorkflow has been a game-changer. The ability to assign tasks and track progress within the app has significantly improved our project efficiency.',
       caption: 'Susan Smith | CEO at Enterprise',
       image: 'susan_smith.png'
     },
     {
       review:
-        'Lorem ipsum dolor sit amet consectetur. Platea morbi egestas id nunc mauris gravida quis lobortis. Risus pretium arcu congue nibh magna.',
-      caption: 'William Parker | Account Manager at Hooli',
-      image: 'susan_smith.png'
+        "TaskWorkflow has made my work life so much easier. I can prioritize tasks, set deadlines, and collaborate with my team seamlessly. It's a must-have tool for anyone serious about productivity!",
+      caption: 'Emilia Carter | Account Manager at StartUp',
+      image: 'emilia_carter.png'
     },
     {
       review:
-        'Lorem ipsum dolor sit amet consectetur. Platea morbi egestas id nunc mauris gravida quis lobortis. Risus pretium arcu congue nibh magna.',
-      caption: 'Susan Smith | CEO at Enterprise',
-      image: 'susan_smith.png'
-    },
-    {
-      review:
-        'Lorem ipsum dolor sit amet consectetur. Platea morbi egestas id nunc mauris gravida quis lobortis. Risus pretium arcu congue nibh magna.',
-      caption: 'William Parker | Account Manager at Hooli',
-      image: 'susan_smith.png'
+        "I've been using TaskWorkflow for months now, and it's become indispensable. From managing personal tasks to coordinating team projects, it's intuitive, efficient, and keeps everything organized beautifully.",
+      caption: 'Jose Valentino | Developer at Hooli',
+      image: 'jose_valentino.png'
     }
   ];
 
@@ -115,7 +115,7 @@ export default function LandingPage() {
       </section>
       <section className="about-section">
         <div className="about-section--group">
-          <img src="src/assets/images/placeholder_image.png" />
+          <img src="src/assets/images/simple_task_management.jpg" />
           <div className="about-section--group--text">
             <h2>Simple task management</h2>
             <p>
@@ -129,13 +129,13 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="about-section--group">
-          <img src="src/assets/images/placeholder_image.png" />
+          <img src="src/assets/images/collaboration.jpg" />
           <div className="about-section--group--text">
-            <h2>Simple task management</h2>
+            <h2>Collaborate with ease</h2>
             <p>
-              Task management with Team is as simple as it gets. No complicated layout and need for
-              user training. Your team members will intuitively know how to navigate the platform.
-              It’s so simple!
+              TaskWorkflow strives to make collaboration between team members a breeze. Anyone can
+              see who is in a certain project and who has been assigned a task. You can even lookup
+              user profiles with our search feature!
             </p>
             <Link to="/login">
               Learn More <IconArrowRight />
@@ -143,13 +143,14 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="about-section--group">
-          <img src="src/assets/images/placeholder_image.png" />
+          <img src="src/assets/images/more_coming.jpg" />
           <div className="about-section--group--text">
-            <h2>Simple task management</h2>
+            <h2>We're not done yet</h2>
             <p>
-              Task management with Team is as simple as it gets. No complicated layout and need for
-              user training. Your team members will intuitively know how to navigate the platform.
-              It’s so simple!
+              Soon, TaskWorkflow will release even more features. These features would make it so
+              much simpler for work to get done on time. We'll be including the ability for users to
+              chat in real-time, mention other users in comments, and even assigned teams within a
+              project!
             </p>
             <Link to="/login">
               Learn More <IconArrowRight />
@@ -191,7 +192,7 @@ export default function LandingPage() {
       </section>
       <section className="overview-section">
         <h2 className="overview-section--title">Everything at Your Finger Tips</h2>
-        <img src="src/assets/images/placeholder_image.png" />
+        <img src="src/assets/images/celebration.jpg" />
       </section>
       <section className="join-section">
         <h2 className="join-section--title">Join the Collaboration</h2>
