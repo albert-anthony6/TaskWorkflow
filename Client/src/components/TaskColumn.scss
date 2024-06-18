@@ -38,8 +38,11 @@
     }
 
     .add-task {
-      margin-right: 6px;
       cursor: pointer;
+
+      @include bp-xl-desktop {
+        margin-right: 6px;
+      }
     }
 
     p {

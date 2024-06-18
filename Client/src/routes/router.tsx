@@ -20,8 +20,6 @@ export const routes: RouteObject[] = [
       {
         element: <RequireAuth />,
         children: [
-          { path: '/login', element: <LoginPage /> },
-          { path: '/register', element: <LoginPage /> },
           { path: '/user/:userId', element: <ProfilePage /> },
           { path: '/projects', element: <ProjectsPage /> },
           { path: '/projects/:projectId', element: <ProjectPage /> },
@@ -32,6 +30,8 @@ export const routes: RouteObject[] = [
         ]
       },
       { path: '/', element: <LandingPage /> },
+      { path: '/login', element: <LoginPage /> },
+      { path: '/register', element: <LoginPage /> },
       { path: '/not-found', element: <NotFound /> },
       { path: '*', element: <Navigate to="/not-found" replace /> }
     ]

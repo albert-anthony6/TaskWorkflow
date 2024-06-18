@@ -339,7 +339,9 @@ export default function TaskCreationModal(props: Props) {
               <label htmlFor="end-date">End Date</label>
               <DatePicker
                 id="end-date"
-                {...register('endDate')}
+                {...register('endDate', {
+                  required: 'Task must have an end date.'
+                })}
                 {...props}
                 selected={(endDateValue && new Date(endDateValue)) || null}
                 onChange={(value) => setValue('endDate', value)}
@@ -349,6 +351,9 @@ export default function TaskCreationModal(props: Props) {
                 dateFormat="MMMM d, yyyy h:mm aa"
                 className={isViewing ? 'date-input disabled' : 'date-input'}
               />
+              <div className="input--helper">
+                <div className="caption text__error">{errors.endDate?.message}</div>
+              </div>
             </div>
           </div>
           {(isCreating || isEditing) && (
