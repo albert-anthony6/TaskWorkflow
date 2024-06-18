@@ -11,10 +11,6 @@
     margin: 0 auto;
     text-align: center;
 
-    @include bp-sm-phone-landscape {
-      text-align: left;
-    }
-
     h2 {
       margin-bottom: 55px;
     }
