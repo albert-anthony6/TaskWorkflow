@@ -124,7 +124,7 @@ export const userSlice = createSlice({
         editProfile.rejected,
         uploadImage.rejected
       ),
-      (state, action) => {
+      (_, action) => {
         throw action.payload;
       }
     );

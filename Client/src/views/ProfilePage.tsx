@@ -13,6 +13,7 @@ import 'react-responsive-pagination/themes/classic.css';
 import ProjectTable from '../components/ProjectTable';
 import StyledSearch from '../components/micro/StyledSearch';
 import useScreenWidth from '../utils/hooks/useScreenWidth';
+import IconAvatar from '../assets/icons/icon_avatar.svg?react';
 import IconFacebook from '../assets/icons/icon_facebook.svg?react';
 import IconTwitter from '../assets/icons/icon_twitter.svg?react';
 import IconInstagram from '../assets/icons/icon_instagram.svg?react';
@@ -148,7 +149,7 @@ export default function ProfilePage() {
             className="banner--image"
             style={{
               backgroundImage: `url(${
-                profile?.coverImage?.url || '/src/assets/images/placeholder_image.png'
+                profile?.coverImage?.url || '/assets/images/placeholder_image.png'
               })`
             }}
           />
@@ -171,10 +172,8 @@ export default function ProfilePage() {
                   alt="User Avatar."
                 />
               ) : (
-                <img
-                  src="/src/assets/icons/icon_avatar.svg?react"
+                <IconAvatar
                   className={screenWidth >= 1200 ? 'avatar avatar__xl' : 'avatar avatar__large'}
-                  alt="User Avatar."
                 />
               )}
             </>

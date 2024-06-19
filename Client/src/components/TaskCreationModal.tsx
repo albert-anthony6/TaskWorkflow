@@ -88,6 +88,7 @@ export default function TaskCreationModal(props: Props) {
       id: taskModal.taskId,
       ...data,
       severity: severityValue,
+      status: `${selectedTask?.status}`,
       appUserIds: data.assignees as string[]
     };
 
@@ -286,7 +287,7 @@ export default function TaskCreationModal(props: Props) {
             <textarea
               className={isViewing ? 'disabled' : ''}
               {...register('description', {
-                maxLength: { value: 100, message: 'Bio must not be over 100 characters long.' }
+                maxLength: { value: 500, message: 'Bio must not be over 500 characters long.' }
               })}
               id="description"
               placeholder="Enter description"
@@ -295,8 +296,8 @@ export default function TaskCreationModal(props: Props) {
             <div className="input--helper">
               <div className="caption text__error">{errors.description?.message}</div>
 
-              <div className={descriptionCharCount > 100 ? 'caption caption__error' : 'caption'}>
-                {descriptionCharCount}/100
+              <div className={descriptionCharCount > 500 ? 'caption caption__error' : 'caption'}>
+                {descriptionCharCount}/500
               </div>
             </div>
           </div>

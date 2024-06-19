@@ -113,7 +113,7 @@ export const taskSlice = createSlice({
         uploadImage.rejected,
         deleteTask.rejected
       ),
-      (state, action) => {
+      (_, action) => {
         throw action.payload;
       }
     );

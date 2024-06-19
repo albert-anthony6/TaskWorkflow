@@ -43,7 +43,7 @@ export default function LandingPage() {
     {
       review:
         "I've tried several task management apps, but TaskWorkflow stands out with its simplicity and powerful features. It helps me stay focused and productive every day.",
-      caption: 'William Parker | Account Manager at Hooli',
+      caption: 'William Parker | Strategist at Serenity',
       image: 'william_parker.png'
     },
     {
@@ -55,7 +55,7 @@ export default function LandingPage() {
     {
       review:
         "TaskWorkflow has made my work life so much easier. I can prioritize tasks, set deadlines, and collaborate with my team seamlessly. It's a must-have tool for anyone serious about productivity!",
-      caption: 'Emilia Carter | Account Manager at StartUp',
+      caption: 'Emilia Carter | Account Manager at Moonlit',
       image: 'emilia_carter.png'
     },
     {
@@ -95,7 +95,7 @@ export default function LandingPage() {
         </div>
         <img
           className="hero-image"
-          src="src/assets/images/hero_image.png"
+          src="/assets/images/hero_image.png"
           alt="Task Workflow home page."
         />
       </section>
@@ -115,7 +115,7 @@ export default function LandingPage() {
       </section>
       <section className="about-section">
         <div className="about-section--group">
-          <img src="src/assets/images/simple_task_management.jpg" />
+          <img src="/assets/images/simple_task_management.jpg" />
           <div className="about-section--group--text">
             <h2>Simple task management</h2>
             <p>
@@ -129,7 +129,7 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="about-section--group">
-          <img src="src/assets/images/collaboration.jpg" />
+          <img src="/assets/images/collaboration.jpg" />
           <div className="about-section--group--text">
             <h2>Collaborate with ease</h2>
             <p>
@@ -143,7 +143,7 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="about-section--group">
-          <img src="src/assets/images/more_coming.jpg" />
+          <img src="/assets/images/more_coming.jpg" />
           <div className="about-section--group--text">
             <h2>We're not done yet</h2>
             <p>
@@ -184,7 +184,7 @@ export default function LandingPage() {
                 <IconStars />
               </div>
               <div className="review-section__right">
-                <img src={`src/assets/images/${slide.image}`} alt={slide.caption} />
+                <img src={`/assets/images/${slide.image}`} alt={slide.caption} />
               </div>
             </div>
           ))}
@@ -192,7 +192,7 @@ export default function LandingPage() {
       </section>
       <section className="overview-section">
         <h2 className="overview-section--title">Everything at Your Finger Tips</h2>
-        <img src="src/assets/images/celebration.jpg" />
+        <img src="/assets/images/celebration.jpg" />
       </section>
       <section className="join-section">
         <h2 className="join-section--title">Join the Collaboration</h2>

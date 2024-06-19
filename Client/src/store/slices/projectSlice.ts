@@ -130,7 +130,7 @@ export const projectSlice = createSlice({
         updateMembers.rejected,
         deleteProject.rejected
       ),
-      (state, action) => {
+      (_, action) => {
         throw action.payload;
       }
     );

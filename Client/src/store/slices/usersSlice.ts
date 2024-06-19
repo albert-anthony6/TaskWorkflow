@@ -63,7 +63,7 @@ export const usersSlice = createSlice({
     builder.addMatcher(isAnyOf(getUsers.fulfilled), (state, action) => {
       state.users = action.payload;
     });
-    builder.addMatcher(isAnyOf(getUsers.rejected, getProfile.rejected), (state, action) => {
+    builder.addMatcher(isAnyOf(getUsers.rejected, getProfile.rejected), (_, action) => {
       throw action.payload;
     });
   }

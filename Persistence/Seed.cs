@@ -14,93 +14,108 @@ namespace Persistence
                 {
                     new AppUser
                     {
-                        DisplayName = "Bob",
+                        DisplayName = "Bob Evans",
                         UserName = "bob",
-                        Email = "bob@test.com"
+                        Bio = "Manager at Aura",
+                        Email = "bob@test.com",
                     },
                     new AppUser
                     {
-                        DisplayName = "Jane",
+                        DisplayName = "Jane Smith",
                         UserName = "jane",
+                        Bio = "Marketing at Glam",
                         Email = "jane@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Tom",
+                        DisplayName = "Tom Smith",
                         UserName = "tom",
+                        Bio = "Designer at Opal Cos.",
                         Email = "tom@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Bob2",
-                        UserName = "bob2",
-                        Email = "bob2@test.com"
+                        DisplayName = "Sarah David",
+                        UserName = "sarah",
+                        Bio = "CEO at Luxe Glow",
+                        Email = "sarah@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Jane2",
-                        UserName = "jane2",
-                        Email = "jane2@test.com"
+                        DisplayName = "Michael Thomson",
+                        UserName = "michael",
+                        Bio = "Brand at Radiant",
+                        Email = "michael@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Tom2",
-                        UserName = "tom2",
-                        Email = "tom2@test.com"
+                        DisplayName = "Jennifer Martinez",
+                        UserName = "jennifer",
+                        Bio = "Developer at Stellar",
+                        Email = "jennifer@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Bob3",
-                        UserName = "bob3",
-                        Email = "bob3@test.com"
+                        DisplayName = "Robert Anderson",
+                        UserName = "robert",
+                        Bio = "Director at Belle",
+                        Email = "robert@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Jane3",
-                        UserName = "jane3",
-                        Email = "jane3@test.com"
+                        DisplayName = "Jessica Taylor",
+                        UserName = "jessica",
+                        Bio = "Artist at Ethereal",
+                        Email = "jessica@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Tom3",
-                        UserName = "tom3",
-                        Email = "tom3@test.com"
+                        DisplayName = "James Thomas",
+                        UserName = "james",
+                        Bio = "Sales at Enchanted",
+                        Email = "james@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Bob4",
-                        UserName = "bob4",
-                        Email = "bob4@test.com"
+                        DisplayName = "William Parker",
+                        UserName = "william",
+                        Bio = "Strategist at Serenity",
+                        Email = "william@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Jane4",
-                        UserName = "jane4",
-                        Email = "jane4@test.com"
+                        DisplayName = "Melissa Moore",
+                        UserName = "melissa",
+                        Bio = "PR at Luminous",
+                        Email = "melissa@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Tom4",
-                        UserName = "tom4",
-                        Email = "tom4@test.com"
+                        DisplayName = "Joshua Carter",
+                        UserName = "joshua",
+                        Bio = "Manager at Aurora",
+                        Email = "joshua@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Bob5",
-                        UserName = "bob5",
-                        Email = "bob5@test.com"
+                        DisplayName = "Nicole Lewis",
+                        UserName = "nicole",
+                        Bio = "Manager at Moonlit",
+                        Email = "nicole@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Jane5",
-                        UserName = "jane5",
-                        Email = "jane5@test.com"
+                        DisplayName = "Daniel Walker",
+                        UserName = "daniel",
+                        Bio = "Officer at Celestial",
+                        Email = "daniel@test.com"
                     },
                     new AppUser
                     {
-                        DisplayName = "Tom5",
-                        UserName = "tom5",
-                        Email = "tom5@test.com"
+                        DisplayName = "Andrew Baker",
+                        UserName = "andrew",
+                        Bio = "Founder at Velvet",
+                        Email = "andrew@test.com"
                     },
                 };
 
@@ -115,19 +130,31 @@ namespace Persistence
                     new Project
                     {
                         ProjectId = Guid.NewGuid(),
-                        Name = "Project 1",
+                        Name = "Ford Motor 100",
                         Owner = users[0].DisplayName,
-                        ActiveTicketsCount = 5,
+                        ActiveTicketsCount = 10,
                         MembersCount = 3,
+                        Members = new List<AppUser>
+                        {
+                            users[0],
+                            users[1],
+                            users[2],
+                        },
                         UserTicketsCount = 0
                     },
                     new Project
                     {
                         ProjectId = Guid.NewGuid(),
-                        Name = "Project 2",
-                        Owner = users[2].DisplayName,
-                        ActiveTicketsCount = 5,
+                        Name = "Waymo Experiential",
+                        Owner = users[3].DisplayName,
+                        ActiveTicketsCount = 10,
                         MembersCount = 3,
+                        Members = new List<AppUser>
+                        {
+                            users[3],
+                            users[4],
+                            users[5],
+                        },
                         UserTicketsCount = 0
                     }
                 };
@@ -140,203 +167,311 @@ namespace Persistence
                     new Ticket
                     {
                         ProjectId = projects[0].ProjectId,
-                        Title = "Past Ticket 1",
-                        Description = "Ticket 2 months ago",
-                        Severity = "Low",
+                        Title = "Build Timeline",
+                        Description = "Create a timeline of when each department should begin work for Ford Motor 100.",
+                        Severity = "Medium",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
                         Author = users[0],
+                        Status = "done",
                         Assignees = new List<TicketAssignee>
                         {
-                            new TicketAssignee
-                            {
-                                AppUser = users[0],
-                            }
-                        }
-                    },
-                    new Ticket
-                    {
-                        ProjectId = projects[1].ProjectId,
-                        Title = "Past Ticket 2",
-                        Description = "Ticket 1 month ago",
-                        Severity = "Low",
-                        StartDate = DateTime.UtcNow,
-                        EndDate = DateTime.UtcNow.AddDays(5),
-                        Author = users[0],
-                        Assignees = new List<TicketAssignee>
-                        {
-                            new TicketAssignee
-                            {
-                                AppUser = users[0],
-                            },
-                            new TicketAssignee
-                            {
-                                AppUser = users[1],
-                            },
+                            new TicketAssignee { AppUser = users[0] }
                         }
                     },
                     new Ticket
                     {
                         ProjectId = projects[0].ProjectId,
-                        Title = "Future Ticket 1",
-                        Description = "Ticket 1 month in future",
-                        Severity = "Low",
-                        StartDate = DateTime.UtcNow,
-                        EndDate = DateTime.UtcNow.AddDays(5),
-                        Author = users[2],
-                        Assignees = new List<TicketAssignee>
-                        {
-                            new TicketAssignee
-                            {
-                                AppUser = users[2],
-                            },
-                            new TicketAssignee
-                            {
-                                AppUser = users[1],
-                            },
-                        }
-                    },
-                    new Ticket
-                    {
-                        ProjectId = projects[1].ProjectId,
-                        Title = "Future Ticket 2",
-                        Description = "Ticket 2 months in future",
-                        Severity = "Low",
-                        StartDate = DateTime.UtcNow,
-                        EndDate = DateTime.UtcNow.AddDays(5),
-                        Author = users[0],
-                        Assignees = new List<TicketAssignee>
-                        {
-                            new TicketAssignee
-                            {
-                                AppUser = users[0],
-                            },
-                            new TicketAssignee
-                            {
-                                AppUser = users[2],
-                            },
-                        }
-                    },
-                    new Ticket
-                    {
-                        ProjectId = projects[0].ProjectId,
-                        Title = "Future Ticket 3",
-                        Description = "Ticket 3 months in future",
-                        Severity = "Low",
-                        StartDate = DateTime.UtcNow,
-                        EndDate = DateTime.UtcNow.AddDays(5),
+                        Title = "Prepare Marketing Strategy",
+                        Description = "Draft a marketing strategy for the Ford Motor 100 launch.",
+                        Severity = "High",
+                        StartDate = DateTime.UtcNow.AddDays(1),
+                        EndDate = DateTime.UtcNow.AddDays(7),
                         Author = users[1],
+                        Status = "inProgress",
                         Assignees = new List<TicketAssignee>
                         {
-                            new TicketAssignee
-                            {
-                                AppUser = users[1],
-                            },
-                            new TicketAssignee
-                            {
-                                AppUser = users[0],
-                            },
+                            new TicketAssignee { AppUser = users[1] }
                         }
                     },
                     new Ticket
                     {
-                        ProjectId = projects[1].ProjectId,
-                        Title = "Future Ticket 4",
-                        Description = "Ticket 4 months in future",
-                        Severity = "Low",
-                        StartDate = DateTime.UtcNow,
-                        EndDate = DateTime.UtcNow.AddDays(5),
+                        ProjectId = projects[0].ProjectId,
+                        Title = "Prototype Development",
+                        Description = "Develop initial prototypes for Ford Motor 100 vehicle components.",
+                        Severity = "Critical",
+                        StartDate = DateTime.UtcNow.AddDays(2),
+                        EndDate = DateTime.UtcNow.AddDays(10),
+                        Author = users[2],
+                        Status = "readyForReview",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[2] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[0].ProjectId,
+                        Title = "User Testing",
+                        Description = "Conduct user testing sessions for Ford Motor 100 features.",
+                        Severity = "Medium",
+                        StartDate = DateTime.UtcNow.AddDays(3),
+                        EndDate = DateTime.UtcNow.AddDays(6),
+                        Author = users[0],
+                        Status = "todo",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[0] },
+                            new TicketAssignee { AppUser = users[1] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[0].ProjectId,
+                        Title = "Supply Chain Audit",
+                        Description = "Audit the supply chain for components needed in Ford Motor 100 production.",
+                        Severity = "High",
+                        StartDate = DateTime.UtcNow.AddDays(4),
+                        EndDate = DateTime.UtcNow.AddDays(8),
+                        Author = users[2],
+                        Status = "inProgress",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[2] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[0].ProjectId,
+                        Title = "Documentation Review",
+                        Description = "Review and update documentation related to Ford Motor 100 production processes.",
+                        Severity = "Medium",
+                        StartDate = DateTime.UtcNow.AddDays(5),
+                        EndDate = DateTime.UtcNow.AddDays(7),
                         Author = users[1],
+                        Status = "readyForReview",
                         Assignees = new List<TicketAssignee>
                         {
-                            new TicketAssignee
-                            {
-                                AppUser = users[1],
-                            }
+                            new TicketAssignee { AppUser = users[1] },
+                            new TicketAssignee { AppUser = users[2] }
                         }
                     },
                     new Ticket
                     {
                         ProjectId = projects[0].ProjectId,
-                        Title = "Future Ticket 5",
-                        Description = "Ticket 5 months in future",
-                        Severity = "Low",
-                        StartDate = DateTime.UtcNow,
-                        EndDate = DateTime.UtcNow.AddDays(5),
+                        Title = "Quality Control Testing",
+                        Description = "Perform quality control tests on Ford Motor 100 prototypes.",
+                        Severity = "High",
+                        StartDate = DateTime.UtcNow.AddDays(6),
+                        EndDate = DateTime.UtcNow.AddDays(9),
                         Author = users[0],
+                        Status = "done",
                         Assignees = new List<TicketAssignee>
                         {
-                            new TicketAssignee
-                            {
-                                AppUser = users[0],
-                            },
-                            new TicketAssignee
-                            {
-                                AppUser = users[1],
-                            },
-                        }
-                    },
-                    new Ticket
-                    {
-                        ProjectId = projects[1].ProjectId,
-                        Title = "Future Ticket 6",
-                        Description = "Ticket 6 months in future",
-                        Severity = "Low",
-                        StartDate = DateTime.UtcNow,
-                        EndDate = DateTime.UtcNow.AddDays(5),
-                        Author = users[2],
-                        Assignees = new List<TicketAssignee>
-                        {
-                            new TicketAssignee
-                            {
-                                AppUser = users[2],
-                            },
-                            new TicketAssignee
-                            {
-                                AppUser = users[1],
-                            },
+                            new TicketAssignee { AppUser = users[0] },
+                            new TicketAssignee { AppUser = users[2] }
                         }
                     },
                     new Ticket
                     {
                         ProjectId = projects[0].ProjectId,
-                        Title = "Future Ticket 7",
-                        Description = "Ticket 7 months in future",
-                        Severity = "Low",
-                        StartDate = DateTime.UtcNow,
-                        EndDate = DateTime.UtcNow.AddDays(5),
+                        Title = "Final Assembly Planning",
+                        Description = "Plan the final assembly process for Ford Motor 100 production.",
+                        Severity = "Medium",
+                        StartDate = DateTime.UtcNow.AddDays(7),
+                        EndDate = DateTime.UtcNow.AddDays(10),
                         Author = users[0],
+                        Status = "todo",
                         Assignees = new List<TicketAssignee>
                         {
-                            new TicketAssignee
-                            {
-                                AppUser = users[0],
-                            },
-                            new TicketAssignee
-                            {
-                                AppUser = users[2],
-                            },
+                            new TicketAssignee { AppUser = users[0] },
+                            new TicketAssignee { AppUser = users[1] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[0].ProjectId,
+                        Title = "Launch Event Coordination",
+                        Description = "Coordinate logistics for the Ford Motor 100 launch event.",
+                        Severity = "High",
+                        StartDate = DateTime.UtcNow.AddDays(8),
+                        EndDate = DateTime.UtcNow.AddDays(11),
+                        Author = users[1],
+                        Status = "inProgress",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[1] },
+                            new TicketAssignee { AppUser = users[2] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[0].ProjectId,
+                        Title = "Post-Launch Analysis",
+                        Description = "Conduct analysis of customer feedback and performance data post Ford Motor 100 launch.",
+                        Severity = "Medium",
+                        StartDate = DateTime.UtcNow.AddDays(9),
+                        EndDate = DateTime.UtcNow.AddDays(12),
+                        Author = users[0],
+                        Status = "readyForReview",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[0] },
+                            new TicketAssignee { AppUser = users[1] }
                         }
                     },
                     new Ticket
                     {
                         ProjectId = projects[1].ProjectId,
-                        Title = "Future Ticket 8",
-                        Description = "Ticket 8 months in future",
-                        Severity = "Low",
+                        Title = "Route Mapping",
+                        Description = "Update route mapping data for Waymo Experiential testing.",
+                        Severity = "Medium",
                         StartDate = DateTime.UtcNow,
                         EndDate = DateTime.UtcNow.AddDays(5),
-                        Author = users[2],
+                        Author = users[3],
+                        Status = "todo",
                         Assignees = new List<TicketAssignee>
                         {
-                            new TicketAssignee
-                            {
-                                AppUser = users[2],
-                            },
-                            new TicketAssignee
-                            {
-                                AppUser = users[1],
-                            },
+                            new TicketAssignee { AppUser = users[3] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[1].ProjectId,
+                        Title = "Sensor Calibration",
+                        Description = "Calibrate sensors for Waymo Experiential vehicles.",
+                        Severity = "High",
+                        StartDate = DateTime.UtcNow.AddDays(1),
+                        EndDate = DateTime.UtcNow.AddDays(6),
+                        Author = users[4],
+                        Status = "inProgress",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[4] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[1].ProjectId,
+                        Title = "User Experience Testing",
+                        Description = "Conduct user experience testing sessions for Waymo Experiential.",
+                        Severity = "Critical",
+                        StartDate = DateTime.UtcNow.AddDays(2),
+                        EndDate = DateTime.UtcNow.AddDays(7),
+                        Author = users[5],
+                        Status = "readyForReview",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[5] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[1].ProjectId,
+                        Title = "Performance Evaluation",
+                        Description = "Evaluate performance metrics of Waymo Experiential vehicles.",
+                        Severity = "High",
+                        StartDate = DateTime.UtcNow.AddDays(3),
+                        EndDate = DateTime.UtcNow.AddDays(8),
+                        Author = users[3],
+                        Status = "done",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[3] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[1].ProjectId,
+                        Title = "Data Analysis",
+                        Description = "Analyze data collected from Waymo Experiential testing.",
+                        Severity = "Medium",
+                        StartDate = DateTime.UtcNow.AddDays(4),
+                        EndDate = DateTime.UtcNow.AddDays(9),
+                        Author = users[4],
+                        Status = "todo",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[4] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[1].ProjectId,
+                        Title = "Regulatory Compliance",
+                        Description = "Ensure Waymo Experiential complies with local regulations.",
+                        Severity = "High",
+                        StartDate = DateTime.UtcNow.AddDays(5),
+                        EndDate = DateTime.UtcNow.AddDays(10),
+                        Author = users[5],
+                        Status = "inProgress",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[5] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[1].ProjectId,
+                        Title = "System Integration Testing",
+                        Description = "Perform system integration testing for Waymo Experiential.",
+                        Severity = "Medium",
+                        StartDate = DateTime.UtcNow.AddDays(6),
+                        EndDate = DateTime.UtcNow.AddDays(11),
+                        Author = users[3],
+                        Status = "readyForReview",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[3] },
+                            new TicketAssignee { AppUser = users[4] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[1].ProjectId,
+                        Title = "Documentation Update",
+                        Description = "Update documentation for Waymo Experiential system changes.",
+                        Severity = "Low",
+                        StartDate = DateTime.UtcNow.AddDays(7),
+                        EndDate = DateTime.UtcNow.AddDays(12),
+                        Author = users[4],
+                        Status = "done",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[4] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[1].ProjectId,
+                        Title = "Stakeholder Presentation",
+                        Description = "Prepare and deliver a presentation on Waymo Experiential progress to stakeholders.",
+                        Severity = "High",
+                        StartDate = DateTime.UtcNow.AddDays(8),
+                        EndDate = DateTime.UtcNow.AddDays(13),
+                        Author = users[5],
+                        Status = "todo",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[5] },
+                            new TicketAssignee { AppUser = users[3] }
+                        }
+                    },
+                    new Ticket
+                    {
+                        ProjectId = projects[1].ProjectId,
+                        Title = "Final Testing Phase",
+                        Description = "Execute final testing phase for Waymo Experiential before deployment.",
+                        Severity = "Critical",
+                        StartDate = DateTime.UtcNow.AddDays(9),
+                        EndDate = DateTime.UtcNow.AddDays(14),
+                        Author = users[3],
+                        Status = "todo",
+                        Assignees = new List<TicketAssignee>
+                        {
+                            new TicketAssignee { AppUser = users[3] },
+                            new TicketAssignee { AppUser = users[4] },
+                            new TicketAssignee { AppUser = users[5] }
                         }
                     }
                 };
