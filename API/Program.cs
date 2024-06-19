@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using AspNetCoreRateLimit;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -34,6 +35,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("CorsPolicy");
+
+app.UseIpRateLimiting();
 
 app.UseAuthentication();
 app.UseAuthorization();

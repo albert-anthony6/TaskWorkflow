@@ -1,6 +1,7 @@
 using Application.Core;
 using Application.Interfaces;
 using Application.Tickets;
+using AspNetCoreRateLimit;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Photos;
@@ -18,6 +19,15 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,
             IConfiguration config)
         {
+            // Configure rate limiting
+            services.AddOptions();
+            services.AddMemoryCache();
+
+            services.Configure<IpRateLimitOptions>(config.GetSection("IpRateLimiting"));
+            services.Configure<IpRateLimitPolicies>(config.GetSection("IpRateLimitPolicies"));
+            
+            services.AddInMemoryRateLimiting();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen((c) => 
@@ -46,6 +56,9 @@ namespace API.Extensions
                     }
                 });
             });
+
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
             services.Configure<FormOptions>(options =>
             {
                 options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // 10 MB limit

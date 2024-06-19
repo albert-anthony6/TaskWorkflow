@@ -39,7 +39,6 @@ axios.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    console.log(error);
     const { data, status, config } = error.response as AxiosResponse;
     switch (status) {
       case 400:
@@ -69,6 +68,9 @@ axios.interceptors.response.use(
         break;
       case 404:
         router.navigate('/not-found');
+        break;
+      case 429:
+        toast.error('Too many requests. Try again later.');
         break;
       case 500:
         toast.error('Server Error');

@@ -202,9 +202,9 @@ export default function TaskCreationModal(props: Props) {
             <IconUpload />
             <p className="drop-container">Choose a file or drag it here</p>
           </ImageDropzone>
-          {selectedTask?.attachments && (
+          {selectedTask?.attachments?.length !== 0 && (
             <div className="attachments-container">
-              {selectedTask.attachments.map((photo) => (
+              {selectedTask?.attachments?.map((photo) => (
                 <img src={photo.url} key={photo.id} />
               ))}
             </div>
