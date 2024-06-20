@@ -101,11 +101,12 @@ const Projects = {
         `/projects/?pageNumber=${pageNumber}&pageSize=${pageSize}&userId=${userId}&filterProjects=${filterProjects}&searchTerm=${searchTerm}`
       )
       .then(responseBody),
-  details: (projectId: string) => requests.get<Project>(`/projects/${projectId}`),
+  details: (id: string, searchTerm: string) =>
+    requests.get<Project>(`/projects/${id}/?searchTerm=${searchTerm}`),
   create: (name: string) => requests.post<void>('/projects/', { name }),
-  update: (projectId: string, appUserIds: string[]) =>
-    requests.patch<void>(`/projects/${projectId}/`, appUserIds),
-  delete: (projectId: string) => requests.delete<void>(`/projects/${projectId}`)
+  update: (id: string, appUserIds: string[]) =>
+    requests.patch<void>(`/projects/${id}/`, appUserIds),
+  delete: (id: string) => requests.delete<void>(`/projects/${id}`)
 };
 
 const Tasks = {

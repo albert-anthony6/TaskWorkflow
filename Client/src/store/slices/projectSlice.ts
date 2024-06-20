@@ -55,11 +55,11 @@ export const getProjects = createAsyncThunk<Project[] | void, GetProjectsParams>
   }
 );
 
-export const getProject = createAsyncThunk<Project, string>(
+export const getProject = createAsyncThunk<Project, { id: string; searchTerm: string }>(
   'project/getProject',
-  async (projectId, thunkAPI) => {
+  async ({ id, searchTerm }, thunkAPI) => {
     try {
-      return await agent.Projects.details(projectId);
+      return await agent.Projects.details(id, searchTerm);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error });
     }

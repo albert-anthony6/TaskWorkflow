@@ -19,10 +19,25 @@
   }
 
   &--actions {
+    display: flex;
     padding: 40px 50px 0;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    @include bp-md-tablet {
+      flex-direction: row;
+      align-items: center;
+    }
 
     .members {
       display: flex;
+      flex-wrap: wrap;
+      max-width: 375px;
+      margin-top: 15px;
+
+      @include bp-md-tablet {
+        margin: 0 0 -5px 40px;
+      }
 
       .member {
         margin-right: 10px;

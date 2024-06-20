@@ -120,12 +120,12 @@ export default function ImageDropzone({
             />
           )}
           {files.length > 0 || hasImage ? (
-            <div onClick={handleReset}>
+            <div onClick={handleReset} className="cancel-image">
               <IconUpload />
               Cancel Image
             </div>
           ) : (
-            <div>
+            <div className="upload-image">
               <IconUpload />
               Upload Image
             </div>

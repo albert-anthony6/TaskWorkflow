@@ -19,9 +19,9 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProjectTickets(Guid id)
+        public async Task<IActionResult> GetProjectTickets(Guid id, [FromQuery] string searchTerm)
         {
-            return HandleResult(await Mediator.Send(new Details.Query{ Id = id }));
+            return HandleResult(await Mediator.Send(new Details.Query{ Id = id, SearchTerm = searchTerm }));
         }
 
         [HttpPatch("{id}")]

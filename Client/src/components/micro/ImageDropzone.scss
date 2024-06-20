@@ -11,6 +11,11 @@
     border-color: $dark-neutral;
   }
 
+  .upload-image,
+  .cancel-image {
+    cursor: pointer;
+  }
+
   &__full-width {
     width: 100%;
     min-height: 250px;

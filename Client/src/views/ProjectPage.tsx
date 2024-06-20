@@ -11,6 +11,7 @@ import { getProject } from '../store/slices/projectSlice';
 import { updateStatus } from '../store/slices/taskSlice';
 import { toast } from 'react-toastify';
 import MemberModal from '../components/MemberModal';
+import StyledSearch from '../components/micro/StyledSearch';
 import IconAvatar from '../assets/icons/icon_avatar.svg?react';
 import IconAddUser from '../assets/icons/icon_add_user.svg?react';
 import { Project } from '../utils/interfaces/project';
@@ -20,6 +21,8 @@ export default function ProjectPage() {
   const { project } = useAppSelector((state) => state.project);
   const dispatch = useAppDispatch();
   const { taskModal } = useAppSelector((state) => state.task);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
 
   interface Column {
@@ -91,10 +94,20 @@ export default function ProjectPage() {
   }, []);
 
   useEffect(() => {
-    dispatch(getProject(`${params.projectId}`)).then((action) => {
-      updateColumns(action as { payload: Project });
-    });
-  }, [dispatch, params.projectId, updateColumns]);
+    const delayDebounceFn = setTimeout(
+      () => {
+        setIsLoading(true);
+        dispatch(getProject({ id: `${params.projectId}`, searchTerm }))
+          .then((action) => {
+            updateColumns(action as { payload: Project });
+          })
+          .finally(() => setIsLoading(false));
+      },
+      searchTerm ? 500 : 0
+    );
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [dispatch, params.projectId, updateColumns, searchTerm]);
 
   function onDragEnd({ source, destination }: DropResult) {
     // Make sure we have a valid destination
@@ -191,6 +204,7 @@ export default function ProjectPage() {
         </Link>
       </div>
       <div className="project-page--actions">
+        <StyledSearch handleChange={(event) => setSearchTerm(event.target.value)} />
         <div className="members">
           {project?.members.map((member) => (
             <div className="member" key={member.id}>
@@ -223,7 +237,7 @@ export default function ProjectPage() {
         <TaskCreationModal
           members={project?.members as User[]}
           getProject={() =>
-            dispatch(getProject(`${params.projectId}`)).then((action) =>
+            dispatch(getProject({ id: `${params.projectId}`, searchTerm })).then((action) =>
               updateColumns(action as { payload: Project })
             )
           }
