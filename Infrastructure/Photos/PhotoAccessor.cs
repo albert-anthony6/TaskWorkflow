@@ -20,7 +20,7 @@ namespace Infrastructure.Photos
             _cloudinary = new Cloudinary(account);
         }
 
-        public async Task<PhotoUploadResult> AddPhoto(IFormFile file, Boolean isBanner)
+        public async Task<PhotoUploadResult> AddPhoto(IFormFile file, bool isBanner)
         { 
             if (file.Length > 0)
             {

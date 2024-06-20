@@ -14,7 +14,8 @@ interface Props {
   setBlob: (param: null) => void;
   setBlobUrl: (param: string) => void;
   children?: React.ReactNode;
-  handleSave?: () => void;
+  handleSave?: () => Promise<void>;
+  isLoading?: boolean;
 }
 
 export default function ImageDropzone({
@@ -28,7 +29,8 @@ export default function ImageDropzone({
   customPreview,
   setHasImage,
   children,
-  handleSave
+  handleSave,
+  isLoading
 }: Props) {
   function handleReset() {
     setHasImage(false);
@@ -38,6 +40,11 @@ export default function ImageDropzone({
       setBlob(null);
       setBlobUrl('');
     }
+  }
+
+  async function handleSaveAndReset() {
+    await handleSave?.();
+    handleReset();
   }
 
   function preventEvent(event: React.MouseEvent<HTMLDivElement>) {
@@ -93,8 +100,8 @@ export default function ImageDropzone({
                   <button className="button__secondary__button" onClick={handleReset}>
                     Cancel
                   </button>
-                  <button className="button__primary" onClick={handleSave}>
-                    Save
+                  <button className="button__primary" onClick={handleSaveAndReset}>
+                    {isLoading ? <div className="loading-spinner" /> : <span>Save</span>}
                   </button>
                 </div>
               </div>

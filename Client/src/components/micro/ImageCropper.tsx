@@ -44,8 +44,8 @@ export default function ImageCropper({ setFiles, setBlob, files, aspectRatio }: 
   }, [cropper]);
 
   return (
-    <div className="image-cropper" onClick={() => setFiles([])}>
-      <div className="cropper-container" onClick={(e) => e.stopPropagation()}>
+    <div className="image-cropper">
+      <div className="cropper-container">
         <Cropper
           src={files.length > 0 ? files[0].preview : ''}
           initialAspectRatio={aspectRatio || 1}

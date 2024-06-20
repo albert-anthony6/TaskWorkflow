@@ -101,7 +101,7 @@ export default function ProjectPage() {
     if (destination === undefined || destination === null) return null;
 
     const draggedItem = columns[source.droppableId].list[source.index];
-    console.log('Dragged Item:', draggedItem, destination.droppableId);
+    // console.log('Dragged Item:', draggedItem, destination.droppableId);
 
     // If the source and destination columns are the same
     // AND if the index is the same, the item isn't moving

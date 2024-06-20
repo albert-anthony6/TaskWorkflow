@@ -11,7 +11,7 @@ namespace Application.Projects
         public class Query : IRequest<Result<PagedList<RespProjectDto>>> {
             public PagingParams Params { get; set; }
             public string UserId { get; set; }
-            public Boolean FilterProjects { get; set; }
+            public bool FilterProjects { get; set; }
             public string SearchTerm { get; set; }
         }
 

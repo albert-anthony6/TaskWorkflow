@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { User } from '../utils/interfaces/user';
 import { Task } from '../utils/interfaces/task';
+import { Photo } from '../utils/interfaces/photo';
 import { ColorOption } from '../utils/interfaces/color-options';
 import { colorOptionsData } from '../utils/data/colorOptions';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
@@ -11,6 +12,7 @@ import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { toast } from 'react-toastify';
 import {
   createTask,
+  deleteAttachment,
   deleteTask,
   editTask,
   getTask,
@@ -38,9 +40,11 @@ export default function TaskCreationModal(props: Props) {
   const params = useParams();
   const { taskModal, selectedTask } = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch();
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo>();
   const [isWriting, setIsWriting] = useState(false);
   const [isOnDetails, setIsOnDetails] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const {
     blob: attachmentBlob,
@@ -76,7 +80,15 @@ export default function TaskCreationModal(props: Props) {
   const endDateValue = watch('endDate');
 
   function onAttachmentSave() {
-    dispatch(uploadImage({ file: attachmentBlob as Blob, id: `${selectedTask?.id}` }));
+    setIsLoading(true);
+    return dispatch(uploadImage({ file: attachmentBlob as Blob, id: `${selectedTask?.id}` }))
+      .then(() => {
+        toast.success('Attachment successfully saved');
+        dispatch(getTask(`${taskModal.taskId}`)).catch(() => {
+          toast.error('Error getting task info');
+        });
+      })
+      .finally(() => setIsLoading(false));
   }
 
   function onSubmit(data: Task) {
@@ -118,9 +130,15 @@ export default function TaskCreationModal(props: Props) {
     }
   }
 
-  function handleDeletion() {
+  function handleTaskDeletion() {
     props.getProject();
     dispatch(toggleTaskModal({ isOpen: false }));
+  }
+
+  function handleAttachmentDeletion() {
+    dispatch(getTask(`${taskModal.taskId}`)).catch(() => {
+      toast.error('Error getting task info');
+    });
   }
 
   function handleErrors(errors: any) {
@@ -165,10 +183,15 @@ export default function TaskCreationModal(props: Props) {
   const isViewing = !isWriting && selectedTask;
   const isCreating = isWriting && !selectedTask;
   const isEditing = isWriting && selectedTask;
+  const isModalOpen =
+    isDeleteModalOpen || isPhotoModalOpen || (attachmentFiles.length > 0 && !attachmentBlob);
 
   if (!isOnDetails)
     return (
-      <div className="task-creation-modal modal-container">
+      <div
+        className="task-creation-modal modal-container"
+        style={isModalOpen ? {} : { overflowY: 'scroll' }}
+      >
         <div className="form-container">
           <ul>
             <li onClick={() => setIsOnDetails(true)} className={isOnDetails ? 'active' : ''}>
@@ -198,6 +221,7 @@ export default function TaskCreationModal(props: Props) {
             setFiles={setAttachmentFiles}
             setBlob={setAttachmentBlob}
             setBlobUrl={setAttachmentBlobUrl}
+            isLoading={isLoading}
           >
             <IconUpload />
             <p className="drop-container">Choose a file or drag it here</p>
@@ -205,7 +229,14 @@ export default function TaskCreationModal(props: Props) {
           {selectedTask?.attachments?.length !== 0 && (
             <div className="attachments-container">
               {selectedTask?.attachments?.map((photo) => (
-                <img src={photo.url} key={photo.id} />
+                <div
+                  className="task-attachment"
+                  onClick={() => setSelectedPhoto(photo)}
+                  key={photo.id}
+                >
+                  <IconDelete onClick={() => setIsDeleteModalOpen(true)} />
+                  <img src={photo.url} onClick={() => setIsPhotoModalOpen(true)} />
+                </div>
               ))}
             </div>
           )}
@@ -214,11 +245,31 @@ export default function TaskCreationModal(props: Props) {
             className="icon-close"
           />
         </div>
+        {isPhotoModalOpen && (
+          <div className="modal-container img-modal" onClick={() => setIsPhotoModalOpen(false)}>
+            <img src={selectedPhoto?.url} />
+          </div>
+        )}
+        {isDeleteModalOpen && (
+          <DeleteModal
+            title="Are you sure you want to delete this attachment?"
+            closeModal={() => setIsDeleteModalOpen(false)}
+            dispatchAction={() =>
+              dispatch(
+                deleteAttachment({ taskId: `${selectedTask?.id}`, photoId: `${selectedPhoto?.id}` })
+              )
+            }
+            handleDeletion={handleAttachmentDeletion}
+          />
+        )}
       </div>
     );
 
   return (
-    <div className="task-creation-modal modal-container">
+    <div
+      className="task-creation-modal modal-container"
+      style={isModalOpen ? {} : { overflowY: 'scroll' }}
+    >
       <div className="form-container">
         <ul>
           <li onClick={() => setIsOnDetails(true)} className={isOnDetails ? 'active' : ''}>
@@ -384,7 +435,7 @@ export default function TaskCreationModal(props: Props) {
           title="Are you sure you want to delete this task?"
           closeModal={() => setIsDeleteModalOpen(false)}
           dispatchAction={() => dispatch(deleteTask(`${selectedTask?.id}`))}
-          handleDeletion={handleDeletion}
+          handleDeletion={handleTaskDeletion}
         />
       )}
     </div>

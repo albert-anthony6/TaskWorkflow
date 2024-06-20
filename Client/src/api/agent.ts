@@ -127,7 +127,9 @@ const Tasks = {
     return axios.post<void>('photos', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-  }
+  },
+  deleteImage: (taskId: string, photoId: string) =>
+    requests.delete<void>(`/photos/${taskId}/?photoId=${photoId}`)
 };
 
 const Account = {

@@ -1,6 +1,4 @@
 .task-creation-modal {
-  overflow-y: scroll;
-
   .form-container {
     width: 100%;
     position: absolute;
@@ -44,9 +42,37 @@
       border: 2px solid $dark-neutral;
       border-radius: 8px;
 
-      img {
-        width: 100%;
-        object-fit: cover;
+      .task-attachment {
+        position: relative;
+        cursor: pointer;
+
+        &:hover {
+          svg {
+            opacity: 1;
+          }
+        }
+
+        img {
+          width: 100%;
+          object-fit: cover;
+        }
+
+        svg {
+          position: absolute;
+          width: 30px;
+          height: 30px;
+          padding: 5px;
+          top: 10px;
+          right: 10px;
+          opacity: 0;
+          cursor: pointer;
+          border-radius: 8px;
+          background-color: $error;
+
+          path {
+            fill: white;
+          }
+        }
       }
     }
 
@@ -137,6 +163,20 @@
           color: $error;
         }
       }
+    }
+  }
+
+  .img-modal {
+    position: relative;
+
+    img {
+      position: absolute;
+      width: 80%;
+      max-width: 800px;
+      top: 50%;
+      left: 50%;
+      object-fit: cover;
+      transform: translate(-50%, -50%);
     }
   }
 

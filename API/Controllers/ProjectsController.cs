@@ -7,7 +7,7 @@ namespace API.Controllers
     public class ProjectsController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetProfiles([FromQuery]PagingParams param, string userId, Boolean filterProjects, string searchTerm)
+        public async Task<IActionResult> GetProfiles([FromQuery]PagingParams param, string userId, bool filterProjects, string searchTerm)
         {
             return HandlePagedResult(await Mediator.Send(new List.Query{Params = param, UserId = userId, FilterProjects = filterProjects, SearchTerm = searchTerm}));
         }

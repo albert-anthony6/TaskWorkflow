@@ -74,6 +74,17 @@ export const uploadImage = createAsyncThunk<void, { file: Blob; id: string }>(
   }
 );
 
+export const deleteAttachment = createAsyncThunk<void, { taskId: string; photoId: string }>(
+  'task/deleteAttachment',
+  async ({ taskId, photoId }, thunkAPI) => {
+    try {
+      return await agent.Tasks.deleteImage(taskId, photoId);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
+
 export const deleteTask = createAsyncThunk<void, string>(
   'task/deleteTask',
   async (taskId, thunkAPI) => {
