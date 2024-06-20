@@ -224,7 +224,7 @@ export default function TaskCreationModal(props: Props) {
             isLoading={isLoading}
           >
             <IconUpload />
-            <p className="drop-container">Choose a file or drag it here</p>
+            <p className="drop-container">Choose a .png/.jpg file or drag it here</p>
           </ImageDropzone>
           {selectedTask?.attachments?.length !== 0 && (
             <div className="attachments-container">
