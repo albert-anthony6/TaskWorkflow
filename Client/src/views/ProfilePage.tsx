@@ -71,7 +71,7 @@ export default function ProfilePage() {
       await dispatch(
         getProjects({
           pagingParams: { pageNumber: 1, pageSize: 10 },
-          userId: `${userId}`,
+          id: `${userId}`,
           filterProjects: true,
           searchTerm: ''
         })
@@ -86,7 +86,7 @@ export default function ProfilePage() {
       await dispatch(
         getProjects({
           pagingParams: { pageNumber: 1, pageSize: 10 },
-          userId: `${userId}`,
+          id: `${userId}`,
           filterProjects: false,
           searchTerm: ''
         })

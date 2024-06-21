@@ -72,7 +72,7 @@ export default function ProjectsPage() {
       await dispatch(
         getProjects({
           pagingParams: { pageNumber: 1, pageSize: 10 },
-          userId: `${currentUser?.id}`,
+          id: `${currentUser?.id}`,
           filterProjects: true,
           searchTerm: ''
         })
@@ -87,7 +87,7 @@ export default function ProjectsPage() {
       await dispatch(
         getProjects({
           pagingParams: { pageNumber: 1, pageSize: 10 },
-          userId: `${currentUser?.id}`,
+          id: `${currentUser?.id}`,
           filterProjects: false,
           searchTerm: ''
         })
