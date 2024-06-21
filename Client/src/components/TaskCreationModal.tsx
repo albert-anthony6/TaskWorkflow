@@ -10,6 +10,7 @@ import { colorOptionsData } from '../utils/data/colorOptions';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { toast } from 'react-toastify';
+import Skeleton from 'react-loading-skeleton';
 import {
   createTask,
   deleteAttachment,
@@ -45,7 +46,7 @@ export default function TaskCreationModal(props: Props) {
   const [isOnDetails, setIsOnDetails] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const {
     blob: attachmentBlob,
     setBlob: setAttachmentBlob,
@@ -152,9 +153,10 @@ export default function TaskCreationModal(props: Props) {
   }
 
   useEffect(() => {
+    setIsLoading(true);
     // Viewing an existing task
     if (taskModal.taskId) {
-      dispatch(getTask(taskModal.taskId));
+      dispatch(getTask(taskModal.taskId)).finally(() => setIsLoading(false));
     } else {
       // Creating a new task
       dispatch(resetSelectedTask());
@@ -271,39 +273,65 @@ export default function TaskCreationModal(props: Props) {
       style={isModalOpen ? {} : { overflowY: 'scroll' }}
     >
       <div className="form-container">
-        <ul>
-          <li onClick={() => setIsOnDetails(true)} className={isOnDetails ? 'active' : ''}>
-            Details
-          </li>
-          {isCreating ? (
-            <li className="disabled">Attachments</li>
-          ) : (
-            <li onClick={() => setIsOnDetails(false)} className={isOnDetails ? '' : 'active'}>
-              Attachments
+        {isLoading ? (
+          <Skeleton baseColor="#ccc" duration={0.9} width={'30%'} height={'40px'} circle={false} />
+        ) : (
+          <ul>
+            <li onClick={() => setIsOnDetails(true)} className={isOnDetails ? 'active' : ''}>
+              Details
             </li>
-          )}
-        </ul>
-        {isEditing && (
-          <>
-            <h2>Edit task</h2>
-            <p className="form-note">Use this form to edit the task</p>
-          </>
+            {isCreating ? (
+              <li className="disabled">Attachments</li>
+            ) : (
+              <li onClick={() => setIsOnDetails(false)} className={isOnDetails ? '' : 'active'}>
+                Attachments
+              </li>
+            )}
+          </ul>
         )}
-        {isCreating && (
+        {isLoading ? (
           <>
-            <h2>Create new task</h2>
-            <p className="form-note">Use this form to setup your new task</p>
+            <Skeleton
+              baseColor="#ccc"
+              duration={0.9}
+              width={'40%'}
+              height={'20px'}
+              style={{ margin: '15px 0' }}
+              circle={false}
+            />
+            <Skeleton
+              baseColor="#ccc"
+              duration={0.9}
+              width={'50%'}
+              height={'40px'}
+              circle={false}
+            />
           </>
-        )}
-        {isViewing && (
+        ) : (
           <>
-            <p className="edit-task" onClick={() => setIsWriting(true)}>
-              Edit task <IconEdit />
-            </p>
-            <p className="delete-task" onClick={() => setIsDeleteModalOpen(true)}>
-              Delete task <IconDelete />
-            </p>
-            <h2 className="title">{selectedTask.title}</h2>
+            {isEditing && (
+              <>
+                <h2>Edit task</h2>
+                <p className="form-note">Use this form to edit the task</p>
+              </>
+            )}
+            {isCreating && (
+              <>
+                <h2>Create new task</h2>
+                <p className="form-note">Use this form to setup your new task</p>
+              </>
+            )}
+            {isViewing && (
+              <>
+                <p className="edit-task" onClick={() => setIsWriting(true)}>
+                  Edit task <IconEdit />
+                </p>
+                <p className="delete-task" onClick={() => setIsDeleteModalOpen(true)}>
+                  Delete task <IconDelete />
+                </p>
+                <h2 className="title">{selectedTask.title}</h2>
+              </>
+            )}
           </>
         )}
         <IconClose
@@ -334,80 +362,128 @@ export default function TaskCreationModal(props: Props) {
             </div>
           )}
           <div className={`input-container ${!errors.title?.message && 'input-container__error'}`}>
-            <label htmlFor="description">Description</label>
-            <textarea
-              className={isViewing ? 'disabled' : ''}
-              {...register('description', {
-                maxLength: { value: 500, message: 'Bio must not be over 500 characters long.' }
-              })}
-              id="description"
-              placeholder="Enter description"
-              onChange={(e) => setValue('description', e.target.value)}
-            />
-            <div className="input--helper">
-              <div className="caption text__error">{errors.description?.message}</div>
+            {isLoading ? (
+              <Skeleton
+                baseColor="#ccc"
+                duration={0.9}
+                width={'100%'}
+                height={'200px'}
+                style={{ margin: '35px 0 25px' }}
+                circle={false}
+              />
+            ) : (
+              <>
+                <label htmlFor="description">Description</label>
+                <textarea
+                  className={isViewing ? 'disabled' : ''}
+                  {...register('description', {
+                    maxLength: { value: 500, message: 'Bio must not be over 500 characters long.' }
+                  })}
+                  id="description"
+                  placeholder="Enter description"
+                  onChange={(e) => setValue('description', e.target.value)}
+                />
+                <div className="input--helper">
+                  <div className="caption text__error">{errors.description?.message}</div>
 
-              <div className={descriptionCharCount > 500 ? 'caption caption__error' : 'caption'}>
-                {descriptionCharCount}/500
-              </div>
-            </div>
+                  <div
+                    className={descriptionCharCount > 500 ? 'caption caption__error' : 'caption'}
+                  >
+                    {descriptionCharCount}/500
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-          <label>Assignees</label>
-          <MutliSelectDropdown
-            fieldName="assignees"
-            options={props.members}
-            defaultValue={selectedTask?.assignees}
-            register={register}
-            setValue={setValue}
-            isReadOnly={isViewing as boolean}
-          />
-          <StyledDropdown
-            value={severityValue as ColorOption}
-            isReadOnly={isViewing as boolean}
-            onChange={(selectedOption) => setValue('severity', selectedOption)}
-          />
-          <div className="dates-container">
-            <div className="input-container">
-              <label htmlFor="start-date">Start Date</label>
-              <DatePicker
-                id="start-date"
-                {...register('startDate', {
-                  required: 'Task must have a start date.'
-                })}
-                {...props}
-                selected={(startDateValue && new Date(startDateValue)) || null}
-                onChange={(value) => setValue('startDate', value)}
-                placeholderText="Start Date"
-                showTimeSelect
-                timeCaption="time"
-                dateFormat="MMMM d, yyyy h:mm aa"
-                className={isViewing ? 'date-input disabled' : 'date-input'}
+          {isLoading ? (
+            <Skeleton
+              baseColor="#ccc"
+              duration={0.9}
+              width={'100%'}
+              height={'40px'}
+              circle={false}
+            />
+          ) : (
+            <>
+              <label>Assignees</label>
+              <MutliSelectDropdown
+                fieldName="assignees"
+                options={props.members}
+                defaultValue={selectedTask?.assignees}
+                register={register}
+                setValue={setValue}
+                isReadOnly={isViewing as boolean}
               />
-              <div className="input--helper">
-                <div className="caption text__error">{errors.startDate?.message}</div>
+            </>
+          )}
+          {isLoading ? (
+            <Skeleton
+              baseColor="#ccc"
+              duration={0.9}
+              width={'50%'}
+              height={'40px'}
+              style={{ margin: '25px 0' }}
+              circle={false}
+            />
+          ) : (
+            <StyledDropdown
+              value={severityValue as ColorOption}
+              isReadOnly={isViewing as boolean}
+              onChange={(selectedOption) => setValue('severity', selectedOption)}
+            />
+          )}
+          {isLoading ? (
+            <Skeleton
+              baseColor="#ccc"
+              duration={0.9}
+              width={'100%'}
+              height={'40px'}
+              circle={false}
+            />
+          ) : (
+            <div className="dates-container">
+              <div className="input-container">
+                <label htmlFor="start-date">Start Date</label>
+                <DatePicker
+                  id="start-date"
+                  {...register('startDate', {
+                    required: 'Task must have a start date.'
+                  })}
+                  {...props}
+                  selected={(startDateValue && new Date(startDateValue)) || null}
+                  onChange={(value) => setValue('startDate', value)}
+                  placeholderText="Start Date"
+                  showTimeSelect
+                  timeCaption="time"
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  className={isViewing ? 'date-input disabled' : 'date-input'}
+                />
+                <div className="input--helper">
+                  <div className="caption text__error">{errors.startDate?.message}</div>
+                </div>
+              </div>
+              <div className="input-container">
+                <label htmlFor="end-date">End Date</label>
+                <DatePicker
+                  id="end-date"
+                  {...register('endDate', {
+                    required: 'Task must have an end date.'
+                  })}
+                  {...props}
+                  selected={(endDateValue && new Date(endDateValue)) || null}
+                  onChange={(value) => setValue('endDate', value)}
+                  placeholderText="End Date"
+                  showTimeSelect
+                  timeCaption="time"
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  className={isViewing ? 'date-input disabled' : 'date-input'}
+                />
+                <div className="input--helper">
+                  <div className="caption text__error">{errors.endDate?.message}</div>
+                </div>
               </div>
             </div>
-            <div className="input-container">
-              <label htmlFor="end-date">End Date</label>
-              <DatePicker
-                id="end-date"
-                {...register('endDate', {
-                  required: 'Task must have an end date.'
-                })}
-                {...props}
-                selected={(endDateValue && new Date(endDateValue)) || null}
-                onChange={(value) => setValue('endDate', value)}
-                placeholderText="End Date"
-                showTimeSelect
-                timeCaption="time"
-                dateFormat="MMMM d, yyyy h:mm aa"
-                className={isViewing ? 'date-input disabled' : 'date-input'}
-              />
-              <div className="input--helper">
-                <div className="caption text__error">{errors.endDate?.message}</div>
-              </div>
-            </div>
-          </div>
+          )}
           {(isCreating || isEditing) && (
             <div className="buttons-container">
               <button
