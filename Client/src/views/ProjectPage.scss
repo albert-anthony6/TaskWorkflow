@@ -9,6 +9,16 @@
     padding: 35px 50px 40px;
     background-color: $light-grey;
 
+    h1 {
+      font-size: 35px;
+      line-height: 40px;
+
+      @include bp-sm-phone-landscape {
+        font-size: 45px;
+        line-height: 50px;
+      }
+    }
+
     .breadcrumbs {
       color: $dark-neutral;
 

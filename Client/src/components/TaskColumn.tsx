@@ -5,6 +5,7 @@ import { Task } from '../utils/interfaces/task';
 import { toggleTaskModal } from '../store/slices/taskSlice';
 import { useAppDispatch } from '../store/configureStore';
 import Collapsible from 'react-collapsible';
+import Skeleton from 'react-loading-skeleton';
 import IconAdd from '../assets/icons/icon_add.svg?react';
 
 interface Props {
@@ -14,9 +15,13 @@ interface Props {
     statusColor: string;
     list: Task[];
   };
+  isLoading: boolean;
 }
 
-export default function TaskColumn({ col: { list, id, columnName, statusColor } }: Props) {
+export default function TaskColumn({
+  col: { list, id, columnName, statusColor },
+  isLoading
+}: Props) {
   const dispatch = useAppDispatch();
 
   function handleAddTaskClick(event: React.MouseEvent) {
@@ -40,16 +45,35 @@ export default function TaskColumn({ col: { list, id, columnName, statusColor } 
             contentInnerClassName="task-column"
             open={true}
           >
-            <div
-              className="task-column--content"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {list.map((task, index) => (
-                <TaskCard key={task.id} task={task} index={index} />
-              ))}
-              {provided.placeholder}
-            </div>
+            {isLoading ? (
+              <div className="task-column--content" ref={provided.innerRef}>
+                <Skeleton
+                  baseColor="#ccc"
+                  duration={0.9}
+                  width={'100%'}
+                  circle={false}
+                  className={'task-card'}
+                />
+                <Skeleton
+                  baseColor="#ccc"
+                  duration={0.9}
+                  width={'100%'}
+                  circle={false}
+                  className={'task-card'}
+                />
+              </div>
+            ) : (
+              <div
+                className="task-column--content"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {list.map((task, index) => (
+                  <TaskCard key={task.id} task={task} index={index} />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
           </Collapsible>
         )}
       </Droppable>

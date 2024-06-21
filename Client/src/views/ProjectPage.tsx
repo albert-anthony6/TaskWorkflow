@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Task } from '../utils/interfaces/task';
 import { User } from '../utils/interfaces/user';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
+import Skeleton from 'react-loading-skeleton';
 import TaskColumn from '../components/TaskColumn';
 import TaskCreationModal from '../components/TaskCreationModal';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
@@ -197,28 +198,52 @@ export default function ProjectPage() {
 
   return (
     <main className="project-page">
-      <div className="project-page--header">
-        <h1>{project?.name}</h1>
-        <Link to="/projects" className="breadcrumbs">
-          Projects/{project?.name}
-        </Link>
-      </div>
+      {isLoading ? (
+        <div className="project-page--header">
+          <Skeleton baseColor="#ccc" duration={0.9} width={'25vw'} height={'30px'} circle={false} />
+          <Skeleton baseColor="#ccc" duration={0.9} width={'15vw'} height={'15px'} circle={false} />
+        </div>
+      ) : (
+        <div className="project-page--header">
+          <h1>{project?.name}</h1>
+          <Link to="/projects" className="breadcrumbs">
+            Projects/{project?.name}
+          </Link>
+        </div>
+      )}
       <div className="project-page--actions">
         <StyledSearch handleChange={(event) => setSearchTerm(event.target.value)} />
         <div className="members">
-          {project?.members.map((member) => (
-            <div className="member" key={member.id}>
-              {member.avatar ? (
-                <img
-                  src={member.avatar.url}
-                  alt={member.displayName}
-                  className="avatar avatar__xs"
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, index) => (
+              <div className="member" key={index}>
+                <Skeleton
+                  key={index}
+                  baseColor="#ccc"
+                  duration={0.9}
+                  width={'30px'}
+                  circle={true}
+                  className={'avatar avatar__xs'}
                 />
-              ) : (
-                <IconAvatar className="avatar avatar__xs" />
-              )}
-            </div>
-          ))}
+              </div>
+            ))
+          ) : (
+            <>
+              {project?.members.map((member) => (
+                <div className="member" key={member.id}>
+                  {member.avatar ? (
+                    <img
+                      src={member.avatar.url}
+                      alt={member.displayName}
+                      className="avatar avatar__xs"
+                    />
+                  ) : (
+                    <IconAvatar className="avatar avatar__xs" />
+                  )}
+                </div>
+              ))}
+            </>
+          )}
           <div onClick={() => setIsMemberModalOpen(true)} className="member">
             <IconAddUser />
           </div>
@@ -228,7 +253,7 @@ export default function ProjectPage() {
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="columns-container">
             {Object.values(columns).map((col) => (
-              <TaskColumn col={col} key={col.id} />
+              <TaskColumn col={col} key={col.id} isLoading={isLoading} />
             ))}
           </div>
         </DragDropContext>
