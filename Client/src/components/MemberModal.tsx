@@ -4,16 +4,26 @@ import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { getUsers } from '../store/slices/usersSlice';
 import { User } from '../utils/interfaces/user';
 import { updateMembers } from '../store/slices/projectSlice';
+import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import MutliSelectDropdown from './micro/MultiSelectDropdown';
 import IconClose from '../assets/icons/icon_close.svg?react';
 
 interface Props {
   members: any;
+  isLoading: boolean;
   closeModal: () => void;
+  setIsLoading: (arg: boolean) => void;
+  getProject: () => void;
 }
 
-export default function MemberModal({ members, closeModal }: Props) {
+export default function MemberModal({
+  members,
+  closeModal,
+  isLoading,
+  setIsLoading,
+  getProject
+}: Props) {
   const params = useParams();
   const dispatch = useAppDispatch();
   const { users } = useAppSelector((state) => state.users);
@@ -24,7 +34,16 @@ export default function MemberModal({ members, closeModal }: Props) {
   });
 
   function onSubmit(data: { members: string[] }) {
-    dispatch(updateMembers({ projectId: `${params.projectId}`, appUserIds: data.members }));
+    setIsLoading(true);
+    dispatch(updateMembers({ projectId: `${params.projectId}`, appUserIds: data.members }))
+      .then(() => {
+        toast.success('Members successfully updated');
+        getProject();
+      })
+      .finally(() => {
+        closeModal();
+        setIsLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -48,7 +67,9 @@ export default function MemberModal({ members, closeModal }: Props) {
             <button type="button" onClick={closeModal} className="button__cancel">
               Cancel
             </button>
-            <button className="button__primary">Update Members</button>
+            <button className="button__primary">
+              {isLoading ? <div className="loading-spinner" /> : <span>Update Members</span>}
+            </button>
           </div>
         </form>
       </div>

@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import './ProjectPage.scss';
-import { Link, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import { Task } from '../utils/interfaces/task';
 import { User } from '../utils/interfaces/user';
 import { useDebouncedSearch } from '../utils/hooks/useDebouncedSearch';
@@ -25,6 +25,7 @@ export default function ProjectPage() {
   const { taskModal } = useAppSelector((state) => state.task);
   const [searchTerm, setSearchTerm] = useState('');
   const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   interface Column {
     id: string;
@@ -94,7 +95,7 @@ export default function ProjectPage() {
     setColumns(newColumns);
   }, []);
 
-  const isLoading = useDebouncedSearch(
+  const isLoadingSearch = useDebouncedSearch(
     searchTerm,
     dispatch,
     getProject,
@@ -191,7 +192,7 @@ export default function ProjectPage() {
 
   return (
     <main className="project-page">
-      {isLoading ? (
+      {isLoading || isLoadingSearch ? (
         <div className="project-page--header">
           <Skeleton baseColor="#ccc" duration={0.9} width={'25vw'} height={'30px'} circle={false} />
           <Skeleton baseColor="#ccc" duration={0.9} width={'15vw'} height={'15px'} circle={false} />
@@ -207,7 +208,7 @@ export default function ProjectPage() {
       <div className="project-page--actions">
         <StyledSearch handleChange={(event) => setSearchTerm(event.target.value)} />
         <div className="members">
-          {isLoading ? (
+          {isLoading || isLoadingSearch ? (
             Array.from({ length: 3 }).map((_, index) => (
               <div className="member" key={index}>
                 <Skeleton
@@ -224,15 +225,17 @@ export default function ProjectPage() {
             <>
               {project?.members.map((member) => (
                 <div className="member" key={member.id}>
-                  {member.avatar ? (
-                    <img
-                      src={member.avatar.url}
-                      alt={member.displayName}
-                      className="avatar avatar__xs"
-                    />
-                  ) : (
-                    <IconAvatar className="avatar avatar__xs" />
-                  )}
+                  <NavLink to={`/user/${member.id}`}>
+                    {member.avatar ? (
+                      <img
+                        src={member.avatar.url}
+                        alt={member.displayName}
+                        className="avatar avatar__xs"
+                      />
+                    ) : (
+                      <IconAvatar className="avatar avatar__xs" />
+                    )}
+                  </NavLink>
                 </div>
               ))}
             </>
@@ -246,7 +249,7 @@ export default function ProjectPage() {
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="columns-container">
             {Object.values(columns).map((col) => (
-              <TaskColumn col={col} key={col.id} isLoading={isLoading} />
+              <TaskColumn col={col} key={col.id} isLoading={isLoadingSearch} />
             ))}
           </div>
         </DragDropContext>
@@ -265,6 +268,16 @@ export default function ProjectPage() {
         <MemberModal
           members={project?.members as User[]}
           closeModal={() => setIsMemberModalOpen(false)}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          getProject={() => {
+            setIsLoading(true);
+            dispatch(getProject({ id: `${params.projectId}`, searchTerm }))
+              .then((action) => {
+                updateColumns(action as { payload: Project });
+              })
+              .finally(() => setIsLoading(false));
+          }}
         />
       )}
     </main>

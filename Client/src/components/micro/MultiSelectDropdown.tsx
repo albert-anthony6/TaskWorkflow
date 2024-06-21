@@ -69,7 +69,7 @@ export default function MutliSelectDropdown({
       placeholder="Users..."
       defaultValue={defaultValue}
       className={isReadOnly ? 'multiselect__readonly' : ''}
-      options={options ? options : null}
+      options={options ? options : []}
       classNamePrefix="select"
       onChange={handleChange}
       isSearchable={true}
