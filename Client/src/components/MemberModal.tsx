@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { getUsers } from '../store/slices/usersSlice';
@@ -27,13 +27,23 @@ export default function MemberModal({
   const params = useParams();
   const dispatch = useAppDispatch();
   const { users } = useAppSelector((state) => state.users);
-  const { register, handleSubmit, setValue } = useForm({
+  const initialValues = useState<string[]>(members.map((member: User) => member.id))[0];
+
+  const { register, handleSubmit, setValue } = useForm<{ members: string[] }>({
     defaultValues: {
       members: members.map((member: User) => member.id)
     }
   });
 
   function onSubmit(data: { members: string[] }) {
+    const isDataModified =
+      JSON.stringify(data.members.sort()) !== JSON.stringify(initialValues.sort());
+
+    if (!isDataModified) {
+      toast.info('No changes detected.');
+      return;
+    }
+
     setIsLoading(true);
     dispatch(updateMembers({ projectId: `${params.projectId}`, appUserIds: data.members }))
       .then(() => {

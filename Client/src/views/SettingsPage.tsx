@@ -12,6 +12,7 @@ import useBlobCleanup from '../utils/hooks/useBlobCleanup';
 export default function SettingsPage() {
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state) => state.user);
+  const [initialValues, setInitialValues] = useState<EditUserFormValues | null>(null);
 
   const {
     blob: avatarBlob,
@@ -41,7 +42,7 @@ export default function SettingsPage() {
     setValue,
     setError,
     formState: { errors }
-  } = useForm({
+  } = useForm<EditUserFormValues>({
     defaultValues: {
       displayName: '',
       bio: '',
@@ -175,6 +176,13 @@ export default function SettingsPage() {
     ) {
       return;
     }
+
+    // Check if any field has been updated
+    const isDataModified = Object.keys(data).some(
+      (key) =>
+        data[key as keyof EditUserFormValues] !== initialValues?.[key as keyof EditUserFormValues]
+    );
+
     try {
       setIsLoading(true);
       const promises = [];
@@ -192,8 +200,10 @@ export default function SettingsPage() {
         promises.push(uploadCoverImagePromise);
       }
 
-      const editUserProfile = dispatch(editProfile(data));
-      promises.push(editUserProfile);
+      if (isDataModified) {
+        const editUserProfile = dispatch(editProfile(data));
+        promises.push(editUserProfile);
+      }
 
       await Promise.all(promises).then(() => {
         toast.success('User profile info saved!');
@@ -210,12 +220,21 @@ export default function SettingsPage() {
   // Set input values with currentUser data
   useEffect(() => {
     if (currentUser) {
-      setValue('displayName', currentUser.displayName || '');
-      setValue('bio', currentUser.bio || '');
-      setValue('facebookLink', currentUser.facebookLink || '');
-      setValue('twitterLink', currentUser.twitterLink || '');
-      setValue('instagramLink', currentUser.instagramLink || '');
-      setValue('linkedinLink', currentUser.linkedinLink || '');
+      const initialValues: EditUserFormValues = {
+        displayName: currentUser.displayName || '',
+        bio: currentUser.bio || '',
+        facebookLink: currentUser.facebookLink || '',
+        twitterLink: currentUser.twitterLink || '',
+        instagramLink: currentUser.instagramLink || '',
+        linkedinLink: currentUser.linkedinLink || ''
+      };
+      setInitialValues(initialValues);
+      setValue('displayName', initialValues.displayName);
+      setValue('bio', initialValues.bio);
+      setValue('facebookLink', initialValues.facebookLink);
+      setValue('twitterLink', initialValues.twitterLink);
+      setValue('instagramLink', initialValues.instagramLink);
+      setValue('linkedinLink', initialValues.linkedinLink);
     }
   }, [currentUser, setValue]);
 

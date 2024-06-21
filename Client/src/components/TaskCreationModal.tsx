@@ -96,7 +96,6 @@ export default function TaskCreationModal(props: Props) {
     setIsLoading(true);
     const severityValue: string = (data.severity as ColorOption).value;
 
-    // Only using the value property from the severity object
     const payload = {
       id: taskModal.taskId,
       ...data,
@@ -161,6 +160,7 @@ export default function TaskCreationModal(props: Props) {
       // Creating a new task
       dispatch(resetSelectedTask());
       setIsWriting(true);
+      setIsLoading(false);
     }
   }, [dispatch, taskModal]);
 
@@ -273,7 +273,7 @@ export default function TaskCreationModal(props: Props) {
       style={isModalOpen ? {} : { overflowY: 'scroll' }}
     >
       <div className="form-container">
-        {isLoading && !isCreating ? (
+        {isLoading && !isCreating && !isEditing ? (
           <Skeleton baseColor="#ccc" duration={0.9} width={'30%'} height={'40px'} circle={false} />
         ) : (
           <ul>
@@ -289,7 +289,7 @@ export default function TaskCreationModal(props: Props) {
             )}
           </ul>
         )}
-        {isLoading && !isCreating ? (
+        {isLoading && !isCreating && !isEditing ? (
           <>
             <Skeleton
               baseColor="#ccc"
@@ -362,7 +362,7 @@ export default function TaskCreationModal(props: Props) {
             </div>
           )}
           <div className={`input-container ${!errors.title?.message && 'input-container__error'}`}>
-            {isLoading && !isCreating ? (
+            {isLoading && !isCreating && !isEditing ? (
               <Skeleton
                 baseColor="#ccc"
                 duration={0.9}
@@ -395,7 +395,7 @@ export default function TaskCreationModal(props: Props) {
               </>
             )}
           </div>
-          {isLoading && !isCreating ? (
+          {isLoading && !isCreating && !isEditing ? (
             <Skeleton
               baseColor="#ccc"
               duration={0.9}
@@ -416,7 +416,7 @@ export default function TaskCreationModal(props: Props) {
               />
             </>
           )}
-          {isLoading && !isCreating ? (
+          {isLoading && !isCreating && !isEditing ? (
             <Skeleton
               baseColor="#ccc"
               duration={0.9}
@@ -432,7 +432,7 @@ export default function TaskCreationModal(props: Props) {
               onChange={(selectedOption) => setValue('severity', selectedOption)}
             />
           )}
-          {isLoading && !isCreating ? (
+          {isLoading && !isCreating && !isEditing ? (
             <Skeleton
               baseColor="#ccc"
               duration={0.9}
@@ -495,19 +495,11 @@ export default function TaskCreationModal(props: Props) {
               </button>
               {isCreating ? (
                 <button className="button__primary">
-                  {isLoading && !isCreating ? (
-                    <div className="loading-spinner" />
-                  ) : (
-                    <span>Create Task</span>
-                  )}
+                  {isLoading ? <div className="loading-spinner" /> : <span>Create Task</span>}
                 </button>
               ) : (
                 <button className="button__primary">
-                  {isLoading && !isCreating ? (
-                    <div className="loading-spinner" />
-                  ) : (
-                    <span>Edit Task</span>
-                  )}
+                  {isLoading ? <div className="loading-spinner" /> : <span>Edit Task</span>}
                 </button>
               )}
             </div>
