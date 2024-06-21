@@ -13,7 +13,7 @@ interface ProjectState {
 
 interface GetProjectsParams {
   pagingParams: PagingParams | undefined;
-  userId: string;
+  id: string;
   filterProjects?: boolean;
   searchTerm?: string;
 }
@@ -31,14 +31,14 @@ export const setMyProjects = createAction<Project[]>('project/setMyProjects');
 export const getProjects = createAsyncThunk<Project[] | void, GetProjectsParams>(
   'project/getProjects',
   async (
-    { pagingParams = { pageNumber: 1, pageSize: 10 }, userId, filterProjects = false, searchTerm },
+    { pagingParams = { pageNumber: 1, pageSize: 10 }, id, filterProjects = false, searchTerm },
     thunkAPI
   ) => {
     try {
       const results = await agent.Projects.list(
         pagingParams.pageNumber as number,
         pagingParams.pageSize as number,
-        userId,
+        id,
         filterProjects,
         searchTerm
       );

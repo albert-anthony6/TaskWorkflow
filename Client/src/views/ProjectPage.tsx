@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import './ProjectPage.scss';
 import { Link, useParams } from 'react-router-dom';
 import { Task } from '../utils/interfaces/task';
 import { User } from '../utils/interfaces/user';
+import { useDebouncedSearch } from '../utils/hooks/useDebouncedSearch';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import Skeleton from 'react-loading-skeleton';
 import TaskColumn from '../components/TaskColumn';
@@ -23,7 +24,6 @@ export default function ProjectPage() {
   const dispatch = useAppDispatch();
   const { taskModal } = useAppSelector((state) => state.task);
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
 
   interface Column {
@@ -94,21 +94,14 @@ export default function ProjectPage() {
     setColumns(newColumns);
   }, []);
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(
-      () => {
-        setIsLoading(true);
-        dispatch(getProject({ id: `${params.projectId}`, searchTerm }))
-          .then((action) => {
-            updateColumns(action as { payload: Project });
-          })
-          .finally(() => setIsLoading(false));
-      },
-      searchTerm ? 500 : 0
-    );
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [dispatch, params.projectId, updateColumns, searchTerm]);
+  const isLoading = useDebouncedSearch(
+    searchTerm,
+    dispatch,
+    getProject,
+    params.projectId,
+    false,
+    updateColumns
+  );
 
   function onDragEnd({ source, destination }: DropResult) {
     // Make sure we have a valid destination

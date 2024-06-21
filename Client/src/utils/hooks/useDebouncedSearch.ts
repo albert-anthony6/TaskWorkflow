@@ -4,9 +4,10 @@ import { AnyAction, Dispatch } from 'redux';
 export function useDebouncedSearch(
   searchTerm: string,
   dispatch: Dispatch<AnyAction>,
-  action: (params: any) => any,
+  action: (args: any) => any,
   userId: string | null = null,
-  filterProjects = false
+  filterProjects = false,
+  helperFunction?: (arg: any) => void
 ) {
   const [isLoadingSearch, setIsLoadingSearch] = useState(true);
 
@@ -17,19 +18,23 @@ export function useDebouncedSearch(
         dispatch(
           action({
             searchTerm,
-            userId,
+            id: userId,
             pagingParams: { pageNumber: 1, pageSize: 12 },
             filterProjects
           })
-        ).finally(() => {
-          setIsLoadingSearch(false);
-        });
+        )
+          .then((resp: any) => {
+            helperFunction?.(resp);
+          })
+          .finally(() => {
+            setIsLoadingSearch(false);
+          });
       },
       searchTerm ? 500 : 0
     );
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, dispatch, action, userId, filterProjects]);
+  }, [searchTerm, dispatch, action, userId, filterProjects, helperFunction]);
 
   return isLoadingSearch;
 }
