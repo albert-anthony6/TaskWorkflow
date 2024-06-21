@@ -19,7 +19,13 @@
       }
     }
 
+    .project-owner {
+      font-size: 14px;
+    }
+
     .breadcrumbs {
+      display: inline-block;
+      margin-top: 15px;
       color: $dark-neutral;
 
       &:hover {

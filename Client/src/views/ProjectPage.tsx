@@ -195,7 +195,14 @@ export default function ProjectPage() {
       {isLoading || isLoadingSearch ? (
         <div className="project-page--header">
           <Skeleton baseColor="#ccc" duration={0.9} width={'25vw'} height={'30px'} circle={false} />
-          <Skeleton baseColor="#ccc" duration={0.9} width={'15vw'} height={'15px'} circle={false} />
+          <Skeleton
+            baseColor="#ccc"
+            duration={0.9}
+            width={'15vw'}
+            height={'35px'}
+            style={{ marginTop: '15px' }}
+            circle={false}
+          />
         </div>
       ) : (
         <div className="project-page--header">
@@ -203,6 +210,7 @@ export default function ProjectPage() {
           <Link to="/projects" className="breadcrumbs">
             Projects/{project?.name}
           </Link>
+          <p className="project-owner">Project Owner: {project?.owner}</p>
         </div>
       )}
       <div className="project-page--actions">
