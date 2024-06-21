@@ -123,7 +123,7 @@ const Tasks = {
     formData.append('Id', id);
     if (file?.size > 10485760) {
       toast.error('File size too large. Maximum is 10 MB.');
-      return;
+      throw Error;
     }
     return axios.post<void>('photos', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
@@ -152,7 +152,7 @@ const Profile = {
     formData.append('File', file);
     if (file?.size > 10485760) {
       toast.error('File size too large. Maximum is 10 MB.');
-      return;
+      throw Error;
     }
     return axios.put<void>(type === 'avatar' ? 'photos/avatar' : 'photos/cover-image', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
