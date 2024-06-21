@@ -273,7 +273,7 @@ export default function TaskCreationModal(props: Props) {
       style={isModalOpen ? {} : { overflowY: 'scroll' }}
     >
       <div className="form-container">
-        {isLoading ? (
+        {isLoading && !isCreating ? (
           <Skeleton baseColor="#ccc" duration={0.9} width={'30%'} height={'40px'} circle={false} />
         ) : (
           <ul>
@@ -289,7 +289,7 @@ export default function TaskCreationModal(props: Props) {
             )}
           </ul>
         )}
-        {isLoading ? (
+        {isLoading && !isCreating ? (
           <>
             <Skeleton
               baseColor="#ccc"
@@ -362,7 +362,7 @@ export default function TaskCreationModal(props: Props) {
             </div>
           )}
           <div className={`input-container ${!errors.title?.message && 'input-container__error'}`}>
-            {isLoading ? (
+            {isLoading && !isCreating ? (
               <Skeleton
                 baseColor="#ccc"
                 duration={0.9}
@@ -395,7 +395,7 @@ export default function TaskCreationModal(props: Props) {
               </>
             )}
           </div>
-          {isLoading ? (
+          {isLoading && !isCreating ? (
             <Skeleton
               baseColor="#ccc"
               duration={0.9}
@@ -416,7 +416,7 @@ export default function TaskCreationModal(props: Props) {
               />
             </>
           )}
-          {isLoading ? (
+          {isLoading && !isCreating ? (
             <Skeleton
               baseColor="#ccc"
               duration={0.9}
@@ -432,7 +432,7 @@ export default function TaskCreationModal(props: Props) {
               onChange={(selectedOption) => setValue('severity', selectedOption)}
             />
           )}
-          {isLoading ? (
+          {isLoading && !isCreating ? (
             <Skeleton
               baseColor="#ccc"
               duration={0.9}
@@ -495,11 +495,19 @@ export default function TaskCreationModal(props: Props) {
               </button>
               {isCreating ? (
                 <button className="button__primary">
-                  {isLoading ? <div className="loading-spinner" /> : <span>Create Task</span>}
+                  {isLoading && !isCreating ? (
+                    <div className="loading-spinner" />
+                  ) : (
+                    <span>Create Task</span>
+                  )}
                 </button>
               ) : (
                 <button className="button__primary">
-                  {isLoading ? <div className="loading-spinner" /> : <span>Edit Task</span>}
+                  {isLoading && !isCreating ? (
+                    <div className="loading-spinner" />
+                  ) : (
+                    <span>Edit Task</span>
+                  )}
                 </button>
               )}
             </div>
