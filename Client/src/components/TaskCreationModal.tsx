@@ -96,6 +96,13 @@ export default function TaskCreationModal(props: Props) {
     setIsLoading(true);
     const severityValue: string = (data.severity as ColorOption).value;
 
+    // Validate end date should not be before start date
+    if (data.startDate && data.endDate && data.endDate < data.startDate) {
+      setError('endDate', { message: 'End date must be after start date.' });
+      setIsLoading(false);
+      return;
+    }
+
     const payload = {
       id: taskModal.taskId,
       ...data,
