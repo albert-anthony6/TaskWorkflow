@@ -68,32 +68,33 @@ export default function ProfilePage() {
   async function getUpdatedProjects() {
     try {
       setIsMyProjectsLoading(true);
-      await dispatch(
-        getProjects({
-          pagingParams: { pageNumber: 1, pageSize: 10 },
-          id: `${userId}`,
-          filterProjects: true,
-          searchTerm: ''
-        })
-      );
-      setIsMyProjectsLoading(false);
-    } catch (error) {
-      toast.error('Failed to get list of projects');
-    }
-
-    try {
       setIsProjectsLoading(true);
-      await dispatch(
-        getProjects({
-          pagingParams: { pageNumber: 1, pageSize: 10 },
-          id: `${userId}`,
-          filterProjects: false,
-          searchTerm: ''
-        })
-      );
+
+      await Promise.all([
+        dispatch(
+          getProjects({
+            pagingParams: { pageNumber: 1, pageSize: 10 },
+            id: `${userId}`,
+            filterProjects: true,
+            searchTerm: myProjectsSearchTerm
+          })
+        ),
+        dispatch(
+          getProjects({
+            pagingParams: { pageNumber: 1, pageSize: 10 },
+            id: `${userId}`,
+            filterProjects: false,
+            searchTerm: projectsSearchTerm
+          })
+        )
+      ]);
+
+      setIsMyProjectsLoading(false);
       setIsProjectsLoading(false);
     } catch (error) {
       toast.error('Failed to get list of projects');
+      setIsMyProjectsLoading(false);
+      setIsProjectsLoading(false);
     }
   }
 
