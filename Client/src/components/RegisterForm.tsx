@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../store/configureStore';
 import { registerUser } from '../store/slices/userSlice';
@@ -6,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 export default function RegisterForm() {
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -22,26 +24,29 @@ export default function RegisterForm() {
   });
 
   function onSubmit(data: AuthUserFormValues) {
+    setIsLoading(true);
     if (data.confirmPassword !== data.password) {
       setError('confirmPassword', { message: 'Passwords do not match' });
       return;
     }
 
-    dispatch(registerUser(data)).catch((err) => {
-      if (err.error) {
-        err.error.forEach((err: string) => {
-          if (err.includes('Password')) {
-            setError('password', { message: err });
-          } else if (err.includes('Email')) {
-            setError('email', { message: err });
-          } else if (err.includes('Username')) {
-            setError('username', { message: err });
-          } else if (err.includes('DisplayName')) {
-            setError('displayName', { message: err });
-          }
-        });
-      }
-    });
+    dispatch(registerUser(data))
+      .catch((err) => {
+        if (err.error) {
+          err.error.forEach((err: string) => {
+            if (err.includes('Password')) {
+              setError('password', { message: err });
+            } else if (err.includes('Email')) {
+              setError('email', { message: err });
+            } else if (err.includes('Username')) {
+              setError('username', { message: err });
+            } else if (err.includes('DisplayName')) {
+              setError('displayName', { message: err });
+            }
+          });
+        }
+      })
+      .finally(() => setIsLoading(false));
   }
 
   return (
@@ -127,7 +132,7 @@ export default function RegisterForm() {
         </div>
       </div>
       <button type="submit" className="button__primary">
-        Register
+        {isLoading ? <div className="loading-spinner" /> : <span>Register</span>}
       </button>
       <div className="caption">
         Already have an account? <Link to="/login">Login</Link>

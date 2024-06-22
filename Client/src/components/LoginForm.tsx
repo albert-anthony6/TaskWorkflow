@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthUserFormValues } from '../utils/interfaces/user';
 import { Link } from 'react-router-dom';
@@ -6,6 +7,8 @@ import { signInUser } from '../store/slices/userSlice';
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDemoLoading, setIsDemoLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -19,13 +22,20 @@ export default function LoginForm() {
   });
 
   function handleDemoLogin() {
+    setIsDemoLoading(true);
     onSubmit({ email: 'bob@test.com', password: 'Pa$$w0rd' } as AuthUserFormValues);
   }
 
   function onSubmit(data: AuthUserFormValues) {
-    dispatch(signInUser(data)).catch(() => {
-      setError('password', { message: 'Invalid email or password' });
-    });
+    setIsLoading(true);
+    dispatch(signInUser(data))
+      .catch(() => {
+        setError('password', { message: 'Invalid email or password' });
+      })
+      .finally(() => {
+        setIsLoading(false);
+        if (isDemoLoading) setIsDemoLoading(false);
+      });
   }
 
   return (
@@ -64,10 +74,14 @@ export default function LoginForm() {
       </div>
       <div className="login-actions">
         <button type="submit" className="button__primary">
-          Login
+          {isLoading && !isDemoLoading ? <div className="loading-spinner" /> : <span>Login</span>}
         </button>
         <button type="button" onClick={handleDemoLogin} className="button__secondary">
-          Demo Account (Bypass Login)
+          {isDemoLoading && isDemoLoading ? (
+            <div className="loading-spinner" />
+          ) : (
+            <span>Demo Account (Bypass Login)</span>
+          )}
         </button>
       </div>
       <div className="caption">
