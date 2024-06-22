@@ -14,11 +14,13 @@ export default function LoginForm() {
   } = useForm<AuthUserFormValues>({
     defaultValues: {
       email: '',
-      password: '',
-      displayName: '',
-      username: ''
+      password: ''
     }
   });
+
+  function handleDemoLogin() {
+    onSubmit({ email: 'bob@test.com', password: 'Pa$$w0rd' } as AuthUserFormValues);
+  }
 
   function onSubmit(data: AuthUserFormValues) {
     dispatch(signInUser(data)).catch(() => {
@@ -60,9 +62,14 @@ export default function LoginForm() {
           * {errors.password?.message}
         </div>
       </div>
-      <button type="submit" className="button__primary">
-        Login
-      </button>
+      <div className="login-actions">
+        <button type="submit" className="button__primary">
+          Login
+        </button>
+        <button type="button" onClick={handleDemoLogin} className="button__secondary">
+          Demo Account (Bypass Login)
+        </button>
+      </div>
       <div className="caption">
         Don't have an account yet? <Link to="/register">Sign Up</Link>
       </div>

@@ -48,6 +48,29 @@
       }
     }
 
+    .login-actions {
+      button {
+        display: block;
+
+        &:last-child {
+          padding: 10px 7px;
+          color: $lightest-neutral;
+          border-color: $lightest-neutral;
+          background-color: transparent;
+          transition: all 0.3s ease;
+
+          @include bp-sm-phone-landscape {
+            padding: 15px 20px;
+          }
+
+          &:hover {
+            color: $dark-neutral;
+            background-color: $lightest-neutral;
+          }
+        }
+      }
+    }
+
     button {
       margin-top: 15px;
       color: $dark-neutral;
