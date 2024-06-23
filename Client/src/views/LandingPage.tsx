@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { router } from '../routes/router';
 import { useAppSelector } from '../store/configureStore';
+import agent from '../api/agent';
 import Carousel from 'react-multi-carousel';
 import './LandingPage.scss';
 import 'react-multi-carousel/lib/styles.css';
@@ -18,6 +19,12 @@ export default function LandingPage() {
       router.navigate(`/user/${currentUser?.id}`);
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    agent.Warmup.touch().catch((error) => {
+      console.error('Error warming up the server:', error);
+    });
+  }, []);
 
   const responsive = {
     superLargeDesktop: {

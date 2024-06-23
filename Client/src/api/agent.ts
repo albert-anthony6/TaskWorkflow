@@ -161,11 +161,16 @@ const Profile = {
   edit: (user: EditUserFormValues) => requests.put<void>('/profiles/user', user)
 };
 
+const Warmup = {
+  touch: () => requests.get<void>('/warmup')
+};
+
 const agent = {
   Projects,
   Tasks,
   Account,
-  Profile
+  Profile,
+  Warmup
 };
 
 export default agent;
